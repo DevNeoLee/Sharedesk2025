@@ -18,6 +18,8 @@ import "controllers"
 
 require('./jquery.raty')
 
+// Bootstrap 5 compatibility
+window.bootstrap = require('bootstrap')
 
 // google map api with Stimulus.js
 window.dispatchMapsEvent = function (...args) {

@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_many :reservations
   has_many :reviews
   
-  has_one_attached :avatar # 마치 유저의 속한 하나의 파일 처럼 작동
+  has_one_attached :avatar # Works like a file belonging to the user
 
   def default_avatar
     if avatar.attached?
