@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-3">
+        <%= image_tag avatar_url(@other), class: "img-circle avatar-medium"%><br>
+        <strong><%= @other.calling_name</strong>
+        <%= linkt_to "View Profile", @other, class: "btn btn-default wide"%>
+    </div>
+    <div class="col-md-9">
+
+        <div class="card card-body">
+            <div class="card-header">  
+                Conversation with <%= @other.fullname%>
+            </div>
+            <div class="card-body">
+                <div class="container">
+
+                <%= form_with [@conversation, @conversation.messages.new] do |f|%>
+                <div class="form-group">
+                    <%= f.text_area :content, id: "new_message", placeholder: "Add a personal message", class-name: "form-contorl"%>
+                </div>
+                <%= f.hidden_field :user_id, value: current_user.id %>
+            
+                <div class="actions">
+                    <%= f.submit "Send Message", class: "btn btn-primary" %>
+                </div>
+                <% end %>
+
+            </div>
+            </div>
+        </div>
+
+        <div id="chat">
+            <%= render 'messages'%>
+        </div>
+        
+    </div>
+</div>

@@ -1,0 +1,211 @@
+
+<div class="h2">Showing matches for " <%=params[:q]["address_cont"] %> " </div>
+
+<div id="complex_search" class="card m-3 p-3 shadow ">
+    <div>
+        <button id="complex_search_button" class="btn btn-danger mb-3">Click for Advanced Search</button>
+    </div>
+
+    <div id="complex_search_menu" class="invisible col-md-12">
+       
+        <div class="mt-3">
+            <%= search_form_for @browse, url: search_path do |f| %>
+                <div class="row mb3">
+                    <div class="col-md-6">
+                        Location: <%=f.search_field :address_cont, class: "form-control input-lg mr-sm-2", placeholder: "Where are you going?", id: "search_location" %>
+                    </div>
+                    <div class="col-md-3 ">
+                        Start Date: <%= text_field_tag :start_date, nil, {placeholder: "Start Date", id: "start_date", class: "form-control"}%>
+                    </div>
+                    <div class="col-md-3">
+                        End Date: <%= text_field_tag :end_date, nil, placeholder: "End Date", class: "form-control", id: "end_date"%>
+                    </div>
+                </div>
+                <hr>
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        Space Name: <%= f.text_field :listing_name, placeholder: "Listing Name", class: "form-control"%>
+                    </div>
+                </div>
+                <hr>
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        Price(min $) <%= f.number_field :price_gteq, placeholder: "min price", class: "form-control", id: "price_min"%>
+                    </div>
+                    <div class="col-md-3">
+                        (max $)<%= f.number_field :price_lteq, placeholder: "max price", class: "form-control", id: "price_max"%>
+                    </div>
+                </div>
+                <hr>      
+                <div class="row">
+                    <span class="col-md-2">Space Type: </span>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[space_type_eq_any][]", "Apartment"%> Apartment <i class="far fa-building"></i>
+                    </div>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[space_type_eq_any][]", "House"%> House <i class="fas fa-house-user"></i>
+                    </div>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[space_type_eq_any][]", "Office"%> Office <i class="fas fa-briefcase"></i>
+                    </div>                
+                </div>
+                <hr>
+                <div class="row">
+                    <span class="col-md-2">Desk Type: </span>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[desk_type_eq_any][]", "Single Desk"%> Single Desk <i class="far fa-user"></i>
+                    </div>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[desk_type_eq_any][]", "Private Room Office"%> Private Room Office <i class="fas fa-person-booth"></i>
+                    </div>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[desk_type_eq_any][]", "Sharing Table"%> Sharing Table <i class="fas fa-users"></i>
+                    </div>                
+                </div>
+                <hr>
+                 <div class="row">
+                    <span class="col-md-2">Noise Level: </span>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[noise_level_eq_any][]", "Silent Mode"%> Silent Mode <i class="fas fa-volume-mute"></i>
+                    </div>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[noise_level_eq_any][]", "Quiet"%> Quiet <i class="fas fa-volume-off"></i>
+                    </div>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[noise_level_eq_any][]", "Casual"%> Casual <i class="fas fa-volume-down"></i>
+                    </div>                
+                </div>
+                <hr>
+                <div class="row">
+                    <span class="col-md-2">Manager on Premise: </span>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[manager_on_eq_any][]", "Fulltime"%> Fulltime <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[manager_on_eq_any][]", "Parttime"%> Parttime <i class="fas fa-user-clock"></i>
+                    </div>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[manager_on_eq_any][]", "No Stay"%> No Stay <i class="fas fa-comment-slash"></i>
+                    </div>                
+                </div>
+                <hr>
+                <div class="row">
+                    <span class="col-md-2">Security Level: </span>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[security_level_eq_any][]", "Maximum"%> Maximum <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[security_level_eq_any][]", "High"%> High <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="col-md-3">
+                        <%= check_box_tag "q[security_level_eq_any][]", "Good"%> Good <i class="fas fa-shield-alt"></i>
+                    </div>                
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>How many seats needed?</label>
+                            <%= f.number_field :capacity_gteq, class: "form-control", placeholder: "How many people?" %>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Bathrooms</label>
+                            <%= f.select :bath_room_gteq, [["1",1], ["2",2], ["3",3], ["4+",4]], prompt: "Need more bathrooms?", class: "form-control"%>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row pl-3 pb-3">
+                        Amenity: 
+                    </div>
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <%= check_box_tag "q[is_conference_eq]", true %> Conference Call <i class="fas fa-headset ml-3"></i>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <%= check_box_tag "q[is_kitchen_eq]", true %> Kitchen <i class="fas fa-sink ml-3"></i>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <%= check_box_tag "q[is_wifi_eq]", true %> Wifi <i class="fas fa-wifi ml-3 mb-1"></i>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <%= check_box_tag "q[is_heating_eq]", true %> Heating <i class="fas fa-fire ml-3"></i>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <%= check_box_tag "q[is_air_eq]", true %> Air Condition <i class="fas fa-fan ml-3"></i>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <%= check_box_tag "q[is_printing_eq]", true %> Printing Station <i class="fas fa-print ml-3"></i>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <%= check_box_tag "q[is_drinks_eq]", true %> Free Drinks <i class="fas fa-print ml-3"></i>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <%= check_box_tag "q[is_parking_eq]", true %> parking <i class="fas fa-parking ml-3"></i>
+                    </div>           
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-4">
+                        <%= f.submit "Now, Find Your Best Preference! Go Go!", class: "btn btn-primary"%>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+
+    </div>
+</div>
+
+<div data-controller="infinite-scroll" data-action="scroll@window->infinite-scroll#scroll">
+    <div class="row" data-target="infinite-scroll.entries">
+    <%# <div class="row"> %>
+     
+            <%= render 'rooms/rooms'%> 
+     
+    <%# </div>            %>
+    </div>
+    <div data-target="infinite-scroll.pagination", class="pagination_type">
+        <%== pagy_bootstrap_nav(@pagy_search).html_safe %>
+    </div>
+</div>
+  
+<script>
+    $(function() {
+        $('#complex_search_button').on('click', function() {
+            if ( $('#complex_search_menu').hasClass('visible')) {
+                $('#complex_search_menu').attr('class', 'invisible');
+                
+            } else {
+                $('#complex_search_menu').attr('class', 'visible');
+                $('#search_location').val('');
+                $('#listing_name').val('');
+                $('#start_date').val('');
+                $('#end_date').val('');
+                $('#price_min').val('');
+                $('#price_max').val('');
+            }
+        });
+
+        $('#start_date').datepicker({
+            dateFormat: 'dd-mm-yy',
+            minDate: 0,
+            maxDate: '3m',
+            onSelect: function(select) {
+                $('#end_date').datepicker("option", "minDate", select);
+                $('#end_date').attr('disabled', false);
+            }
+        })
+  
+        $('#end_date').datepicker({
+            dateFormat: 'dd-mm-yy',
+            minDate: 0,
+            maxDate: '3m',
+            onSelect: function(select) {
+                $('#start_date').datepicker("option", "maxDate", select);
+            }
+        })
+
+    });
+</script>

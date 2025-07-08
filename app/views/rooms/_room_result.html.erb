@@ -1,0 +1,21 @@
+<div class="col-md-4" style="min-width: 280px; max-width: 300px;">
+    <%= link_to room_path(room.id) do %>
+            <div class="card mb-5">
+                <div class="card-header">
+                    <h4><%= room.listing_name %></h4>                     
+                </div>
+                <% if room.images.attached? %>
+                    <%= image_tag room.medium_image(room.images[0]), class: "img-fluid" %>
+                <% end %>
+                <div class="card-body">
+                    <div class="card-title">
+                        <%= room.address %>
+                    </div>
+                    <div class="d-flex text-center">
+                        <%= link_to "Update", edit_room_path(room), class: "btn btn-primary ml-4 mb-2 mr-3" %>
+                        <%= button_to "Delete", room_path(room), method: "delete", data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>                                    
+                    </div>                         
+                </div>
+            </div>
+    <% end %>                    
+</div>                 

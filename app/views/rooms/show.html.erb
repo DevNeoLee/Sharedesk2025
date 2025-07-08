@@ -1,0 +1,197 @@
+
+<div class="card mb-3 shadow">
+    <div class="card-header bg-light">
+        <div class="row">
+            <h1 class="ml-2 p-2 m-2"><%= @room.listing_name %></h1>
+            <div class="ml-5 pt-4"><span id="average_rating"></span></div>
+        </div>
+            <h5 class="ml-4 mt-2 pb-2"><%= @room.address %></h5>
+    </div>
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">                    
+            <% if @room.images.attached? %>
+            <ol class="carousel-indicators">
+                <% @room.images.each do |image| %>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="<%= image.id %>"></li>
+                <% end %>
+            </ol>
+        <% end %>
+        <div class="carousel-inner">
+            <% if @room.images.attached? %>
+                <% @room.images.each_with_index do |image, i| %>
+                    <div class="carousel-item <%='active' if i == 0%>">
+                        <%= image_tag image, class: "image_carousel img-fluid"%>
+                        <div class="carousel-caption">
+                            <h2 class="display-3"><%= @room.listing_name %></h2>
+                        </div>
+                    </div>
+                <% end %>
+            <% end %>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+
+<%# Room summanry%>
+<div class="card mb-3 shadow info_text">
+    <div class="card-header">
+        <h4>About</h4>
+    </div>
+    <div class="col-md-12">
+        <div class="row p-3">
+            <div class="col-md-5 pt-5 text-center">
+                <p class="pl-3 pr-3 h5"><%= @room.summary %></p>                   
+            </div>
+            <div class=" h5 col-md-1.5 pt-5 text-center">
+                Managed by:
+            </div>        
+            <div class="col-md-4 text-center">
+                <%= link_to user_path(@room.user.id) do%>
+                    <%= image_tag (@room.user.default_avatar), class: "img-circle avatar-medium"%>                      
+                <% end %>
+                <div class=" pt-2 ml-2">
+                    <%= @room.user.name %>                                          
+                </div>  
+                            
+            </div>    
+            <p class="col-md-1.5 mt-5 text-center"><%= @room.user.email %></p>                 
+        </div>
+    </div>
+</div>
+
+<%# Room Essential Info %>
+<div class="card shadow mb-3">
+    <div class="card-header">
+       <h4>Info</h4>
+    </div>
+    <div class="row text-center info_text">
+        <div class="col-md-3 mb-5 p-3 ">
+            Operating in <br>
+            <%= "#{@room.space_type }" == 'House' ? 'a ': 'an '%><%= @room.space_type%>
+        </div>
+        <div class="col-md-3 mb-5 p-3 ">
+            <%= @room.desk_type %> <br> Type
+        </div>
+        <div class="col-md-3 mb-5 p-3 ">
+            Capacity:<br>
+            <% if @room.capacity %>
+                <%= @room.capacity %> <%= @room.capacity > 1 ? "Seats" : "Seat" %>
+            <% end %>                                
+        </div>    
+            <div class="col-md-3 mb-5 p-3">
+            Noise Level:<br> <%= @room.noise_level %>
+        </div>
+    </div>
+    <div class="row text-center info_text">
+        <div class="col-md-3 mb-1 p-3 pb-1">
+            Manager on Premise:<br> <%= @room.manager_on %> 
+        </div>         
+        <div class="col-md-3 mb-1 p-3 pb-1">
+            Security Level:<br> <%= @room.security_level %> 
+        </div>            
+        <div class="col-md-3 mb-1 p-3 pb-1">
+            <%= @room.bath_room %> <br>
+            <% if @room.bath_room != nil %>
+                <%= @room.bath_room > 1 ? "Bathrooms" : "Bathroom" %>
+            <% end %>
+        </div>
+         <div class="col-md-3 mb-1 p-3 pb-1">
+            $ <%= @room.price %> per day<br>
+        </div>
+    </div>         
+</div>
+
+
+
+<%# google map %>
+<div class="card  shadow mb-3" id="map_image">
+    <%= image_tag "https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=700x400&markers=size:small%7Ccolor:red%7C#{@room.latitude},#{@room.longitude}&key=#{ ENV['MAPS_API_KEY']}", alt: "Map" %>        
+</div>
+<%# Amenities %>
+<div class="card shadow mb-3">
+    <div class="card-header">
+        <h4>Amenity</h4>
+    </div>
+    <div class="col-md-12">
+        <div class="row info_text">
+            <div class="col-md-4 text-center">
+                <ul class="amenities">                            
+                    <li class="<%= 'text-line-through' if !@room.is_wifi %> p-4"><i class="fas fa-wifi fa-lg"></i>Wifi/Internet</li>
+                    <li class="<%= 'text-line-through' if !@room.is_conference %> p-4"><i class="fas fa-phone-square-alt fa-lg"></i>Conference Call Space</li>
+                    <li class="<%= 'text-line-through' if !@room.is_kitchen %> p-4"><i class="fas fa-sink fa-lg"></i>Kitchen</li>
+                </ul>
+            </div>
+            <div class="col-md-4 text-center">
+                <ul class="amenities">
+                    <li class="<%= 'text-line-through' if !@room.is_drinks %> p-4"><i class="fas fa-wine-glass-alt fa-lg"></i>Free Drinks</li>
+                    <li class="<%= 'text-line-through' if !@room.is_heating %> p-4"><i class="fas fa-fire fa-lg"></i>Heating</li>
+                    <li class="<%= 'text-line-through' if !@room.is_printing %> p-4"><i class="fas fa-print fa-lg"></i>Printing Statin</li>
+                </ul>
+            </div>
+            <div class="col-md-4 text-center">
+                <ul class="amenities">
+                    <li class="<%= 'text-line-through' if !@room.is_parking %> p-4"><i class="fas fa-parking fa-lg"></i>Parking</li>
+                    <li class="<%= 'text-line-through' if !@room.is_air %> p-4"><i class="fas fa-fan fa-lg"></i>Air-Conditioning</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%# reservation %>
+<%= render 'reservations/form' %>
+
+<%# Reviews %>
+<div class="card shadow">
+    <div class="card-header">
+        <h4>Review <span id="average_rating"></span> (<%= @reviews.count %>)</h4>        
+    </div>
+</div>
+
+    <div class="p-0"><%= render 'reviews/form' if @booked && !@hasReview %></div>
+    <%= render partial: 'reviews/review', locals: {reviews: @reviews} %>
+
+<div class="jumbotron mt-5">
+    <div class="h3 mb-4 p-2">Other Spaces Near By: </div> 
+    <div class="row">
+    <% if @room.nearbys(15) == nil || @room.nearbys(15).length == 0 %>
+        <p class="ml-4">There is no space near by </p>
+    <% else %>
+        <% @room.nearbys(15).each do |room| %>
+            <div class="col-md-4 mb-3">
+                <%= link_to room_path(room.id) do %>
+                    <div class="card shadow m-2">
+                        <% if room.images.attached? %>
+                            <%= image_tag room.medium_image(room.images[0]) %>                    
+                        <% end %>                    
+                        <div class="card-body">
+                            <%= room.listing_name%><br>
+                            (<%= room.distance.round(2) %> miles away)
+                        </div>
+                    </div>                
+                <% end %>                
+            </div>
+        <% end %>
+    <% end %>    
+    </div>
+</div>
+<script>
+$(function(){
+    $('#average_rating').raty({
+        readOnly: true,
+        score: <%= @room.average_rating %>,
+        starOff: '<%= image_path('star-off.png') %>',
+        starOn : '<%= image_path('star-on.png') %>',
+        starHalf: '<%= image_path 'star-half.png' %>',
+    })
+
+});
+</script>
+
+

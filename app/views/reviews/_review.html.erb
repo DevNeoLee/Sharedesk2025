@@ -1,0 +1,38 @@
+<% if reviews == nil || reviews.count == 0 %>
+    <div class="text-center"><h4>There is no Review yet.</h4></div>
+<% else %>
+    <% reviews.each do |review|%>
+    <% if review.user %>
+    <div class="card shadow p-3 mb-2">
+        <div class="row">
+            <div class="col-md-2 text-center">
+                <%= image_tag review.user.default_avatar, class: "avatar-medium" %>
+            </div>
+            <div class="col-md-10 d-flex justify-content-around mt-5">              
+                <div class="col-md-2">
+                    <%= review.user.name %>                
+                </div>
+                <span class="pull-right col-md-1">
+                    <%= link_to "Remove My Review", room_review_path(review.user.id, review) , method: "delete", data: {confirm: "Are you sure?"} if current_user && current_user == review.user %>
+                </span>             
+                <div class="col-md-2"><%= review.created_at.strftime("%v") %></div>
+                <div class="col-md-5"><%= review.comment %></div>
+                <div class="col-md-4 star_min_width" id="stars_<%= review.id %>"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+    $(function(){
+        $('#stars_<%= review.id %>').raty({
+            readOnly: true,
+            score: <%= review.star %>,
+            starOff: '<%= image_path('star-off.png') %>',
+            starOn : '<%= image_path('star-on.png') %>',
+            starHalf: '<%= image_path 'star-half.png' %>',
+        })
+    });
+    </script>
+    <% end %>
+    <% end %>
+<% end %>
+

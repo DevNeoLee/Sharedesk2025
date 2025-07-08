@@ -1,0 +1,23 @@
+{
+  "name": "sharedesk",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
+    "@rails/actioncable": "^6.0.0",
+    "@rails/activestorage": "^6.0.0",
+    "@rails/ujs": "^6.0.0",
+    "@rails/webpacker": "4.3.0",
+    "bootstrap": "^4.5.3",
+    "jquery": "^3.5.1",
+    "jquery-ui-dist": "^1.12.1",
+    "popper.js": "^1.16.1",
+    "stimulus": "^1.1.1",
+    "toastr": "^2.1.4",
+    "turbolinks": "^5.2.0",
+    "yarn": "^1.22.19"
+  },
+  "version": "0.1.0",
+  "devDependencies": {
+    "webpack-dev-server": "^3.11.0"
+  }
+}

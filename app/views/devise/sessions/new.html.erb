@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="card  mx-auto shadow mb-5">
+    <div class="card-body">
+      <div class="card-title">
+        <h2 class=" text-center mt-4 mb-3">Welcome</h1>   
+      </div>
+      <hr>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2") do |f| %>
+       <div class="m-2 border-none">
+              <div class=" d-flex">
+                <div class="pt-3 mt-1 font-weight-bold">Wherever you go</div>
+                <%= image_tag "orangePolygonLarge.png", width: "100"%>  
+                <div class="pt-4 mt-4 font-weight-bold">Have your desk instantly!</div>
+          </div>
+        </div>
+        <%= render 'shared/devise_message' %>
+        <div class="form-label-group m-2">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "please do something", id: "inputEmail"%>
+          <label for="inputEmail">Email address</label>
+        </div>
+        <div class="form-label-group m-2">    
+          <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "please do something" %>
+          <label for="inputPassword">Password</label>
+        </div>
+        <div class="m-2">
+          <% if devise_mapping.rememberable? %>
+          <div class="checkbox">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me %>
+          </div>
+          <% end %>
+          <%= f.submit "Log in", class: "btn btn-lg btn-primary btn-block p-2" %>
+        </div>
+      <% end %>
+
+      <div class="text-center m-2">
+        <%= render "devise/shared/links" %>
+      </div>
+
+      <div class="m-2">
+      <hr>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2") do |f| %>
+              <%= f.hidden_field :email, value: 'peter@email.com' %>
+              <%= f.hidden_field :password, value: '111111' %>
+              <%= f.submit "DEMO", class: "btn btn-lg btn-primary btn-block p-2"  %>    
+        <% end %>
+      </div>
+
+      <hr>
+      <div class="pt-3 mb-3 text-muted text-center"><a href="https://devneolee.github.io/JustinKLee/" target="_blank">© Justin K Lee <%= image_tag "blueplane_icon.svg", width: "25px", class: "blueplane"%> </a> All Rights Reserved</div>
+    </div>
+  </div>
+</div>
+

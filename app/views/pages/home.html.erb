@@ -1,0 +1,152 @@
+
+<%# front two main images with local access %>
+<div class="jumbotron shadow">
+  <h1 class="display-4">Need Quick Work Space in <%= @location_received %> ?</h1>
+  <p class="lead ml-2 mt-2">Find your office instantly in your area.</p>
+  <hr class="my-4">
+  <div class="col-md-12">
+    <div class="row">
+        <div class="col-md-6">
+            <%= image_tag "main_image2.jpg", class: "img-fluid" %>
+        </div>
+        <div class="col-md-6">
+            <%= image_tag "main_image1.jpg", class: "img-fluid" %>
+        </div>
+    </div>
+  </div>
+  <p class="lead">
+  <%= link_to search_path(q: {"address_cont": @location_received }) do %>
+    <button class="btn btn-primary btn-lg mt-5 ml-4 ">Find Local in Your Area</button>
+  <% end %>
+  </p>
+</div>
+
+
+<%# one click search for three main cities ard the world %>
+<div class="jumbotron shadow">
+    <div class="text-center">
+        <h2>Any City You Go</h2>
+        <p class="mt-2 h5">Discover Amazing Work Space Around You</p>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4 col-sm-12">        
+            <%= link_to search_path(q:{"address_cont": "NYC"} ) do %>
+                <div class="card shadow mb-2">
+                    <div class="card-header text-center">       
+                        <h2><strong>NYC</strong></h2>
+                    </div>
+                    <%= image_tag "nyc_home_page_pexels-ono-kosuki.jpg", class: "img-fluid image-medium image_response" %>
+                    <div class="card-body">
+                        <div class="card-text">
+                            Find Home on Our Cozy Cowork Places Just Around the Corner
+                        </div>
+                    </div>
+                </div>
+            <% end %>    
+        </div>    
+    <div class="col-md-4 col-sm-12">
+        <%= link_to search_path(q:{"address_cont": "Kolkata"}) do %>
+            <div class="card shadow mb-2">
+                <div class="card-header text-center">                    
+                    <h2><strong>Kolkata</strong></h2>                    
+                </div>
+                <%= image_tag "kolkata_home_page_pexels-neosiam-.jpg", class: "img-fluid image-medium image_response"%>
+                <div class="card-body">
+                    <div class="card-text">
+                        Professional Cowork Space in Busy Diverse Dinamic City
+                    </div>
+                </div>
+            </div>
+        <% end %>
+        </div>
+    <div class="col-md-4 col-sm-12">
+        <%= link_to search_path(q:{"address_cont": "Bangkok"}) do %>
+            <div class="card shadow mb-2">
+                <div class="card-header text-center">                    
+                    <h2><strong>Bangkok</strong></h2>                    
+                </div>
+                    <%= image_tag "bangkok_home_page_pexels-nick-wehrli.jpg" , class: "img-fluid image-medium"%>                         
+                <div class="card-body">
+                    <div class="card-text">
+                        Remote Work Desk Spot in This Beautiful Backpackers Heaven 
+                    </div>
+                </div>
+            </div>
+        <% end %>
+        </div>
+    </div>
+</div>
+
+<%# Ad for Hosting your Space %>
+<div class="jumbotron shadow">
+
+        <h2 class="text-center"> Host your space in your city for extra income</h2>
+        <%= link_to new_user_registration_path do %>
+            <h5 class="text-center pt-3">Join Desk<%= image_tag 'orangePolygonLarge.png', width: "50" %>Share your place for your local community</h5>
+        <% end %>
+       
+</div>
+
+<%# mid-search form %>
+<div class="container-fluid mb-4 border p-4 shadow sticky-top bg-light">
+    <%= search_form_for @search, url: search_path, method: :get do |f| %>
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <%= f.search_field :address_cont, placeholder: "where are you going?", class: "form-control input-lg"%>
+            </div>
+            <div class="col-md-2 mb-2">
+                <%= f.submit "Check Availability", class: "btn btn-primary"%>
+            </div>
+            <div class="col-md-2 mb-2">
+                <%= text_field_tag :start_date, "start date", class:"form-control", id: "start_date"%>
+            </div>
+            <div class="col-md-2 mb-2">
+                <%= text_field_tag :end_date, "end date", class:"form-control", id: "end_date"%>
+            </div>
+        </div>
+    <% end %>
+</div>
+
+<%# Top Most Poplular Picks %>
+<div class="jumbotron shadow col-md-12">
+    <div class="text-center mb-5 h3">
+        <h3 class="title_font">Highly Rated Locations by Our Reviewers </h3>
+    </div>
+    <div class="row">    
+        <%= render @best_rooms %>
+    </div>
+</div>
+
+<%# customer reviews %>
+<div class="jumbotron shadow">
+    <div class="text-center">
+        <h2 class="mb-4">Customer Reviews</h2>
+    </div>
+    <div class="col-md-12"> 
+        <%= render partial: 'reviews/review', locals: {reviews: @best_reviews} %>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        $('#start_date').datepicker({
+            dateFormat: 'dd-mm-yy',
+            minDate: 0,
+            maxDate: '3m',
+            onSelect: function(select) {
+                $('#end_date').datepicker("option", "minDate", select);
+                $('#end_date').attr('disabled', false);
+            }
+        })
+        
+        $('#end_date').datepicker({
+            dateFormat: 'dd-mm-yy',
+            minDate: 0,
+            maxDate: '3m',
+            onSelect: function(select) {
+                $('#start_date').datepicker("option", "maxDate", select);
+            }
+        })
+    });
+</script>

@@ -1,0 +1,47 @@
+<div class="col-md-12" >
+        <div class="h1 m-4 pt-5 pb-3 title_font"> Your Cart</div>
+        <hr>
+    <div class="your_cart_grid">
+            <% @trips_result.each do |trip| %>
+                <div class="col-md-3 mb-2">
+                    <%= link_to room_path(trip.room) do %>
+                    <div class="card mb-2 ml-2 mr-2" style="min-width: 240px; max-width: 250px;">
+                        <div class="card-header h4">
+                                <%= trip.start_date.strftime('%v')%>                
+                        </div>
+                        <% if trip.room.images.attached? %>
+                            <%= image_tag trip.room.medium_image(trip.room.images[0]), class: "img-fluid" , style: "height: 200px" %>
+                        <% end %>
+                        <div class="card-body">
+                            <div class="card-title">                            
+                                <%= trip.room.listing_name %>
+                            </div>
+                            <div class="card-title">                            
+                                <%= trip.room.address %>
+                            </div>
+                            <div class="card-title">                            
+                                Host: <%= image_tag trip.room.user.default_avatar, class: "img-circle avatar-small"%>
+                            </div>
+                            <div class="card-title ml-4">                            
+                                <%= trip.room.user.name%>
+                            </div>
+                            <div class="card-title ml-4">                            
+                                <%= trip.room.user.email%>
+                            </div>
+                            <h4>total payment: $<%= trip.total %></h4>
+                        </div>
+                    </div>
+                    <% end%>
+                </div>
+            <% end %>
+        </div>
+    </div>
+    <div data-target="infinite-scroll.pagination" class="pagination_type">
+        <%== pagy_bootstrap_nav(@pagy).html_safe %>
+    </div>
+</div>
+
+    
+
+               
+   

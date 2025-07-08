@@ -1,0 +1,70 @@
+<div class="col-md-12 mt-5 pt-5">
+    <div class="row">
+        <div class="col-md-3 bg-light">
+            <div class="text-center m-3 p-3">
+                <%= image_tag @user.default_avatar, class: "avatar-large" %>
+            </div>
+            <div class="row h2 bg-light ml-5 p-2">    
+                <p class="text-center"><%= @user.name %> </p>          
+            </div>
+            <div class="d-flex">
+                <div><button class="btn btn-primary mt-2 mr-2 ml-4"> Follow </button></div> <div class="mt-2"><button class="btn btn-primary">Message</button></div>
+            </div>
+            <div class="row m-2 p-2 m-1">
+                <%= @user.description %>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    Email Address
+                </div>
+                <div class="card-body">
+                    <%= @user.email %> 
+                </div>
+            </div>
+               <div class="card mb-3">
+                <div class="card-header">
+                    Telephone Number
+                </div>
+                <div class="card-body">
+                    <%= @user.phone_number %> 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 bg-light">
+            <div data-controller="infinite-scroll" data-action="scroll@window->infinite-scroll#scroll">
+                    <div data-target="infinite-scroll.entries">
+            <div class="row mt-5 mb-4 p-4">
+                <h3><strong><%= @user.name %></strong> operates <span class="h2"><strong><%= @rooms.length%></strong></span>  locations  </h3>   
+            </div>
+            <div class="row">        
+                <% @rooms_result.each do |room| %>
+                    <div class="col-md-6">
+                    <%= link_to room_path(room.id) do %>
+                        <div class="card mb-1 m-3">
+                            <div class="card-header">
+                                <h4><%= room.listing_name %></h4>                     
+                            </div>
+                            <% if room.images.attached? %>
+                                <%= image_tag room.medium_image(room.images[0]), class: "img-fluid" %>
+                            <% end %>
+                            <div class="card-body">                        
+                                <div class="card-text">
+                                    <%= room.address %>                                    
+                                </div>
+                            </div>                                  
+                        </div>                                                        
+                    <% end %>                                      
+                    </div>
+                <% end %>                                                                
+            </div>   
+            </div>
+        </div>
+        <div data-target="infinite-scroll.pagination">
+            <%== pagy_bootstrap_nav(@pagy).html_safe %>
+        </div>
+        </div>
+    </div>
+</div>
+
+           
+

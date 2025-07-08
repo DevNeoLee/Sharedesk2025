@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="card mx-auto shadow mb-1">
+    <div class="card-body">
+      <div class="card-title text-center">
+        <h2>Edit <%= resource_name.to_s.humanize %></h2>
+        <hr>
+      </div>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+          <%= render 'shared/devise_message' %>
+
+        <div class="card m-2">
+          <div class="card-body d-flex bg-light">
+            <%= image_tag(resource.default_avatar, class: "avatar-large") %>
+            <div class="field pt-5 mt-5 ml-3">
+              <%= f.file_field :avatar%>
+            </div>     
+          </div>
+        </div>
+
+        <div class="form-label-group m-2">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email address", id: "inputEmail" %>
+          <label for="email">Email address</label>
+        </div>
+
+        <div class="form-label-group m-2">
+          <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "form-control", placeholder: "Name", id: "name"  %>
+          <label for="name">Name</label>
+        </div>
+
+        <div class="form-label-group m-2">
+          <%= f.text_field :phone_number, autofocus: true, autocomplete: "phone_number", class: "form-control", placeholder: "Phone_number", id: "phone"  %>
+          <label for="phone">Phone number</label>
+        </div>
+
+          <div class="form-label-group m-2">
+          <%= f.text_field :description, autofocus: true, autocomplete: "note", class: "form-control", placeholder: "Note", id: "note"  %>
+            <label for="description">Note</label>
+        </div>
+        
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+        <% end %>
+
+        <div class="form-label-group m-2">
+          <%= f.password_field :password, autocomplete: "new-password", class: "form-control", placeholder:"Password", id: "password"%>
+          <label for="password">Password<em>(<%= @minimum_password_length %> chars, Leave it blank if not wanting to change)</em></label>
+        </div>
+
+        <div class="form-label-group m-2">
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", placeholder: "Password_confirmation", id:"password_confirm" %>
+          <label for="password_confirm">Password confirmation</label>
+        </div>
+
+        <div class="actions m-2">
+          <%= f.submit "Update", class: "btn btn-lg btn-primary btn-block" %>
+        </div>
+      <% end %>
+      <hr>
+        <h3 class="text-center">Cancel account</h3>
+  
+        <p class="text-center m-2">Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-lg btn-danger btn-block"%></p>
+        <div class="text-center">
+          <%= link_to "Back", :back %>
+        </div>
+    </div>
+  </div>
+</div>

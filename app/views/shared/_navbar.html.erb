@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-md bg-white mb-4 sticky-top">
+  <a class="navbar-brand" href="/pages/home"><%= image_tag 'orangeLogoSmall.png', width: "150" %></a>
+
+  <button class="navbar-toggler navbar-light bg-light border-dark" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-2">
+     <% if !user_signed_in? %>
+        <li class="nav-item">
+            <a class="nav-link" href="/users/login">Log in</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/users/signup" tabindex="-1" aria-disabled="true">Sign up</a>
+        </li>
+    <% else %>
+        <li class="nav-item">
+          <%= link_to "Log out", destroy_user_session_path, method: :delete, data: { no_turbolink: true }, class: "nav-link"  %>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/users/edit">Edit Setting <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/users/<%= current_user.id %>">Profile <span class="sr-only">(current)</span><%=image_tag current_user.default_avatar, class: "img-circle avatar-small" %></a>
+        </li>
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown"  tabindex="-1" aria-disabled="true"> | <%=current_user.name %> | <%=current_user.email %></a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <%= link_to "Hosting List", rooms_path, class: "dropdown-item"%>
+              <%= link_to "Customer Reservations", yourlisting_reservations_path, class: "dropdown-item"%>
+              <div class="dropdown-divider"></div>
+              <%= link_to "Your Cart", your_trips_path, class: "dropdown-item"%>
+            </div>
+        </div>
+        
+    <% end %>
+    </ul>
+    <div class= "col-md-8 mt-2">
+      <%= search_form_for @browse, url: search_path, method: :get do |f|%>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-7">
+                  <%=f.search_field :address_cont, class: "form-control input-lg mb-2", placeholder: "Where are you going to? Try Vancouver, Barcelona, Tokyo..." %>
+                </div>
+                  <%= f.submit "Find Space", class: "btn btn-primary ml-3"%>
+                </div>
+            </div>
+          </div>      
+        <% end %>
+      </div>
+    </div> 
+  </div>
+</nav>
+
+
