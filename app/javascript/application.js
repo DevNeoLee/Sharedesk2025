@@ -2,7 +2,7 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
-// Import jQuery and make it globally available
+// Import jQuery FIRST and make it globally available
 import jQuery from "jquery"
 window.$ = window.jQuery = jQuery
 
@@ -14,13 +14,47 @@ window.bootstrap = bootstrap
 import * as Popper from "@popperjs/core"
 window.Popper = Popper
 
-// Import jQuery UI
-import "jquery-ui"
-import "jquery-ui/ui/widgets/datepicker"
+// Import Toastr (using traditional script loading)
+import "toastr"
 
-// Import Toastr
-import toastr from "toastr"
-window.toastr = toastr
+// Load jQuery UI after jQuery is available
+document.addEventListener('DOMContentLoaded', function() {
+  // Load jQuery UI dynamically
+  if (typeof window.$ !== 'undefined') {
+    import("jquery-ui").then(() => {
+      // Check if datepicker is available
+      if (typeof window.$.fn.datepicker !== 'undefined') {
+        // Re-initialize any existing datepicker elements
+        $('.datepicker').datepicker();
+      }
+    }).catch(error => {
+      console.error('Error loading jQuery UI:', error);
+    });
+  }
+});
+
+// Toastr configuration
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof window.toastr !== 'undefined') {
+    window.toastr.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": false,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": false,
+      "onclick": null,
+      "showDuration": "10000",
+      "hideDuration": "1000",
+      "timeOut": "3000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  }
+});
 
 // Import FontAwesome
 import "@fortawesome/fontawesome-free"
@@ -28,12 +62,15 @@ import "@fortawesome/fontawesome-free"
 // Import custom JavaScript
 // import "./site"
 
-// Import jQuery Raty
-import "./jquery.raty"
+// Import jQuery Raty after jQuery is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof window.$ !== 'undefined') {
+    import("./jquery.raty");
+  }
+});
 
 // Google Maps API with Stimulus.js
 window.dispatchMapsEvent = function (...args) {
-  console.log('Google Maps API loaded successfully');
   const event = document.createEvent("Events")
   event.initEvent("google-maps-callback", true, true)
   event.args = args
@@ -43,25 +80,6 @@ window.dispatchMapsEvent = function (...args) {
 // Ensure dispatchMapsEvent is available globally
 document.addEventListener('DOMContentLoaded', function() {
   if (typeof google !== 'undefined' && google.maps) {
-    console.log('Google Maps API is ready');
+    // Google Maps API is ready
   }
-});
-
-// Toastr configuration
-toastr.options = {
-  "closeButton": false,
-  "debug": false,
-  "newestOnTop": false,
-  "progressBar": false,
-  "positionClass": "toast-top-right",
-  "preventDuplicates": false,
-  "onclick": null,
-  "showDuration": "10000",
-  "hideDuration": "1000",
-  "timeOut": "3000",
-  "extendedTimeOut": "1000",
-  "showEasing": "swing",
-  "hideEasing": "linear",
-  "showMethod": "fadeIn",
-  "hideMethod": "fadeOut"
-} 
+}); 

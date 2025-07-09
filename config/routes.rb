@@ -9,7 +9,12 @@ Rails.application.routes.draw do
   
   get 'pages/home', to: 'pages#home'
 
-  resources :users, only: [:show] 
+  get '/preload' => 'reservations#preload'
+  get '/preview' => 'reservations#preview'
+  get '/your_trips' => 'reservations#your_trips'
+  get '/yourlisting_reservations' => 'reservations#yourlisting_reservations'
+  get '/search' => 'pages#search'
+  get '/attribution' => 'pages#attribution'
 
   resources :rooms 
   resources :rooms do 
@@ -24,10 +29,6 @@ Rails.application.routes.draw do
     resources :reviews, only: [:create, :destroy]
   end
 
-  get '/preload' => 'reservations#preload'
-  get '/preview' => 'reservations#preview'
-  get '/your_trips' => 'reservations#your_trips'
-  get '/yourlisting_reservations' => 'reservations#yourlisting_reservations'
-  get '/search' => 'pages#search'
-  get '/attribution' => 'pages#attribution'
+  # users 리소스를 마지막에 배치
+  resources :users, only: [:show], constraints: { id: /\d+/ } 
 end

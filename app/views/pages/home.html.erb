@@ -129,8 +129,9 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof $ !== 'undefined') {
+    // Wait for jQuery UI to be fully loaded
+    function initializeDatepickers() {
+        if (typeof $ !== 'undefined' && typeof $.fn.datepicker !== 'undefined') {
             $('#start_date').datepicker({
                 dateFormat: 'dd-mm-yy',
                 minDate: 0,
@@ -139,7 +140,7 @@
                     $('#end_date').datepicker("option", "minDate", select);
                     $('#end_date').attr('disabled', false);
                 }
-            })
+            });
             
             $('#end_date').datepicker({
                 dateFormat: 'dd-mm-yy',
@@ -148,7 +149,14 @@
                 onSelect: function(select) {
                     $('#start_date').datepicker("option", "maxDate", select);
                 }
-            })
+            });
+        } else {
+            // Retry after a short delay
+            setTimeout(initializeDatepickers, 100);
         }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeDatepickers();
     });
 </script>

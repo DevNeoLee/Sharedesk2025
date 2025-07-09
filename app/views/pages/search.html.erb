@@ -172,40 +172,49 @@
 </div>
   
 <script>
+    // Wait for jQuery UI to be fully loaded
+    function initializeSearchDatepickers() {
+        if (typeof $ !== 'undefined' && typeof $.fn.datepicker !== 'undefined') {
+            $('#complex_search_button').on('click', function() {
+                if ( $('#complex_search_menu').hasClass('visible')) {
+                    $('#complex_search_menu').attr('class', 'invisible');
+                    
+                } else {
+                    $('#complex_search_menu').attr('class', 'visible');
+                    $('#search_location').val('');
+                    $('#listing_name').val('');
+                    $('#start_date').val('');
+                    $('#end_date').val('');
+                    $('#price_min').val('');
+                    $('#price_max').val('');
+                }
+            });
+
+            $('#start_date').datepicker({
+                dateFormat: 'dd-mm-yy',
+                minDate: 0,
+                maxDate: '3m',
+                onSelect: function(select) {
+                    $('#end_date').datepicker("option", "minDate", select);
+                    $('#end_date').attr('disabled', false);
+                }
+            });
+      
+            $('#end_date').datepicker({
+                dateFormat: 'dd-mm-yy',
+                minDate: 0,
+                maxDate: '3m',
+                onSelect: function(select) {
+                    $('#start_date').datepicker("option", "maxDate", select);
+                }
+            });
+        } else {
+            // Retry after a short delay
+            setTimeout(initializeSearchDatepickers, 100);
+        }
+    }
+    
     $(function() {
-        $('#complex_search_button').on('click', function() {
-            if ( $('#complex_search_menu').hasClass('visible')) {
-                $('#complex_search_menu').attr('class', 'invisible');
-                
-            } else {
-                $('#complex_search_menu').attr('class', 'visible');
-                $('#search_location').val('');
-                $('#listing_name').val('');
-                $('#start_date').val('');
-                $('#end_date').val('');
-                $('#price_min').val('');
-                $('#price_max').val('');
-            }
-        });
-
-        $('#start_date').datepicker({
-            dateFormat: 'dd-mm-yy',
-            minDate: 0,
-            maxDate: '3m',
-            onSelect: function(select) {
-                $('#end_date').datepicker("option", "minDate", select);
-                $('#end_date').attr('disabled', false);
-            }
-        })
-  
-        $('#end_date').datepicker({
-            dateFormat: 'dd-mm-yy',
-            minDate: 0,
-            maxDate: '3m',
-            onSelect: function(select) {
-                $('#start_date').datepicker("option", "maxDate", select);
-            }
-        })
-
+        initializeSearchDatepickers();
     });
 </script>

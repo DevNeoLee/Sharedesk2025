@@ -1,4 +1,4 @@
-import { Controller } from "stimulus";
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
     static targets =[ "entries", "pagination"]
@@ -28,10 +28,9 @@ export default class extends Controller {
                 this.entriesTarget.insertAdjacentHTML('beforeend', data.entries)
                 this.paginationTarget.innerHTML = data.pagination
             },
-            error: (message) => {
-                console.log('error')
-                console.log(message)
-            }
+                    error: (message) => {
+            // Error handling
+        }
         })
     }
 }
