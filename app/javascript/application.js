@@ -24,9 +24,6 @@ window.toastr = toastr
 // Import FontAwesome
 import "@fortawesome/fontawesome-free"
 
-// Import custom styles
-import "../stylesheets/application.scss"
-
 // Import custom JavaScript
 import "./site"
 

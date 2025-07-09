@@ -9,4 +9,5 @@ pin "@popperjs/core", to: "https://ga.jspm.io/npm:@popperjs/core@2.11.8/lib/inde
 pin "jquery", to: "https://ga.jspm.io/npm:jquery@3.7.1/dist/jquery.js"
 pin "jquery-ui-dist", to: "https://ga.jspm.io/npm:jquery-ui-dist@1.13.2/ui/widgets/index.js"
 pin "toastr", to: "https://ga.jspm.io/npm:toastr@2.1.4/toastr.js"
-pin "@fortawesome/fontawesome-free", to: "https://ga.jspm.io/npm:@fortawesome/fontawesome-free@6.5.1/js/all.js" 
+pin "@fortawesome/fontawesome-free", to: "https://ga.jspm.io/npm:@fortawesome/fontawesome-free@6.5.1/js/all.js"
+pin "application", preload: true 

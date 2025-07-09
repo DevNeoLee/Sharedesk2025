@@ -41,4 +41,12 @@ class Room < ApplicationRecord
     end
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["active", "address", "bath_room", "capacity", "created_at", "desk_type", "id", "id_value", "is_air", "is_conference", "is_drinks", "is_heating", "is_kitchen", "is_parking", "is_printing", "is_wifi", "latitude", "listing_name", "longitude", "manager_on", "noise_level", "price", "security_level", "space_type", "summary", "updated_at", "user_id"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["user", "reservations", "reviews"]
+  end
+
 end

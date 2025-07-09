@@ -52,6 +52,9 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
+  
+  # Disable precompiled asset checking for Importmaps
+  config.assets.check_precompiled_asset = false
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.

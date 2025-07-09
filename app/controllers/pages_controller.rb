@@ -3,8 +3,8 @@ class PagesController < ApplicationController
     @pagy, @rooms = pagy(Room.all, items: 3)
     @search = @rooms.ransack(params[:q])
     @reviews = Review.all
-    @best_reviews = @reviews[43..46]
-    @best_rooms = User.find(2).rooms[0...3]
+    @best_reviews = @reviews.last(4) # 마지막 4개의 리뷰
+    @best_rooms = Room.limit(3).order(created_at: :desc) # 최신 3개의 방
   end
 
   def attribution
