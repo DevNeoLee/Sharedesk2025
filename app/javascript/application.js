@@ -15,7 +15,8 @@ import * as Popper from "@popperjs/core"
 window.Popper = Popper
 
 // Import jQuery UI
-import "jquery-ui-dist"
+import "jquery-ui"
+import "jquery-ui/ui/widgets/datepicker"
 
 // Import Toastr
 import toastr from "toastr"
@@ -25,18 +26,26 @@ window.toastr = toastr
 import "@fortawesome/fontawesome-free"
 
 // Import custom JavaScript
-import "./site"
+// import "./site"
 
 // Import jQuery Raty
 import "./jquery.raty"
 
 // Google Maps API with Stimulus.js
 window.dispatchMapsEvent = function (...args) {
+  console.log('Google Maps API loaded successfully');
   const event = document.createEvent("Events")
   event.initEvent("google-maps-callback", true, true)
   event.args = args
   window.dispatchEvent(event)
 }
+
+// Ensure dispatchMapsEvent is available globally
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof google !== 'undefined' && google.maps) {
+    console.log('Google Maps API is ready');
+  }
+});
 
 // Toastr configuration
 toastr.options = {
