@@ -104,8 +104,60 @@ import "@fortawesome/fontawesome-free"
 
 // Import jQuery Raty after jQuery is loaded
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOMContentLoaded event fired');
+  console.log('jQuery available at DOMContentLoaded:', typeof window.$ !== 'undefined');
+  
   if (typeof window.$ !== 'undefined') {
-    import("./jquery.raty");
+    import("./jquery.raty.js").then((RatyModule) => {
+      console.log('jQuery Raty loaded successfully (local file)');
+      
+      // Register Raty as jQuery plugin
+      window.$.fn.raty = function(options) {
+        return this.each(function() {
+          const raty = new RatyModule.default(this, options);
+          raty.init();
+          this.raty = raty;
+        });
+      };
+      
+      console.log('Raty function available:', typeof window.$.fn.raty !== 'undefined');
+    }).catch(error => {
+      console.error('Error loading jQuery Raty (local file):', error);
+    });
+  } else {
+    console.log('jQuery not available at DOMContentLoaded');
+  }
+});
+
+// turbo:load에서 모든 별점 div를 한 번에 초기화
+
+document.addEventListener('turbo:load', function() {
+  console.log('turbo:load event fired');
+  console.log('jQuery available:', typeof window.$ !== 'undefined');
+  console.log('Raty available:', typeof window.$.fn.raty !== 'undefined');
+  
+  if (typeof window.$ !== 'undefined' && typeof window.$.fn.raty !== 'undefined') {
+    const starElements = document.querySelectorAll('[id^=stars_]');
+    console.log('Found star elements:', starElements.length);
+    
+    starElements.forEach(function(el, index) {
+      const score = el.getAttribute('data-score');
+      console.log(`Initializing star element ${index + 1}:`, el.id, 'score:', score);
+      
+      window.$(el).raty({
+        readOnly: true,
+        score: score,
+        starOff: '/images/star-off.png',
+        starOn: '/images/star-on.png',
+        starHalf: '/images/star-half.png',
+        size: 20,
+        hints: ['1점', '2점', '3점', '4점', '5점']
+      });
+      
+      console.log(`Star element ${index + 1} initialized`);
+    });
+  } else {
+    console.log('jQuery or Raty not available for star initialization');
   }
 });
 

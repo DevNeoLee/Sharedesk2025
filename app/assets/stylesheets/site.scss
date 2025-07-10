@@ -756,6 +756,14 @@ input[type="checkbox"]:checked:before {
   overflow: hidden;
   border-radius: 5px;
   flex-wrap: wrap;
+  background: #fff !important; /* 카드 배경을 흰색으로 고정 */
+}
+
+.card, .city-card, .home-section {
+  background: #fff !important; /* 카드 배경을 흰색으로 고정 */
+  background-image: none !important;
+  background-repeat: no-repeat !important;
+  background-size: initial !important;
 }
 
 /* Sticky Search Form */
@@ -897,4 +905,20 @@ a .card:hover {
 
 .letter-spacing {
   letter-spacing: 1px;
+}
+
+.star-rating-large img {
+  width: 32px !important;
+  height: 32px !important;
+  vertical-align: middle;
+  margin: 0 2px;
+}
+
+.star-rating-large {
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 4px 0;
 }

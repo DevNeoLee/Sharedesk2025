@@ -304,7 +304,7 @@ reviews_data = [
     user: users.find_by(name: "James Taylor"),
     room: rooms.find_by(listing_name: "Bangkok Quiet Workspace"),
     comment: "Simple but effective workspace. Good for getting work done without distractions. The WiFi is reliable and the space is clean.",
-    star: 3
+    star: 5
   }
 ]
 

@@ -4,7 +4,6 @@
     <div class="card mb-3 shadow text-center city-card">
         <div class="card-header text-center">
             <div class="h4"><%= room.listing_name %></div> 
-            <div class="ml-5 mr-5" id="average_rate_<%= room.id %>"></div>
         </div>
         <% if room.images.attached? %>
             <%= image_tag room.medium_image(room.images[0]), class: "img-fluid image-medium"%>
@@ -14,6 +13,7 @@
                 <%= room.address %>
             </div>
         </div>
+        <div class="ml-5 mr-5 star-rating-large pb-3" id="average_rate_<%= room.id %>"></div>
     </div>
 
 
@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 starOff: '<%= image_path('star-off.png') %>',
                 starOn : '<%= image_path('star-on.png') %>',
                 starHalf: '<%= image_path 'star-half.png' %>',
+                size: 32, // 별 크기 크게
             });
         } else {
             setTimeout(initializeRaty, 100);

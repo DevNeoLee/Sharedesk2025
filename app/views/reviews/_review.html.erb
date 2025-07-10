@@ -17,28 +17,10 @@
                 </span>             
                 <div class="col-md-2"><%= review.created_at.strftime("%v") %></div>
                 <div class="col-md-5"><%= review.comment %></div>
-                <div class="col-md-4 star_min_width" id="stars_<%= review.id %>"></div>
+                <div class="col-md-4 star_min_width" id="stars_<%= review.id %>" data-score="<%= review.star %>"></div>
             </div>
         </div>
     </div>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        function initializeRaty() {
-            if (typeof $ !== 'undefined' && typeof $.fn.raty !== 'undefined') {
-                $('#stars_<%= review.id %>').raty({
-                    readOnly: true,
-                    score: <%= review.star %>,
-                    starOff: '<%= image_path('star-off.png') %>',
-                    starOn : '<%= image_path('star-on.png') %>',
-                    starHalf: '<%= image_path 'star-half.png' %>',
-                });
-            } else {
-                setTimeout(initializeRaty, 100);
-            }
-        }
-        initializeRaty();
-    });
-    </script>
     <% end %>
     <% end %>
 <% end %>

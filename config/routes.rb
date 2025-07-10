@@ -36,4 +36,9 @@ Rails.application.routes.draw do
 
   # Place users resource at the end
   resources :users, only: [:show], constraints: { id: /\d+/ } 
+  
+  # Serve star rating images
+  get '/images/star-on.png', to: proc { [200, {}, [File.read(Rails.root.join('app', 'assets', 'images', 'star-on.png'))]] }
+  get '/images/star-off.png', to: proc { [200, {}, [File.read(Rails.root.join('app', 'assets', 'images', 'star-off.png'))]] }
+  get '/images/star-half.png', to: proc { [200, {}, [File.read(Rails.root.join('app', 'assets', 'images', 'star-half.png'))]] }
 end

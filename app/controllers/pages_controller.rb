@@ -4,7 +4,11 @@ class PagesController < ApplicationController
     @search = @rooms.ransack(params[:q])
     @reviews = Review.all
     @best_reviews = @reviews.order(created_at: :desc).limit(4) # Latest 4 reviews by date
-    @best_rooms = Room.limit(3).order(created_at: :desc) # Latest 3 rooms
+    # @best_rooms = Room.limit(3).order(created_at: :desc) # Latest 3 rooms
+    @best_rooms = Room.left_joins(:reviews)
+                      .group('rooms.id')
+                      .order('AVG(reviews.star) DESC NULLS LAST')
+                      .limit(3)
     
     # Set location_received to a city that actually has rooms
     @location_received ||= Rails.env.development? ? "NYC" : "NYC"
