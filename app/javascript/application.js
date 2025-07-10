@@ -129,37 +129,28 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// turbo:load에서 모든 별점 div를 한 번에 초기화
-
-document.addEventListener('turbo:load', function() {
-  console.log('turbo:load event fired');
-  console.log('jQuery available:', typeof window.$ !== 'undefined');
-  console.log('Raty available:', typeof window.$.fn.raty !== 'undefined');
-  
+function initializeAllRaty() {
   if (typeof window.$ !== 'undefined' && typeof window.$.fn.raty !== 'undefined') {
-    const starElements = document.querySelectorAll('[id^=stars_]');
-    console.log('Found star elements:', starElements.length);
-    
-    starElements.forEach(function(el, index) {
-      const score = el.getAttribute('data-score');
-      console.log(`Initializing star element ${index + 1}:`, el.id, 'score:', score);
-      
-      window.$(el).raty({
-        readOnly: true,
-        score: score,
-        starOff: '/images/star-off.png',
-        starOn: '/images/star-on.png',
-        starHalf: '/images/star-half.png',
-        size: 20,
-        hints: ['1점', '2점', '3점', '4점', '5점']
-      });
-      
-      console.log(`Star element ${index + 1} initialized`);
+    document.querySelectorAll('.star-rating').forEach(function(el) {
+      if (!el.classList.contains('raty-initialized')) {
+        const score = el.getAttribute('data-score') || 0;
+        window.$(el).raty({
+          readOnly: true,
+          score: score,
+          starOff: '/images/star-off.png',
+          starOn: '/images/star-on.png',
+          starHalf: '/images/star-half.png',
+          size: 24,
+          hints: ['1점', '2점', '3점', '4점', '5점']
+        });
+        el.classList.add('raty-initialized');
+      }
     });
-  } else {
-    console.log('jQuery or Raty not available for star initialization');
   }
-});
+}
+
+document.addEventListener('turbo:load', initializeAllRaty);
+document.addEventListener('DOMContentLoaded', initializeAllRaty);
 
 // Google Maps API with Stimulus.js
 window.dispatchMapsEvent = function (...args) {

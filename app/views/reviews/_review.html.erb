@@ -3,22 +3,15 @@
 <% else %>
     <% reviews.each do |review|%>
     <% if review.user %>
-    <div class="card shadow p-3 mb-3">
-        <div class="row align-items-center">
-            <div class="col-md-2 text-center">
-                <%= image_tag review.user.default_avatar, class: "avatar-medium" %>
+    <div class="reviews-list-card">
+        <%= image_tag review.user.default_avatar, class: "avatar-medium" %>
+        <div class="review-content">
+            <div class="review-meta">
+                <div><%= review.user.name %></div>
+                <div><%= review.created_at.strftime("%d-%b-%Y") %></div>
             </div>
-            <div class="col-md-10 d-flex align-items-center">              
-                <div class="col-md-2">
-                    <%= review.user.name %>                
-                </div>
-                <span class="pull-right col-md-1">
-                    <%= link_to "Remove My Review", room_review_path(review.user.id, review) , method: "delete", data: {confirm: "Are you sure?"} if current_user && current_user == review.user %>
-                </span>             
-                <div class="col-md-2"><%= review.created_at.strftime("%v") %></div>
-                <div class="col-md-5"><%= review.comment %></div>
-                <div class="col-md-4 star_min_width" id="stars_<%= review.id %>" data-score="<%= review.star %>"></div>
-            </div>
+            <div class="review-comment"><%= review.comment %></div>
+            <div class="star-rating star_min_width" data-score="<%= review.star %>"></div>
         </div>
     </div>
     <% end %>

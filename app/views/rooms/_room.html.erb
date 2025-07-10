@@ -13,7 +13,7 @@
                 <%= room.address %>
             </div>
         </div>
-        <div class="ml-5 mr-5 star-rating-large pb-3" id="average_rate_<%= room.id %>"></div>
+        <div class="star-rating star-rating-large pb-3" data-score="<%= room.average_rating || 0 %>"></div>
     </div>
 
 
