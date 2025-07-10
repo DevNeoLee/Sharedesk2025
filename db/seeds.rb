@@ -308,16 +308,27 @@ reviews_data = [
   }
 ]
 
-# Create reviews
-reviews_data.each do |review_data|
+# Create reviews with varied dates
+reviews_data.each_with_index do |review_data, index|
   if review_data[:user] && review_data[:room]
-    Review.create!(
+    # Generate more varied dates between 2023-2025, before July 10
+    year = [2023, 2024, 2025].sample
+    month = rand(1..6) # January to June
+    day = rand(1..28) # Avoid month/day issues
+    
+    # Add some time variation to avoid same timestamps
+    hour = rand(0..23)
+    minute = rand(0..59)
+    second = rand(0..59)
+    
+    review = Review.create!(
       user: review_data[:user],
       room: review_data[:room],
       comment: review_data[:comment],
-      star: review_data[:star]
+      star: review_data[:star],
+      created_at: DateTime.new(year, month, day, hour, minute, second)
     )
-    puts "Created review for #{review_data[:room].listing_name} by #{review_data[:user].name}"
+    puts "Created review for #{review_data[:room].listing_name} by #{review_data[:user].name} on #{review.created_at.strftime('%B %d, %Y at %I:%M %p')} with #{review.star} stars"
   else
     puts "Skipping review - user or room not found"
   end

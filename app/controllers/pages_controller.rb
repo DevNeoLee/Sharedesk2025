@@ -3,7 +3,7 @@ class PagesController < ApplicationController
     @pagy, @rooms = pagy(Room.all, items: 3)
     @search = @rooms.ransack(params[:q])
     @reviews = Review.all
-    @best_reviews = @reviews.last(4) # Last 4 reviews
+    @best_reviews = @reviews.order(created_at: :desc).limit(4) # Latest 4 reviews by date
     @best_rooms = Room.limit(3).order(created_at: :desc) # Latest 3 rooms
     
     # Set location_received to a city that actually has rooms
