@@ -1,6 +1,6 @@
 
 <%# front two main images with local access %>
-<div class="bg-light p-5 rounded home-section mb-5 card">
+<div class="bg-light p-5 rounded home-section mb-5 section">
   <div class="text-center mb-4">
     <h1 class="display-4 mb-3">Need A Quick Workspace In <%= @location_received %>?</h1>
     <p class="lead text-muted" style="letter-spacing: 1px;">Find an office instantly in your area.</p>
@@ -22,7 +22,7 @@
 
 
 <%# one click search for three main cities ard the world %>
-<div class="bg-light p-5 rounded home-section mb-5 card">
+<div class="bg-light p-5 rounded home-section mb-5 section">
     <div class="text-center">
         <h2>Any City</h2>
         <p class="mt-2 h5">Discover amazing workspaces around you</p>
@@ -78,7 +78,7 @@
 </div>
 
 <%# Ad for Hosting your Space %>
-<div class="bg-light p-5 rounded home-section mb-5 card">
+<div class="bg-light p-5 rounded home-section mb-5 section">
 
         <h2 class="text-center"> Host your space in your city for extra income</h2>
         <%= link_to new_user_registration_path do %>
@@ -88,7 +88,7 @@
 </div>
 
 <%# mid-search form %>
-<div class="mb-5 p-5 rounded card">
+<div class="mb-5 p-5 rounded section">
     <div class="" style="top: 20px; z-index: 1000;">
         <%= search_form_for @search, url: search_path, method: :get do |f| %>
             <div class="row align-items-end">
@@ -113,7 +113,7 @@
 </div>
 
 <%# Top Most Poplular Picks %>
-<div class="bg-light p-5 rounded home-section col-md-12 mb-5 card">
+<div class="bg-light p-5 rounded home-section col-md-12 mb-5 section">
     <div class="text-center mb-5 h3">
         <h3 class="title_font">Highly Rated Locations by Our Reviewers </h3>
     </div>
@@ -123,7 +123,7 @@
 </div>
 
 <%# customer reviews %>
-<div class="bg-light p-5 rounded home-section mb-5 card">
+<div class="bg-light p-5 rounded home-section mb-5 section">
     <div class="text-center">
         <h2 class="mb-4">Customer Reviews</h2>
     </div>

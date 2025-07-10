@@ -747,7 +747,7 @@ input[type="checkbox"]:checked:before {
 }
 
 /* Card Styles */
-.card {
+.section {
   border: none;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
   transition: all 0.3s ease;
@@ -781,7 +781,12 @@ input[type="checkbox"]:checked:before {
   color: #6c757d;
 }
 
-.card:hover {
+/* City Card Images - No Border Radius */
+.image-medium {
+  border-radius: 0 !important;
+}
+
+.section:hover {
   box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
