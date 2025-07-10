@@ -81,6 +81,90 @@
         <% end %>
         </div>
     </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-4 col-sm-12">
+            <%= link_to search_path(q:{"address_cont": "Seattle"}) do %>
+                <div class="card shadow mb-2 city-card">
+                    <div class="card-header">
+                        <h2><strong>Seattle</strong></h2>
+                    </div>
+                    <%= image_tag "nyc_home_page_pexels-ono-kosuki.jpg", class: "img-fluid image-medium image_response" %>
+                    <div class="card-body">
+                        <div class="card-text">
+                            Tech Hub Workspaces in the Emerald City
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <%= link_to search_path(q:{"address_cont": "Tokyo"}) do %>
+                <div class="card shadow mb-2 city-card">
+                    <div class="card-header">
+                        <h2><strong>Tokyo</strong></h2>
+                    </div>
+                    <%= image_tag "kolkata_home_page_pexels-neosiam-.jpg", class: "img-fluid image-medium image_response" %>
+                    <div class="card-body">
+                        <div class="card-text">
+                            Modern Workspaces in the Heart of Japan
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <%= link_to search_path(q:{"address_cont": "Vancouver"}) do %>
+                <div class="card shadow mb-2 city-card">
+                    <div class="card-header">
+                        <h2><strong>Vancouver</strong></h2>
+                    </div>
+                    <%= image_tag "bangkok_home_page_pexels-nick-wehrli.jpg", class: "img-fluid image-medium" %>
+                    <div class="card-body">
+                        <div class="card-text">
+                            Coastal Workspaces in Beautiful British Columbia
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-4 col-sm-12">
+            <%= link_to search_path(q:{"address_cont": "Los Angeles"}) do %>
+                <div class="card shadow mb-2 city-card">
+                    <div class="card-header">
+                        <h2><strong>Los Angeles</strong></h2>
+                    </div>
+                    <%= image_tag "nyc_home_page_pexels-ono-kosuki.jpg", class: "img-fluid image-medium image_response" %>
+                    <div class="card-body">
+                        <div class="card-text">
+                            Creative Workspaces in the City of Angels
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <%= link_to search_path(q:{"address_cont": "Toronto"}) do %>
+                <div class="card shadow mb-2 city-card">
+                    <div class="card-header">
+                        <h2><strong>Toronto</strong></h2>
+                    </div>
+                    <%= image_tag "kolkata_home_page_pexels-neosiam-.jpg", class: "img-fluid image-medium image_response" %>
+                    <div class="card-body">
+                        <div class="card-text">
+                            Dynamic Workspaces in Canada's Largest City
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <!-- Empty space for balance -->
+        </div>
+    </div>
 </div>
 
 <%# Ad for Hosting your Space %>

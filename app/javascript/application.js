@@ -181,7 +181,7 @@ function initializeAllRaty() {
           starOn: imagePath + 'star-on.png',
           starHalf: imagePath + 'star-half.png',
           size: 24,
-          hints: ['1점', '2점', '3점', '4점', '5점']
+          hints: ['1 star', '2 stars', '3 stars', '4 stars', '5 stars']
         });
         el.classList.add('raty-initialized');
       }
