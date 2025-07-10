@@ -111,7 +111,7 @@
 
 <%# google map %>
 <div class="card  shadow mb-3" id="map_image">
-    <%= image_tag "https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=700x400&markers=size:small%7Ccolor:red%7C#{@room.latitude},#{@room.longitude}&key=#{ ENV['MAPS_API_KEY']}", alt: "Map" %>        
+    <%= image_tag map_image_room_path(@room), alt: "Map" %>        
 </div>
 <%# Amenities %>
 <div class="card shadow mb-3">

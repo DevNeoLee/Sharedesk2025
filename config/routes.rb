@@ -19,8 +19,10 @@ Rails.application.routes.draw do
   get '/search' => 'pages#search'
   get '/attribution' => 'pages#attribution'
 
-  resources :rooms 
   resources :rooms do 
+    member do
+      get :map_image
+    end
     resources :reservations, only: [:create]
   end
 

@@ -46,65 +46,65 @@
                 <div class="row">
                     <span class="col-md-2">Space Type: </span>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[space_type_eq_any][]", "Apartment"%> Apartment <i class="far fa-building"></i>
+                        <%= check_box_tag "q[space_type_eq_any][]", "Apartment", false, id: "space_type_apartment"%> Apartment <i class="far fa-building"></i>
                     </div>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[space_type_eq_any][]", "House"%> House <i class="fas fa-house-user"></i>
+                        <%= check_box_tag "q[space_type_eq_any][]", "House", false, id: "space_type_house"%> House <i class="fas fa-house-user"></i>
                     </div>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[space_type_eq_any][]", "Office"%> Office <i class="fas fa-briefcase"></i>
+                        <%= check_box_tag "q[space_type_eq_any][]", "Office", false, id: "space_type_office"%> Office <i class="fas fa-briefcase"></i>
                     </div>                
                 </div>
                 <hr>
                 <div class="row">
                     <span class="col-md-2">Desk Type: </span>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[desk_type_eq_any][]", "Single Desk"%> Single Desk <i class="far fa-user"></i>
+                        <%= check_box_tag "q[desk_type_eq_any][]", "Single Desk", false, id: "desk_type_single"%> Single Desk <i class="far fa-user"></i>
                     </div>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[desk_type_eq_any][]", "Private Room Office"%> Private Room Office <i class="fas fa-person-booth"></i>
+                        <%= check_box_tag "q[desk_type_eq_any][]", "Private Room Office", false, id: "desk_type_private"%> Private Room Office <i class="fas fa-person-booth"></i>
                     </div>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[desk_type_eq_any][]", "Sharing Table"%> Sharing Table <i class="fas fa-users"></i>
+                        <%= check_box_tag "q[desk_type_eq_any][]", "Sharing Table", false, id: "desk_type_sharing"%> Sharing Table <i class="fas fa-users"></i>
                     </div>                
                 </div>
                 <hr>
                  <div class="row">
                     <span class="col-md-2">Noise Level: </span>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[noise_level_eq_any][]", "Silent Mode"%> Silent Mode <i class="fas fa-volume-mute"></i>
+                        <%= check_box_tag "q[noise_level_eq_any][]", "Silent Mode", false, id: "noise_silent"%> Silent Mode <i class="fas fa-volume-mute"></i>
                     </div>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[noise_level_eq_any][]", "Quiet"%> Quiet <i class="fas fa-volume-off"></i>
+                        <%= check_box_tag "q[noise_level_eq_any][]", "Quiet", false, id: "noise_quiet"%> Quiet <i class="fas fa-volume-off"></i>
                     </div>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[noise_level_eq_any][]", "Casual"%> Casual <i class="fas fa-volume-down"></i>
+                        <%= check_box_tag "q[noise_level_eq_any][]", "Casual", false, id: "noise_casual"%> Casual <i class="fas fa-volume-down"></i>
                     </div>                
                 </div>
                 <hr>
                 <div class="row">
                     <span class="col-md-2">Manager on Premise: </span>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[manager_on_eq_any][]", "Fulltime"%> Fulltime <i class="fas fa-user-shield"></i>
+                        <%= check_box_tag "q[manager_on_eq_any][]", "Fulltime", false, id: "manager_fulltime"%> Fulltime <i class="fas fa-user-shield"></i>
                     </div>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[manager_on_eq_any][]", "Parttime"%> Parttime <i class="fas fa-user-clock"></i>
+                        <%= check_box_tag "q[manager_on_eq_any][]", "Parttime", false, id: "manager_parttime"%> Parttime <i class="fas fa-user-clock"></i>
                     </div>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[manager_on_eq_any][]", "No Stay"%> No Stay <i class="fas fa-comment-slash"></i>
+                        <%= check_box_tag "q[manager_on_eq_any][]", "No Stay", false, id: "manager_nostay"%> No Stay <i class="fas fa-comment-slash"></i>
                     </div>                
                 </div>
                 <hr>
                 <div class="row">
                     <span class="col-md-2">Security Level: </span>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[security_level_eq_any][]", "Maximum"%> Maximum <i class="fas fa-shield-alt"></i>
+                        <%= check_box_tag "q[security_level_eq_any][]", "Maximum", false, id: "security_maximum"%> Maximum <i class="fas fa-shield-alt"></i>
                     </div>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[security_level_eq_any][]", "High"%> High <i class="fas fa-shield-alt"></i>
+                        <%= check_box_tag "q[security_level_eq_any][]", "High", false, id: "security_high"%> High <i class="fas fa-shield-alt"></i>
                     </div>
                     <div class="col-md-3">
-                        <%= check_box_tag "q[security_level_eq_any][]", "Good"%> Good <i class="fas fa-shield-alt"></i>
+                        <%= check_box_tag "q[security_level_eq_any][]", "Good", false, id: "security_good"%> Good <i class="fas fa-shield-alt"></i>
                     </div>                
                 </div>
                 <hr>
@@ -128,28 +128,28 @@
                     </div>
                 <div class="row">
                     <div class="col-md-4 mb-2">
-                        <%= check_box_tag "q[is_conference_eq]", true %> Conference Call <i class="fas fa-headset ml-3"></i>
+                        <%= check_box_tag "q[is_conference_eq]", true, false, id: "amenity_conference"%> Conference Call <i class="fas fa-headset ml-3"></i>
                     </div>
                     <div class="col-md-4 mb-2">
-                        <%= check_box_tag "q[is_kitchen_eq]", true %> Kitchen <i class="fas fa-sink ml-3"></i>
+                        <%= check_box_tag "q[is_kitchen_eq]", true, false, id: "amenity_kitchen"%> Kitchen <i class="fas fa-sink ml-3"></i>
                     </div>
                     <div class="col-md-4 mb-2">
-                        <%= check_box_tag "q[is_wifi_eq]", true %> Wifi <i class="fas fa-wifi ml-3 mb-1"></i>
+                        <%= check_box_tag "q[is_wifi_eq]", true, false, id: "amenity_wifi"%> Wifi <i class="fas fa-wifi ml-3 mb-1"></i>
                     </div>
                     <div class="col-md-4 mb-2">
-                        <%= check_box_tag "q[is_heating_eq]", true %> Heating <i class="fas fa-fire ml-3"></i>
+                        <%= check_box_tag "q[is_heating_eq]", true, false, id: "amenity_heating"%> Heating <i class="fas fa-fire ml-3"></i>
                     </div>
                     <div class="col-md-4 mb-2">
-                        <%= check_box_tag "q[is_air_eq]", true %> Air Condition <i class="fas fa-fan ml-3"></i>
+                        <%= check_box_tag "q[is_air_eq]", true, false, id: "amenity_air"%> Air Condition <i class="fas fa-fan ml-3"></i>
                     </div>
                     <div class="col-md-4 mb-2">
-                        <%= check_box_tag "q[is_printing_eq]", true %> Printing Station <i class="fas fa-print ml-3"></i>
+                        <%= check_box_tag "q[is_printing_eq]", true, false, id: "amenity_printing"%> Printing Station <i class="fas fa-print ml-3"></i>
                     </div>
                     <div class="col-md-4 mb-2">
-                        <%= check_box_tag "q[is_drinks_eq]", true %> Free Drinks <i class="fas fa-print ml-3"></i>
+                        <%= check_box_tag "q[is_drinks_eq]", true, false, id: "amenity_drinks"%> Free Drinks <i class="fas fa-print ml-3"></i>
                     </div>
                     <div class="col-md-4 mb-2">
-                        <%= check_box_tag "q[is_parking_eq]", true %> parking <i class="fas fa-parking ml-3"></i>
+                        <%= check_box_tag "q[is_parking_eq]", true, false, id: "amenity_parking"%> parking <i class="fas fa-parking ml-3"></i>
                     </div>           
                 </div>
                 <br>

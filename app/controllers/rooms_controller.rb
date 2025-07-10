@@ -1,6 +1,6 @@
 class RoomsController < ApplicationController
-  before_action :set_room, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:show]
+  before_action :set_room, only: [:show, :edit, :update, :destroy, :map_image]
+  before_action :authenticate_user!, except: [:show, :map_image]
   
   def index
     @rooms = current_user.rooms
@@ -50,6 +50,23 @@ class RoomsController < ApplicationController
     end
     @room.destroy
     redirect_to rooms_path, notice: 'Room was successfully destroyed.' 
+  end
+
+  def map_image
+    map_url = "https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=700x400&markers=size:small%7Ccolor:red%7C#{@room.latitude},#{@room.longitude}&key=#{ENV['MAPS_API_KEY']}"
+    
+    begin
+      response = Net::HTTP.get_response(URI(map_url))
+      if response.is_a?(Net::HTTPSuccess)
+        send_data response.body, type: 'image/png', disposition: 'inline'
+      else
+        # Fallback to a placeholder image or error message
+        render plain: 'Map not available', status: :not_found
+      end
+    rescue => e
+      Rails.logger.error "Google Maps API error: #{e.message}"
+      render plain: 'Map not available', status: :service_unavailable
+    end
   end
 
   private 
