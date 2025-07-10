@@ -1,9 +1,9 @@
 
 <%# front two main images with local access %>
-<div class="bg-light p-5 rounded shadow mb-5">
+<div class="bg-light p-5 rounded home-section mb-5 card">
   <div class="text-center mb-4">
-    <h1 class="display-4 mb-3">Need a quick workspace in <%= @location_received %>?</h1>
-    <p class="lead text-muted">Find an office instantly in your area.</p>
+    <h1 class="display-4 mb-3">Need A Quick Workspace In <%= @location_received %>?</h1>
+    <p class="lead text-muted" style="letter-spacing: 1px;">Find an office instantly in your area.</p>
   </div>
   <hr class="my-4">
   <div class="row">
@@ -14,16 +14,16 @@
       <%= image_tag "main_image1.jpg", class: "img-fluid rounded shadow" %>
     </div>
   </div>
-  <div class="text-center mt-4">
+  <div class="text-start mt-4">
     <%= link_to search_path(q: {"address_cont": @location_received }) do %>
-      <button class="btn btn-primary btn-lg">Find in Your Area</button>
+      <button class="btn btn-cta btn-lg">Find in Your Area</button>
     <% end %>
   </div>
 </div>
 
 
 <%# one click search for three main cities ard the world %>
-<div class="bg-light p-5 rounded shadow mb-5">
+<div class="bg-light p-5 rounded home-section mb-5 card">
     <div class="text-center">
         <h2>Any City</h2>
         <p class="mt-2 h5">Discover amazing workspaces around you</p>
@@ -79,7 +79,7 @@
 </div>
 
 <%# Ad for Hosting your Space %>
-<div class="bg-light p-5 rounded shadow mb-5">
+<div class="bg-light p-5 rounded home-section mb-5 card">
 
         <h2 class="text-center"> Host your space in your city for extra income</h2>
         <%= link_to new_user_registration_path do %>
@@ -89,8 +89,8 @@
 </div>
 
 <%# mid-search form %>
-<div class="container-fluid mb-5">
-    <div class="bg-light p-4 rounded shadow">
+<div class="mb-5 p-5 rounded card">
+    <div class="" style="top: 20px; z-index: 1000;">
         <%= search_form_for @search, url: search_path, method: :get do |f| %>
             <div class="row align-items-end">
                 <div class="col-md-5 mb-3">
@@ -106,7 +106,7 @@
                     <%= text_field_tag :end_date, nil, placeholder: "End Date", class: "form-control", id: "end_date"%>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <%= f.submit "Check Availability", class: "btn btn-primary w-100"%>
+                    <%= f.submit "Check Availability", class: "btn btn-primary"%>
                 </div>
             </div>
         <% end %>
@@ -114,7 +114,7 @@
 </div>
 
 <%# Top Most Poplular Picks %>
-<div class="bg-light p-5 rounded shadow col-md-12 mb-5">
+<div class="bg-light p-5 rounded home-section col-md-12 mb-5 card">
     <div class="text-center mb-5 h3">
         <h3 class="title_font">Highly Rated Locations by Our Reviewers </h3>
     </div>
@@ -124,7 +124,7 @@
 </div>
 
 <%# customer reviews %>
-<div class="bg-light p-5 rounded shadow mb-5">
+<div class="bg-light p-5 rounded home-section mb-5 card">
     <div class="text-center">
         <h2 class="mb-4">Customer Reviews</h2>
     </div>

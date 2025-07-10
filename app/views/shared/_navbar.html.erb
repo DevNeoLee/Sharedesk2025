@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-white p-3 mb-4 sticky-top">
   <div class="container-fluid">
     <a class="navbar-brand" href="/pages/home">
-      <%= image_tag 'orangeLogoSmall.png', width: "150" %>
+      <%= image_tag 'orangeLogoSmall.png', width: "180" %>
     </a>
     
     <!-- Search Form - Always visible -->
@@ -12,7 +12,7 @@
             <%=f.search_field :address_cont, class: "form-control navbar-search-field", id: "navbar-search", placeholder: "Where are you staying? NYC, Vancouver, Tokyo..." %>
           </div>
           <div class="flex-shrink-0">
-            <%= f.submit "Find Space", class: "btn btn-primary navbar-search-button"%>
+            <%= f.submit "Find Space", class: "btn btn-primary btn-cta"%>
           </div>
         </div>
       <% end %>
