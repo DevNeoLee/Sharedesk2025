@@ -1,19 +1,21 @@
 
 <div class="col-md-4">
 <%=link_to room_path(room.id) do %>
-    <div class="card mb-3 shadow text-center city-card">
+    <div class="card mb-3 shadow text-center city-card d-flex flex-column justify-content-between" style="min-height: 400px; max-width: 370px; margin: 0 auto;">
         <div class="card-header text-center">
             <div class="h4"><%= room.listing_name %></div> 
         </div>
         <% if room.images.attached? %>
-            <%= image_tag room.medium_image(room.images[0]), class: "img-fluid image-medium"%>
+            <%= image_tag room.medium_image(room.images[0]), class: "img-fluid image-medium mt-3"%>
+        <% else %>
+            <div class="image-medium d-flex align-items-center justify-content-center bg-light mt-3 mb-2" style="height:200px; border-radius:8px; color:#bbb; font-size:2rem;">No Image</div>
         <% end %>
-        <div class="card-body">
-            <div class="card-text">
+        <div class="card-body flex-grow-1 d-flex flex-column justify-content-center">
+            <div class="card-text mb-2">
                 <%= room.address %>
             </div>
         </div>
-        <div class="star-rating star-rating-large pb-3" data-score="<%= room.average_rating || 0 %>"></div>
+        <div class="star-rating star-rating-large mb-3 mt-2" data-score="<%= room.average_rating || 0 %>"></div>
     </div>
 
 
