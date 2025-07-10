@@ -15,29 +15,12 @@
                 <%= room.address %>
             </div>
         </div>
-        <div class="star-rating star-rating-large mb-3 mt-2" data-score="<%= room.average_rating || 0 %>"></div>
+        <div data-controller="raty">
+            <div class="star-rating star-rating-large mb-3 mt-2" 
+                 data-raty-target="rating" 
+                 data-score="<%= room.average_rating || 0 %>"></div>
+        </div>
     </div>
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    function initializeRaty() {
-        if (typeof $ !== 'undefined' && typeof $.fn.raty !== 'undefined') {
-            $('#average_rate_<%= room.id %>').raty({
-                readOnly: true,
-                score: <%= room.average_rating %>,
-                starOff: '<%= image_path('star-off.png') %>',
-                starOn : '<%= image_path('star-on.png') %>',
-                starHalf: '<%= image_path 'star-half.png' %>',
-                size: 32, // Large star size
-            });
-        } else {
-            setTimeout(initializeRaty, 100);
-        }
-    }
-    initializeRaty();
-});
-</script>
 
 <% end %>
 </div>
