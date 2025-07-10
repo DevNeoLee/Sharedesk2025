@@ -2,8 +2,11 @@ Rails.application.routes.draw do
 
   devise_for :users, path_names: { sign_in: "login", sign_out: "logout", sign_up: "signup"},
                      controllers: { omniauth_callbacks: "omniauth_callbacks",
-                                    registrations: 'registrations'
-                                  }
+                                    registrations: 'registrations',
+                                    sessions: 'sessions'
+                                  } do
+    get '/users/auth/:provider/failure', to: 'omniauth_callbacks#failure'
+  end
   
   root 'pages#home' 
   

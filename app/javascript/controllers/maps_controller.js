@@ -13,7 +13,6 @@ export default class extends Controller {
     this.map()
     this.marker()
     this.autocomplete()
-    console.log('init')
   }
 
   map() {

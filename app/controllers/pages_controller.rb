@@ -5,6 +5,14 @@ class PagesController < ApplicationController
     @reviews = Review.all
     @best_reviews = @reviews.last(4) # 마지막 4개의 리뷰
     @best_rooms = Room.limit(3).order(created_at: :desc) # 최신 3개의 방
+    
+    # Log flash messages for debugging
+    if flash[:notice]
+      Rails.logger.info "Flash notice in home: #{flash[:notice]}"
+    end
+    if flash[:alert]
+      Rails.logger.info "Flash alert in home: #{flash[:alert]}"
+    end
   end
 
   def attribution

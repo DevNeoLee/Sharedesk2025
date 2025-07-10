@@ -159,14 +159,14 @@
 </div>
 
 <div data-controller="infinite-scroll" data-action="scroll@window->infinite-scroll#scroll">
-    <div class="row" data-target="infinite-scroll.entries">
+    <div class="row" data-infinite-scroll-target="entries">
     <%# <div class="row"> %>
      
             <%= render 'rooms/rooms'%> 
      
     <%# </div>            %>
     </div>
-    <div data-target="infinite-scroll.pagination", class="pagination_type">
+    <div data-infinite-scroll-target="pagination" class="pagination_type">
         <%== pagy_bootstrap_nav(@pagy_search).html_safe %>
     </div>
 </div>

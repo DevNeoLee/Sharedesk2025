@@ -14,10 +14,40 @@ window.bootstrap = bootstrap
 import * as Popper from "@popperjs/core"
 window.Popper = Popper
 
-// Import Toastr (using traditional script loading)
-import "toastr"
+// Global queue for toastr messages
+window.toastrQueue = [];
 
-// Load jQuery UI after jQuery is available
+// Function to process queued messages
+function processToastrQueue() {
+  // Check localStorage for persisted messages
+  const storedMessages = JSON.parse(localStorage.getItem('toastrQueue') || '[]');
+  if (storedMessages.length > 0) {
+    console.log('Found stored messages in localStorage:', storedMessages);
+    storedMessages.forEach(function(item) {
+      if (item.type && item.message) {
+        console.log('Showing stored message:', item.type, item.message);
+        window.toastr[item.type](item.message);
+      }
+    });
+    localStorage.removeItem('toastrQueue');
+  }
+  
+  // Process current queue
+  if (window.toastrQueue && window.toastrQueue.length > 0) {
+    console.log('Processing queued messages:', window.toastrQueue);
+    window.toastrQueue.forEach(function(item) {
+      if (item.type && item.message) {
+        console.log('Showing queued message:', item.type, item.message);
+        window.toastr[item.type](item.message);
+      }
+    });
+    window.toastrQueue = [];
+  } else {
+    console.log('No queued messages to process');
+  }
+}
+
+// Load jQuery UI and Toastr after jQuery is available
 document.addEventListener('DOMContentLoaded', function() {
   // Load jQuery UI dynamically
   if (typeof window.$ !== 'undefined') {
@@ -30,29 +60,46 @@ document.addEventListener('DOMContentLoaded', function() {
     }).catch(error => {
       console.error('Error loading jQuery UI:', error);
     });
-  }
-});
-
-// Toastr configuration
-document.addEventListener('DOMContentLoaded', function() {
-  if (typeof window.toastr !== 'undefined') {
-    window.toastr.options = {
-      "closeButton": false,
-      "debug": false,
-      "newestOnTop": false,
-      "progressBar": false,
-      "positionClass": "toast-top-right",
-      "preventDuplicates": false,
-      "onclick": null,
-      "showDuration": "10000",
-      "hideDuration": "1000",
-      "timeOut": "3000",
-      "extendedTimeOut": "1000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-    }
+    
+    // Load toastr dynamically after jQuery is loaded
+    const toastrScript = document.createElement('script');
+    toastrScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js';
+    toastrScript.onload = function() {
+      if (typeof window.toastr !== 'undefined') {
+        console.log('Toastr loaded successfully');
+        window.toastr.options = {
+          "closeButton": false,
+          "debug": false,
+          "newestOnTop": false,
+          "progressBar": false,
+          "positionClass": "toast-top-right",
+          "preventDuplicates": false,
+          "onclick": null,
+          "showDuration": "10000",
+          "hideDuration": "1000",
+          "timeOut": "3000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        }
+        
+        // Process queued messages immediately
+        processToastrQueue();
+        
+        // Additional checks for queued messages (for OAuth redirects)
+        setTimeout(processToastrQueue, 500);
+        setTimeout(processToastrQueue, 1000);
+        setTimeout(processToastrQueue, 2000);
+      } else {
+        console.error('Toastr failed to load');
+      }
+    };
+    toastrScript.onerror = function() {
+      console.error('Failed to load toastr script');
+    };
+    document.head.appendChild(toastrScript);
   }
 });
 

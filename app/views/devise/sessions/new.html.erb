@@ -5,7 +5,7 @@
         <h2 class=" text-center mt-4 mb-3">Welcome</h1>   
       </div>
       <hr>
-      <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2") do |f| %>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2", html: { id: "new_user" }) do |f| %>
        <div class="m-2 border-none">
               <div class=" d-flex">
                 <div class="pt-3 mt-1 font-weight-bold">Wherever you go</div>
@@ -15,12 +15,12 @@
         </div>
         <%= render 'shared/devise_message' %>
         <div class="form-label-group m-2">
-          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "please do something", id: "inputEmail"%>
+          <%= f.email_field :email, autocomplete: "email", class: "form-control", placeholder: "please do something", id: "inputEmail"%>
           <label for="inputEmail">Email address</label>
         </div>
         <div class="form-label-group m-2">    
-          <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "please do something" %>
-          <label for="inputPassword">Password</label>
+          <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "please do something", id: "user_password" %>
+          <label for="user_password">Password</label>
         </div>
         <div class="m-2">
           <% if devise_mapping.rememberable? %>
@@ -39,9 +39,9 @@
 
       <div class="m-2">
       <hr>
-        <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2") do |f| %>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2", html: { id: "demo_user" }) do |f| %>
               <%= f.hidden_field :email, value: 'peter@email.com' %>
-              <%= f.hidden_field :password, value: '111111' %>
+              <%= f.hidden_field :password, value: '111111', id: "demo_user_password" %>
               <%= f.submit "DEMO", class: "btn btn-lg btn-primary btn-block p-2"  %>    
         <% end %>
       </div>

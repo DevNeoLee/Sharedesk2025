@@ -21,7 +21,7 @@
     </div>
     <div class="col-md-9">
         <%# <div data-controller="infinite-scroll" data-action="scroll@window->infinite-scroll#scroll">
-            <div data-target="infinite-scroll.entries"> %>
+            <div data-infinite-scroll-target="entries"> %>
                 <% @rooms_result.each do |room| %>
                     <% room.reservations.each do |reservation| %>
                         <div class="row">
@@ -89,7 +89,7 @@
             <%# </div>
         </div> %>
     </div>
-    <div data-target="infinite-scroll.pagination" class="pagination_type">
+    <div data-infinite-scroll-target="pagination" class="pagination_type">
         <%== pagy_bootstrap_nav(@pagy).html_safe %>
     </div>
 </div>

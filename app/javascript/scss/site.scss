@@ -1,4 +1,8 @@
 
+/* google font */
+@import url('https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@500&display=swap');
+
 @import "pages";
 $primary: #1100ff; // resetting primary color of bootstrap
 @import "~bootstrap/scss/bootstrap.scss";
@@ -10,10 +14,6 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 @import '@fortawesome/fontawesome-free/scss/regular';
 @import '@fortawesome/fontawesome-free/scss/brands';
 @import '@fortawesome/fontawesome-free/scss/v4-shims';
-
-/* google font */
-@import url('https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@500&display=swap');
 
 /* -------------------- Resets --------------------- */
 body, form, fieldset, ol, ul, li, h1, h2, h3, h4, h5, h6, p {

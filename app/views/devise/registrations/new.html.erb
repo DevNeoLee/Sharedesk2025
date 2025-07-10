@@ -6,7 +6,7 @@
       </div>
       <hr>
   
-      <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { id: "new_user_signup" }) do |f| %>
         <%= render 'shared/devise_message' %>
 
         <div class="card m-2">
@@ -23,7 +23,7 @@
         </div>
 
         <div class="form-label-group m-2">
-          <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "form-control", placeholder: "Name", id: "name"  %>
+          <%= f.text_field :name, autocomplete: "name", class: "form-control", placeholder: "Name", id: "name"  %>
           <label for="name">Name</label>
         </div>
 
@@ -54,9 +54,9 @@
         <div class="m-2">
         <hr>
       
-        <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2") do |f| %>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2", html: { id: "demo_user_signup" }) do |f| %>
           <%= f.hidden_field :email, value: 'peter@email.com' %>
-          <%= f.hidden_field :password, value: '111111' %>
+          <%= f.hidden_field :password, value: '111111', id: "demo_user_password_signup" %>
           <%= f.submit "DEMO", class: "btn btn-lg btn-primary btn-block p-2"  %>    
         <% end %>
         </div>

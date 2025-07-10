@@ -2,7 +2,22 @@
     <script type="text/javascript">
         <% flash.each do |f| %>
             <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
-            toastr['<%= type %>']('<%= f[1] %>')
+            console.log('Flash message detected:', '<%= type %>', '<%= f[1] %>');
+            if (typeof window.toastr !== 'undefined') {
+                console.log('Toastr is available, showing message immediately');
+                toastr['<%= type %>']('<%= f[1] %>');
+            } else {
+                console.log('Toastr not available, queuing message');
+                // Store in localStorage for persistence across redirects
+                const message = {type: '<%= type %>', message: '<%= f[1] %>'};
+                if (!window.toastrQueue) window.toastrQueue = [];
+                window.toastrQueue.push(message);
+                
+                // Also store in localStorage
+                const storedMessages = JSON.parse(localStorage.getItem('toastrQueue') || '[]');
+                storedMessages.push(message);
+                localStorage.setItem('toastrQueue', JSON.stringify(storedMessages));
+            }
         <% end %>
     </script>
 <% end %>
