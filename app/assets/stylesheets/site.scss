@@ -608,7 +608,7 @@ input[type="checkbox"]:checked:before {
 }
 
 .navbar-search-field:focus {
-  border: 2px solid #667eea;
+  border: 2px solid rgb(131, 154, 255);
   background: #ffffff;
   color: #333;
   box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.4);
@@ -768,6 +768,17 @@ input[type="checkbox"]:checked:before {
 /* Home Page Section Shadows */
 .home-section {
   box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+}
+
+/* Form Fields Focus Styles */
+.form-control:focus {
+  border-color: rgb(131, 154, 255);
+  box-shadow: 0 0 0 0.2rem rgba(131, 154, 255, 0.25);
+  outline: none;
+}
+
+.form-control:focus::placeholder {
+  color: #6c757d;
 }
 
 .card:hover {
