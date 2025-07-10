@@ -1,5 +1,5 @@
 class ReservationsController < ApplicationController 
-    before_action :authenticate_user!
+    before_action :authenticate_user!, except: [:preload, :preview]
 
     def preload 
         room = Room.find(params[:room_id])

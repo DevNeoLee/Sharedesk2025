@@ -46,108 +46,117 @@
 
 
 <script>
-function unavailable(date) {
-    dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
-    return [$.inArray(dmy, unavailableDates) == -1];
-}
-$(function(){
+document.addEventListener('DOMContentLoaded', function() {
+    function initializeDatepickers() {
+        if (typeof $ !== 'undefined' && typeof $.fn.datepicker !== 'undefined') {
+            var unavailableDates = [];
 
-    unavailableDates = [];
+            // Define unavailable function inside the scope where unavailableDates is available
+            function unavailable(date) {
+                dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+                return [$.inArray(dmy, unavailableDates) == -1];
+            }
 
-    $.ajax({
-        url: '/preload',
-        data: {'room_id': <%= @room.id %>},
-        dataType: 'json',
-        success: function(data) {
-            $.each(data, function(arrId, arrValue){
-                for(let d = new Date(arrValue.start_date); d <= new Date(arrValue.end_date); d.setDate(d.getDate() + 1)) {
-                    unavailableDates.push($.datepicker.formatDate('d-m-yy',d));
+            $.ajax({
+                url: '/preload',
+                data: {'room_id': <%= @room.id %>},
+                dataType: 'json',
+                success: function(data) {
+                    $.each(data, function(arrId, arrValue){
+                        for(let d = new Date(arrValue.start_date); d <= new Date(arrValue.end_date); d.setDate(d.getDate() + 1)) {
+                            unavailableDates.push($.datepicker.formatDate('d-m-yy',d));
+                        }
+                    })
+
+                    $('#reservation_start_date')
+                        .datepicker( { 
+                            dateFormat: 'dd-mm-yy',
+                            minDate: 0,
+                            maxDate: '3m',
+                            beforeShowDay: unavailable,
+                            onSelect: function(selected) {
+                                $('#reservation_end_date').datepicker("option", "minDate", selected);
+                                $('#reservation_end_date').attr('disabled', false);
+                                
+                                let start_date = $(this).datepicker('getDate');
+                                let end_date = $('#reservation_end_date').datepicker('getDate');
+                                let nights = (end_date - start_date)/1000/60/60/24 ;
+
+                                let input = {
+                                    'start_date': start_date,
+                                    'end_date': end_date,
+                                    'room_id': <%= @room.id %>
+                                }
+
+                                $.ajax({
+                                    url: "/preview",
+                                    data: input,
+                                    success: function(data) {
+                                        if (data.conflict) {
+                                            $('#message').text("This date range is not available.");
+                                            $('#preview').hide();
+                                            $('#btn_book').attr('disabled', true );
+                                        } else {
+                                            $('#preview').show();
+                                            $('#btn_book').attr('disabled', false );
+
+                                            let total = days * <%= @room.price %>
+                                            $('#reservation_days').text(nights);
+                                            $('#reservation_sum').text(total);
+                                            $('#reservation_total').val(total);
+                                        }
+                                    }
+                                }) 
+                            }
+                    });
+
+                    $('#reservation_end_date')
+                        .datepicker( { 
+                            dateFormat: 'dd-mm-yy',
+                            minDate: 0,
+                            maxDate: '3m',
+                            beforeShowDay: unavailable,
+                            onSelect: function(selected) {
+                                $('#reservation_start_date').datepicker("option", "maxDate", selected);
+
+                                let start_date = $('#reservation_start_date').datepicker('getDate');
+                                let end_date = $(this).datepicker('getDate');
+                                let days = (end_date - start_date)/1000/60/60/24 + 1;
+
+                                let input = {
+                                    'start_date': start_date,
+                                    'end_date': end_date,
+                                    'room_id': <%= @room.id %>
+                                }
+
+                                $.ajax({
+                                    url: "/preview",
+                                    data: input,
+                                    success: function(data) {
+                                        if (data.conflict) {
+                                            $('#message').text("This date range is not available.");
+                                            $('#preview').hide();
+                                            $('#btn_book').attr('disabled', true );
+                                        } else {
+                                            $('#preview').show();
+                                            $('#btn_book').attr('disabled', false );
+
+                                            let total = days * <%= @room.price %>
+                                            $('#reservation_days').text(days);
+                                            $('#reservation_sum').text(total);
+                                            $('#reservation_total').val(total);
+                                        }
+                                    }
+                                })
+                            }
+                    } );
                 }
-            })
-
-            $('#reservation_start_date')
-                .datepicker( { 
-                    dateFormat: 'dd-mm-yy',
-                    minDate: 0,
-                    maxDate: '3m',
-                    beforeShowDay: unavailable,
-                    onSelect: function(selected) {
-                        $('#reservation_end_date').datepicker("option", "minDate", selected);
-                        $('#reservation_end_date').attr('disabled', false);
-                        
-                        let start_date = $(this).datepicker('getDate');
-                        let end_date = $('#reservation_end_date').datepicker('getDate');
-                        let nights = (end_date - start_date)/1000/60/60/24 ;
-
-                        let input = {
-                            'start_date': start_date,
-                            'end_date': end_date,
-                            'room_id': <%= @room.id %>
-                        }
-
-                        $.ajax({
-                            url: "/preview",
-                            data: input,
-                            success: function(data) {
-                                if (data.conflict) {
-                                    $('#message').text("This date range is not available.");
-                                    $('#preview').hide();
-                                    $('#btn_book').attr('disabled', true );
-                                } else {
-                                    $('#preview').show();
-                                    $('#btn_book').attr('disabled', false );
-
-                                    let total = days * <%= @room.price %>
-                                    $('#reservation_days').text(nights);
-                                    $('#reservation_sum').text(total);
-                                    $('#reservation_total').val(total);
-                                }
-                            }
-                        }) 
-                    }
             });
-
-            $('#reservation_end_date')
-                .datepicker( { 
-                    dateFormat: 'dd-mm-yy',
-                    minDate: 0,
-                    maxDate: '3m',
-                    beforeShowDay: unavailable,
-                    onSelect: function(selected) {
-                        $('#reservation_start_date').datepicker("option", "maxDate", selected);
-
-                        let start_date = $('#reservation_start_date').datepicker('getDate');
-                        let end_date = $(this).datepicker('getDate');
-                        let days = (end_date - start_date)/1000/60/60/24 + 1;
-
-                        let input = {
-                            'start_date': start_date,
-                            'end_date': end_date,
-                            'room_id': <%= @room.id %>
-                        }
-
-                        $.ajax({
-                            url: "/preview",
-                            data: input,
-                            success: function(data) {
-                                if (data.conflict) {
-                                    $('#message').text("This date range is not available.");
-                                    $('#preview').hide();
-                                    $('#btn_book').attr('disabled', true );
-                                } else {
-                                    $('#preview').show();
-                                    $('#btn_book').attr('disabled', false );
-
-                                    let total = days * <%= @room.price %>
-                                    $('#reservation_days').text(days);
-                                    $('#reservation_sum').text(total);
-                                    $('#reservation_total').val(total);
-                                }
-                            }
-                        })
-                    }
-            } );
+        } else {
+            setTimeout(initializeDatepickers, 100);
         }
-    });
+    }
+    
+    initializeDatepickers();
 });
 </script>

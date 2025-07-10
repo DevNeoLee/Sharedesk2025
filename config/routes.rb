@@ -32,6 +32,6 @@ Rails.application.routes.draw do
     resources :reviews, only: [:create, :destroy]
   end
 
-  # users 리소스를 마지막에 배치
+  # Place users resource at the end
   resources :users, only: [:show], constraints: { id: /\d+/ } 
 end

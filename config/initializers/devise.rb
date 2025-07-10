@@ -275,7 +275,7 @@ Devise.setup do |config|
   # config.omniauth :facebook, Rails.application.credentials.dig(:facebook, :facebook_client_id), Rails.application.credentials.dig(:facebook, :facebook_client_secret)
   # config.omniauth :google_oauth2, Rails.application.credentials.dig(:google, :google_client_id), Rails.application.credentials.dig(:google, :google_client_secret)
 
-  # OmniAuth 설정
+  # OmniAuth Configuration
   config.omniauth :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'], {
     scope: 'email,profile',
     prompt: 'select_account',

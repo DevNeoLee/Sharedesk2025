@@ -18,15 +18,21 @@
 
 
 <script>
-$(function(){
-    $('#average_rate_<%= room.id %>').raty({
-        readOnly: true,
-        score: <%= room.average_rating %>,
-        starOff: '<%= image_path('star-off.png') %>',
-        starOn : '<%= image_path('star-on.png') %>',
-        starHalf: '<%= image_path 'star-half.png' %>',
-    })
-
+document.addEventListener('DOMContentLoaded', function() {
+    function initializeRaty() {
+        if (typeof $ !== 'undefined' && typeof $.fn.raty !== 'undefined') {
+            $('#average_rate_<%= room.id %>').raty({
+                readOnly: true,
+                score: <%= room.average_rating %>,
+                starOff: '<%= image_path('star-off.png') %>',
+                starOn : '<%= image_path('star-on.png') %>',
+                starHalf: '<%= image_path 'star-half.png' %>',
+            });
+        } else {
+            setTimeout(initializeRaty, 100);
+        }
+    }
+    initializeRaty();
 });
 </script>
 

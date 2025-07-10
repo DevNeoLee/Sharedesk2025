@@ -5,7 +5,7 @@ class Room < ApplicationRecord
   geocoded_by :address
   has_many :reviews,  dependent: :destroy 
 
-  validates :images, presence: true
+  # validates :images, presence: true
 
   def validate_image?
     if images.nil?
@@ -15,7 +15,7 @@ class Room < ApplicationRecord
     end
   end
 
-  validates_associated :images, presence: true
+  # validates_associated :images, presence: true
 
   def average_rating 
     reviews.count == 0 ? 0 : reviews.average(:star).round(2)

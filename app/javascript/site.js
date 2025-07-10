@@ -1,5 +1,4 @@
 // Site-specific JavaScript
-console.log('Site JavaScript loaded');
 
 // Bootstrap initialization
 document.addEventListener('DOMContentLoaded', function() {

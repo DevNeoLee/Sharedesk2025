@@ -22,10 +22,8 @@ function processToastrQueue() {
   // Check localStorage for persisted messages
   const storedMessages = JSON.parse(localStorage.getItem('toastrQueue') || '[]');
   if (storedMessages.length > 0) {
-    console.log('Found stored messages in localStorage:', storedMessages);
     storedMessages.forEach(function(item) {
       if (item.type && item.message) {
-        console.log('Showing stored message:', item.type, item.message);
         window.toastr[item.type](item.message);
       }
     });
@@ -34,16 +32,12 @@ function processToastrQueue() {
   
   // Process current queue
   if (window.toastrQueue && window.toastrQueue.length > 0) {
-    console.log('Processing queued messages:', window.toastrQueue);
     window.toastrQueue.forEach(function(item) {
       if (item.type && item.message) {
-        console.log('Showing queued message:', item.type, item.message);
         window.toastr[item.type](item.message);
       }
     });
     window.toastrQueue = [];
-  } else {
-    console.log('No queued messages to process');
   }
 }
 
@@ -66,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
     toastrScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js';
     toastrScript.onload = function() {
       if (typeof window.toastr !== 'undefined') {
-        console.log('Toastr loaded successfully');
         window.toastr.options = {
           "closeButton": false,
           "debug": false,

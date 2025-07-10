@@ -1,6 +1,6 @@
 class UsersController < ApplicationController 
     def show 
-        # 숫자가 아닌 ID는 처리하지 않음
+        # Don't process non-numeric IDs
         unless params[:id].match?(/\A\d+\z/)
           redirect_to root_path, alert: "Invalid user ID"
           return

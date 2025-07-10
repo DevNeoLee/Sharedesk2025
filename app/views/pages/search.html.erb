@@ -1,10 +1,16 @@
 
-<div class="h2">Showing matches for " <%=params[:q]["address_cont"] %> " </div>
+<div class="h2 mb-4">
+  <% if params[:q] && params[:q]["address_cont"].present? %>
+    Search results for "<%= params[:q]["address_cont"] %>"
+  <% else %>
+    View All Spaces
+  <% end %>
+</div>
 
 <div id="complex_search" class="card m-3 p-3 shadow ">
-    <div>
-        <button id="complex_search_button" class="btn btn-danger mb-3">Click for Advanced Search</button>
-    </div>
+            <div>
+            <button id="complex_search_button" class="btn btn-danger mb-3">Advanced Search</button>
+        </div>
 
     <div id="complex_search_menu" class="invisible col-md-12">
        
@@ -149,7 +155,7 @@
                 <br>
                 <div class="row">
                     <div class="col-md-4">
-                        <%= f.submit "Now, Find Your Best Preference! Go Go!", class: "btn btn-primary"%>
+                        <%= f.submit "Search", class: "btn btn-primary"%>
                     </div>
                 </div>
             <% end %>
@@ -159,28 +165,41 @@
 </div>
 
 <div data-controller="infinite-scroll" data-action="scroll@window->infinite-scroll#scroll">
-    <div class="row" data-infinite-scroll-target="entries">
-    <%# <div class="row"> %>
-     
+    <% if @browse_result.empty? %>
+        <div class="text-center py-5">
+            <div class="alert alert-info">
+                <h4>No search results found</h4>
+                <p>Try different search criteria:</p>
+                <ul class="list-unstyled">
+                    <li>• Try a different location name</li>
+                    <li>• Adjust the price range</li>
+                    <li>• Change the space type</li>
+                    <li>• Use advanced search</li>
+                </ul>
+                <%= link_to "View All Spaces", search_path, class: "btn btn-primary mt-3" %>
+            </div>
+        </div>
+    <% else %>
+        <div class="row" data-infinite-scroll-target="entries">
             <%= render 'rooms/rooms'%> 
-     
-    <%# </div>            %>
-    </div>
-    <div data-infinite-scroll-target="pagination" class="pagination_type">
-        <%== pagy_bootstrap_nav(@pagy_search).html_safe %>
-    </div>
+        </div>
+        <div data-infinite-scroll-target="pagination" class="pagination_type">
+            <%== pagy_bootstrap_nav(@pagy_search).html_safe %>
+        </div>
+    <% end %>
 </div>
   
 <script>
     // Wait for jQuery UI to be fully loaded
     function initializeSearchDatepickers() {
         if (typeof $ !== 'undefined' && typeof $.fn.datepicker !== 'undefined') {
+            // Advanced search button toggle
             $('#complex_search_button').on('click', function() {
-                if ( $('#complex_search_menu').hasClass('visible')) {
-                    $('#complex_search_menu').attr('class', 'invisible');
-                    
+                if ($('#complex_search_menu').hasClass('visible')) {
+                    $('#complex_search_menu').removeClass('visible').addClass('invisible');
                 } else {
-                    $('#complex_search_menu').attr('class', 'visible');
+                    $('#complex_search_menu').removeClass('invisible').addClass('visible');
+                    // Clear form fields when opening
                     $('#search_location').val('');
                     $('#listing_name').val('');
                     $('#start_date').val('');
@@ -190,6 +209,7 @@
                 }
             });
 
+            // Initialize datepickers
             $('#start_date').datepicker({
                 dateFormat: 'dd-mm-yy',
                 minDate: 0,
@@ -208,12 +228,37 @@
                     $('#start_date').datepicker("option", "maxDate", select);
                 }
             });
+            
+            // Form validation
+            $('form').on('submit', function(e) {
+                var startDate = $('#start_date').val();
+                var endDate = $('#end_date').val();
+                
+                if (startDate && !endDate) {
+                    e.preventDefault();
+                    alert('Please select an end date.');
+                    return false;
+                }
+                
+                if (endDate && !startDate) {
+                    e.preventDefault();
+                    alert('Please select a start date.');
+                    return false;
+                }
+            });
+            
         } else {
             // Retry after a short delay
             setTimeout(initializeSearchDatepickers, 100);
         }
     }
     
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeSearchDatepickers();
+    });
+    
+    // Also try with jQuery ready
     $(function() {
         initializeSearchDatepickers();
     });
