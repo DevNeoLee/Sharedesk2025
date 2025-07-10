@@ -6,7 +6,7 @@
       </div>
       <hr>
   
-      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { id: "new_user_signup" }) do |f| %>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { id: "new_user_signup", data: { turbo: false } }) do |f| %>
         <%= render 'shared/devise_message' %>
 
         <div class="card m-2">
@@ -53,11 +53,14 @@
 
         <div class="m-2">
         <hr>
+        <div class="text-center mb-2">
+          <small class="text-muted">Want to try the app? Use our demo account!</small>
+        </div>
       
-        <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2", html: { id: "demo_user_signup" }) do |f| %>
-          <%= f.hidden_field :email, value: 'peter@email.com' %>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2", html: { id: "demo_user_signup", data: { turbo: false } }) do |f| %>
+          <%= f.hidden_field :email, value: 'demo@email.com' %>
           <%= f.hidden_field :password, value: '111111', id: "demo_user_password_signup" %>
-          <%= f.submit "DEMO", class: "btn btn-lg btn-primary btn-block p-2"  %>    
+          <%= f.submit "🚀 TRY DEMO", class: "btn btn-lg btn-success btn-block p-2"  %>    
         <% end %>
         </div>
 

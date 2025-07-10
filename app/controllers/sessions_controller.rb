@@ -2,7 +2,11 @@ class SessionsController < Devise::SessionsController
   def create
     super do |user|
       if user.persisted?
-        flash[:notice] = "Welcome back, #{user.name}! You have successfully signed in."
+        if user.email == 'demo@email.com'
+          flash[:notice] = "Welcome to the demo! You are now logged in as a demo user. Feel free to explore all features."
+        else
+          flash[:notice] = "Welcome back, #{user.name}! You have successfully signed in."
+        end
       end
     end
   end

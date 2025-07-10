@@ -5,7 +5,7 @@
         <h2 class=" text-center mt-4 mb-3">Welcome</h1>   
       </div>
       <hr>
-      <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2", html: { id: "new_user" }) do |f| %>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2", html: { id: "new_user", data: { turbo: false } }) do |f| %>
        <div class="m-2 border-none">
               <div class=" d-flex">
                 <div class="pt-3 mt-1 font-weight-bold">Wherever you go</div>
@@ -39,10 +39,13 @@
 
       <div class="m-2">
       <hr>
-        <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2", html: { id: "demo_user" }) do |f| %>
-              <%= f.hidden_field :email, value: 'peter@email.com' %>
+      <div class="text-center mb-2">
+        <small class="text-muted">Want to try the app? Use our demo account!</small>
+      </div>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2", html: { id: "demo_user", data: { turbo: false } }) do |f| %>
+              <%= f.hidden_field :email, value: 'demo@email.com' %>
               <%= f.hidden_field :password, value: '111111', id: "demo_user_password" %>
-              <%= f.submit "DEMO", class: "btn btn-lg btn-primary btn-block p-2"  %>    
+              <%= f.submit "🚀 TRY DEMO", class: "btn btn-lg btn-success btn-block p-2"  %>    
         <% end %>
       </div>
 
