@@ -14,12 +14,56 @@
 <% end %>
 
 <script>
-    $('#stars').raty({
-        scoreName: 'review[star]',
-        score: 1,
-        starOff: '<%= image_path('star-off.png') %>',
-        starOn : '<%= image_path('star-on.png') %>',
-        starHalf: '<%= image_path 'star-half.png' %>',
+console.log('[Raty Review Form Debug] Review form script loaded');
 
-    });
+function initializeReviewRaty() {
+    console.log('[Raty Review Form Debug] initializeReviewRaty called');
+    
+    if (typeof $ !== 'undefined' && typeof $.fn.raty !== 'undefined') {
+        console.log('[Raty Review Form Debug] jQuery and Raty available in review form');
+        
+        const starsElement = document.getElementById('stars');
+        console.log('[Raty Review Form Debug] Stars element found:', starsElement);
+        
+        const starOff = '<%= asset_path('star-off.png') %>';
+        const starOn = '<%= asset_path('star-on.png') %>';
+        const starHalf = '<%= asset_path('star-half.png') %>';
+        
+        console.log('[Raty Review Form Debug] Image paths:', {
+            starOff: starOff,
+            starOn: starOn,
+            starHalf: starHalf
+        });
+        
+        try {
+            $('#stars').raty({
+                scoreName: 'review[star]',
+                score: 1,
+                starOff: starOff,
+                starOn: starOn,
+                starHalf: starHalf,
+            });
+            console.log('[Raty Review Form Debug] Review form raty initialized successfully');
+        } catch (error) {
+            console.error('[Raty Review Form Debug] Error initializing review form raty:', error);
+        }
+    } else {
+        console.log('[Raty Review Form Debug] Dependencies not available:', {
+            jquery: typeof $,
+            raty: typeof $.fn?.raty
+        });
+        setTimeout(initializeReviewRaty, 200);
+    }
+}
+
+// 페이지 로드 시 초기화
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('[Raty Review Form Debug] DOMContentLoaded event fired for review form');
+    initializeReviewRaty();
+});
+
+document.addEventListener('turbo:load', function() {
+    console.log('[Raty Review Form Debug] turbo:load event fired for review form');
+    initializeReviewRaty();
+});
 </script>

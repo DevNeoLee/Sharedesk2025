@@ -169,24 +169,59 @@
   </div>
 </div>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Wait for jQuery to be available
-    function initializeRaty() {
-        if (typeof $ !== 'undefined' && typeof $.fn.raty !== 'undefined') {
+console.log('[Raty Room Show Debug] Room show script loaded');
+
+function initializeShowRaty() {
+    console.log('[Raty Room Show Debug] initializeShowRaty called');
+    
+    if (typeof $ !== 'undefined' && typeof $.fn.raty !== 'undefined') {
+        console.log('[Raty Room Show Debug] jQuery and Raty available in room show');
+        
+        const averageRatingElement = document.getElementById('average_rating');
+        console.log('[Raty Room Show Debug] Average rating element found:', averageRatingElement);
+        
+        const starOff = '<%= asset_path('star-off.png') %>';
+        const starOn = '<%= asset_path('star-on.png') %>';
+        const starHalf = '<%= asset_path('star-half.png') %>';
+        
+        console.log('[Raty Room Show Debug] Image paths:', {
+            starOff: starOff,
+            starOn: starOn,
+            starHalf: starHalf
+        });
+        
+        console.log('[Raty Room Show Debug] Room average rating:', <%= @room.average_rating %>);
+        
+        try {
             $('#average_rating').raty({
                 readOnly: true,
                 score: <%= @room.average_rating %>,
-                starOff: '<%= image_path('star-off.png') %>',
-                starOn : '<%= image_path('star-on.png') %>',
-                starHalf: '<%= image_path 'star-half.png' %>',
+                starOff: starOff,
+                starOn: starOn,
+                starHalf: starHalf,
             });
-        } else {
-            // Retry after a short delay
-            setTimeout(initializeRaty, 100);
+            console.log('[Raty Room Show Debug] Room show raty initialized successfully');
+        } catch (error) {
+            console.error('[Raty Room Show Debug] Error initializing room show raty:', error);
         }
+    } else {
+        console.log('[Raty Room Show Debug] Dependencies not available:', {
+            jquery: typeof $,
+            raty: typeof $.fn?.raty
+        });
+        setTimeout(initializeShowRaty, 200);
     }
-    
-    initializeRaty();
+}
+
+// 페이지 로드 시 초기화
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('[Raty Room Show Debug] DOMContentLoaded event fired for room show');
+    initializeShowRaty();
+});
+
+document.addEventListener('turbo:load', function() {
+    console.log('[Raty Room Show Debug] turbo:load event fired for room show');
+    initializeShowRaty();
 });
 </script>
 
