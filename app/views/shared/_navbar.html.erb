@@ -1,62 +1,75 @@
-<nav class="navbar navbar-expand-md bg-white p-4 mb-4 sticky-top">
-  <a class="navbar-brand" href="/pages/home"><%= image_tag 'orangeLogoSmall.png', width: "150" %></a>
-  <button class="navbar-toggler navbar-light bg-light border-dark" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarCollapse">
-    <div class= "col-md-10 mt-2">
+<nav class="navbar navbar-expand-lg bg-white p-3 mb-4 sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/pages/home">
+      <%= image_tag 'orangeLogoSmall.png', width: "150" %>
+    </a>
+    
+    <!-- Search Form - Always visible -->
+    <div class="navbar-search-container">
       <%= search_form_for @browse, url: search_path, method: :get do |f|%>
-        <div class="">
-            <div class="d-flex p-2 rounded">
-              <div class="flex-grow-1 me-3">
-                <%=f.search_field :address_cont, class: "form-control fs-5 fw-light", style: "letter-spacing: 0.5px;", placeholder: "Where are you staying? NYC, Vancouver, Tokyo..." %>
-                <style>
-                  .form-control::placeholder {
-                    font-size: 1.1rem !important;
-                    letter-spacing: 0.5px !important;
-                    font-weight: 300 !important;
-                  }
-                </style>
-              </div>
-              <div class="flex-shrink-0">
-                <%= f.submit "Find Space", class: "btn btn-primary"%>
-              </div>
-            </div>
-          </div>      
+        <div class="d-flex align-items-center">
+          <div class="flex-grow-1 me-3">
+            <%=f.search_field :address_cont, class: "form-control navbar-search-field", id: "navbar-search", placeholder: "Where are you staying? NYC, Vancouver, Tokyo..." %>
+          </div>
+          <div class="flex-shrink-0">
+            <%= f.submit "Find Space", class: "btn btn-primary navbar-search-button"%>
+          </div>
+        </div>
       <% end %>
     </div>
-    <ul class="navbar-nav m-auto">
-      <% if !user_signed_in? %>
+    
+    <!-- Toggle Button -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <!-- Navigation Menu -->
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav ms-auto">
+        <% if !user_signed_in? %>
           <li class="nav-item">
-              <a class="nav-link" href="/users/login">Log in</a>
+            <a class="nav-link" href="/users/login">Log in</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="/users/signup" tabindex="-1" aria-disabled="true">Sign up</a>
+            <a class="nav-link" href="/users/signup">Sign up</a>
           </li>
-      <% else %>
+        <% else %>
           <li class="nav-item">
             <%= link_to "Log out", destroy_user_session_path, class: "nav-link" %>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="/users/edit">Edit Setting <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/users/edit">Edit Setting</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="/users/<%= current_user.id %>">Profile <span class="sr-only">(current)</span><%=image_tag current_user.default_avatar, class: "img-circle avatar-small" %></a>
+            <a class="nav-link" href="/users/<%= current_user.id %>">
+              Profile <%=image_tag current_user.default_avatar, class: "img-circle avatar-small" %>
+            </a>
           </li>
-          <div class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown"  tabindex="-1" aria-disabled="true"> | <%=current_user.name %> | <%=current_user.email %></a>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <%= link_to "Hosting List", rooms_path, class: "dropdown-item"%>
-                <%= link_to "Customer Reservations", yourlisting_reservations_path, class: "dropdown-item"%>
-                <div class="dropdown-divider"></div>
-                <%= link_to "Your Cart", your_trips_path, class: "dropdown-item"%>
-              </div>
-          </div>
-          
-      <% end %>
-    </ul>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <%=current_user.name %>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><%= link_to "Hosting List", rooms_path, class: "dropdown-item"%></li>
+              <li><%= link_to "Customer Reservations", yourlisting_reservations_path, class: "dropdown-item"%></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><%= link_to "Your Cart", your_trips_path, class: "dropdown-item"%></li>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   </div>
-
 </nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Auto focus on search field when page loads
+    const searchField = document.getElementById('navbar-search');
+    if (searchField) {
+      searchField.focus();
+    }
+  });
+</script>
 
 
