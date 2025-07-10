@@ -25,14 +25,16 @@
 <div class="bg-light p-5 rounded home-section mb-5 section">
     <div class="text-center">
         <h2>Any City</h2>
-        <p class="mt-2 h5">Discover amazing workspaces around you</p>
+        <p class="lead text-muted" style="letter-spacing: 1px;">Discover amazing workspaces around you</p>
+
+
     </div>
     <br>
     <div class="row">
         <div class="col-md-4 col-sm-12">        
             <%= link_to search_path(q:{"address_cont": "NYC"} ) do %>
-                <div class="card shadow mb-2">
-                    <div class="card-header text-center">       
+                <div class="card shadow mb-2 city-card">
+                    <div class="card-header">       
                         <h2><strong>NYC</strong></h2>
                     </div>
                     <%= image_tag "nyc_home_page_pexels-ono-kosuki.jpg", class: "img-fluid image-medium image_response" %>
@@ -46,8 +48,8 @@
         </div>    
     <div class="col-md-4 col-sm-12">
         <%= link_to search_path(q:{"address_cont": "Kolkata"}) do %>
-            <div class="card shadow mb-2">
-                <div class="card-header text-center">                    
+            <div class="card shadow mb-2 city-card">
+                <div class="card-header">                    
                     <h2><strong>Kolkata</strong></h2>                    
                 </div>
                 <%= image_tag "kolkata_home_page_pexels-neosiam-.jpg", class: "img-fluid image-medium image_response"%>
@@ -61,8 +63,8 @@
         </div>
     <div class="col-md-4 col-sm-12">
         <%= link_to search_path(q:{"address_cont": "Bangkok"}) do %>
-            <div class="card shadow mb-2">
-                <div class="card-header text-center">                    
+            <div class="card shadow mb-2 city-card">
+                <div class="card-header">                    
                     <h2><strong>Bangkok</strong></h2>                    
                 </div>
                     <%= image_tag "bangkok_home_page_pexels-nick-wehrli.jpg" , class: "img-fluid image-medium"%>                         
@@ -115,7 +117,7 @@
 <%# Top Most Poplular Picks %>
 <div class="bg-light p-5 rounded home-section col-md-12 mb-5 section">
     <div class="text-center mb-5 h3">
-        <h3 class="title_font">Highly Rated Locations by Our Reviewers </h3>
+        <h2 class="title_font">Highly Rated Locations by Our Reviewers </h2>
     </div>
     <div class="row">    
         <%= render @best_rooms %>
