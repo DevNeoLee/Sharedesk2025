@@ -4,6 +4,9 @@ export default class extends Controller {
     static targets =[ "entries", "pagination"]
 
     scroll() {
+        // Check if pagination target exists
+        if (!this.hasPaginationTarget) { return }
+        
         let next_page = this.paginationTarget.querySelector("a[rel='next']")
         if (next_page == null) { return }
 

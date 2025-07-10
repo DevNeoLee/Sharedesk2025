@@ -157,7 +157,7 @@
     <div class="p-0"><%= render 'reviews/form' if @booked && !@hasReview %></div>
     <%= render partial: 'reviews/review', locals: {reviews: @reviews} %>
 
-<div class="jumbotron mt-5">
+<div class="bg-light p-5 rounded mt-5">
     <div class="h3 mb-4 p-2">Other Spaces Near By: </div> 
     <div class="row">
     <% if @room.nearbys(15) == nil || @room.nearbys(15).length == 0 %>

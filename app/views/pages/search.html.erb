@@ -164,30 +164,30 @@
     </div>
 </div>
 
-<div data-controller="infinite-scroll" data-action="scroll@window->infinite-scroll#scroll">
-    <% if @browse_result.empty? %>
-        <div class="text-center py-5">
-            <div class="alert alert-info">
-                <h4>No search results found</h4>
-                <p>Try different search criteria:</p>
-                <ul class="list-unstyled">
-                    <li>• Try a different location name</li>
-                    <li>• Adjust the price range</li>
-                    <li>• Change the space type</li>
-                    <li>• Use advanced search</li>
-                </ul>
-                <%= link_to "View All Spaces", search_path, class: "btn btn-primary mt-3" %>
-            </div>
+<% if @browse_result.empty? %>
+    <div class="text-center py-5">
+        <div class="alert alert-info">
+            <h4>No search results found</h4>
+            <p>Try different search criteria:</p>
+            <ul class="list-unstyled">
+                <li>• Try a different location name</li>
+                <li>• Adjust the price range</li>
+                <li>• Change the space type</li>
+                <li>• Use advanced search</li>
+            </ul>
+            <%= link_to "View All Spaces", search_path, class: "btn btn-primary mt-3" %>
         </div>
-    <% else %>
+    </div>
+<% else %>
+    <div data-controller="infinite-scroll" data-action="scroll@window->infinite-scroll#scroll">
         <div class="row" data-infinite-scroll-target="entries">
             <%= render 'rooms/rooms'%> 
         </div>
         <div data-infinite-scroll-target="pagination" class="pagination_type">
             <%== pagy_bootstrap_nav(@pagy_search).html_safe %>
         </div>
-    <% end %>
-</div>
+    </div>
+<% end %>
   
 <script>
     // Wait for jQuery UI to be fully loaded
@@ -258,8 +258,10 @@
         initializeSearchDatepickers();
     });
     
-    // Also try with jQuery ready
-    $(function() {
-        initializeSearchDatepickers();
-    });
+    // Also try with jQuery ready when available
+    if (typeof $ !== 'undefined') {
+        $(function() {
+            initializeSearchDatepickers();
+        });
+    }
 </script>

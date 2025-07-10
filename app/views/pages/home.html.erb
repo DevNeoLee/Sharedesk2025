@@ -1,6 +1,6 @@
 
 <%# front two main images with local access %>
-<div class="jumbotron shadow">
+<div class="bg-light p-5 rounded shadow mb-5">
   <h1 class="display-4">Need a quick workspace in <%= @location_received %>?</h1>
   <p class="lead ml-2 mt-2">Find an office instantly in your area.</p>
   <hr class="my-4">
@@ -23,7 +23,7 @@
 
 
 <%# one click search for three main cities ard the world %>
-<div class="jumbotron shadow">
+<div class="bg-light p-5 rounded shadow mb-5">
     <div class="text-center">
         <h2>Any City</h2>
         <p class="mt-2 h5">Discover amazing workspaces around you</p>
@@ -79,7 +79,7 @@
 </div>
 
 <%# Ad for Hosting your Space %>
-<div class="jumbotron shadow">
+<div class="bg-light p-5 rounded shadow mb-5">
 
         <h2 class="text-center"> Host your space in your city for extra income</h2>
         <%= link_to new_user_registration_path do %>
@@ -89,7 +89,7 @@
 </div>
 
 <%# mid-search form %>
-<div class="container-fluid mb-4 border p-4 shadow sticky-top bg-light">
+<div class="container-fluid mb-4 border p-4 shadow sticky-top bg-light mb-5">
     <%= search_form_for @search, url: search_path, method: :get do |f| %>
         <div class="row">
             <div class="col-md-6 mb-2">
@@ -109,7 +109,7 @@
 </div>
 
 <%# Top Most Poplular Picks %>
-<div class="jumbotron shadow col-md-12">
+<div class="bg-light p-5 rounded shadow col-md-12 mb-5">
     <div class="text-center mb-5 h3">
         <h3 class="title_font">Highly Rated Locations by Our Reviewers </h3>
     </div>
@@ -119,7 +119,7 @@
 </div>
 
 <%# customer reviews %>
-<div class="jumbotron shadow">
+<div class="bg-light p-5 rounded shadow mb-5">
     <div class="text-center">
         <h2 class="mb-4">Customer Reviews</h2>
     </div>

@@ -6,6 +6,13 @@ class PagesController < ApplicationController
     @best_reviews = @reviews.last(4) # Last 4 reviews
     @best_rooms = Room.limit(3).order(created_at: :desc) # Latest 3 rooms
     
+    # Set location_received to a city that actually has rooms
+    @location_received ||= Rails.env.development? ? "NYC" : "NYC"
+    
+    # Debug location_received variable
+    Rails.logger.info "Location received: #{@location_received.inspect}"
+    Rails.logger.info "Location received class: #{@location_received.class}"
+    
     # Log flash messages for debugging
     if flash[:notice]
       Rails.logger.info "Flash notice in home: #{flash[:notice]}"
@@ -40,9 +47,9 @@ class PagesController < ApplicationController
       end
     end
     
-    # Handle when no search results found
-    if @browse_result.empty?
-      flash.now[:notice] = "No search results found. Try different criteria."
+    # Handle when no search results found - only show message if there's a search query
+    if params[:q].present? && @browse_result.empty?
+      flash.now[:notice] = "No search results found for #{params[:q]['address_cont']}. Try searching for NYC, Bangkok, or Kolkata."
     end
   end
 end
