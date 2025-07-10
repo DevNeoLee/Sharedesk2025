@@ -90,8 +90,10 @@
 </div>
 
 <%# mid-search form %>
-<div class="mb-5 p-5 rounded section">
+<div class="bg-light mb-5 p-5 rounded section">
     <div class="" style="top: 20px; z-index: 1000;">
+        <h2 class="text-center mb-5"> Make Reservation</h2>
+
         <%= search_form_for @search, url: search_path, method: :get do |f| %>
             <div class="row align-items-end">
                 <div class="col-md-5 mb-3">

@@ -1,13 +1,13 @@
 
 <div class="col-md-4">
 <%=link_to room_path(room.id) do %>
-    <div class="card mb-3 shadow text-center">
+    <div class="card mb-3 shadow text-center city-card">
         <div class="card-header text-center">
             <div class="h4"><%= room.listing_name %></div> 
             <div class="ml-5 mr-5" id="average_rate_<%= room.id %>"></div>
         </div>
         <% if room.images.attached? %>
-            <%= image_tag room.medium_image(room.images[0]), class: "img-fluid"%>
+            <%= image_tag room.medium_image(room.images[0]), class: "img-fluid image-medium"%>
         <% end %>
         <div class="card-body">
             <div class="card-text">
