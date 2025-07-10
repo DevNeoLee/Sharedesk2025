@@ -11,4 +11,5 @@ pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.3.2/dist/js/bootstrap.e
 pin "@popperjs/core", to: "https://ga.jspm.io/npm:@popperjs/core@2.11.8/lib/index.js"
 # pin "toastr", to: "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js", preload: true
 pin "@fortawesome/fontawesome-free", to: "https://ga.jspm.io/npm:@fortawesome/fontawesome-free@6.5.1/js/all.js"
+pin "jquery.raty", to: "jquery.raty.js", preload: true
 pin "application", preload: true 

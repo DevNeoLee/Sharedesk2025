@@ -108,8 +108,8 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('jQuery available at DOMContentLoaded:', typeof window.$ !== 'undefined');
   
   if (typeof window.$ !== 'undefined') {
-    import("./jquery.raty.js").then((RatyModule) => {
-      console.log('jQuery Raty loaded successfully (local file)');
+    import("jquery.raty").then((RatyModule) => {
+      console.log('jQuery Raty loaded successfully (importmap)');
       
       // Register Raty as jQuery plugin
       window.$.fn.raty = function(options) {
@@ -121,34 +121,79 @@ document.addEventListener('DOMContentLoaded', function() {
       };
       
       console.log('Raty function available:', typeof window.$.fn.raty !== 'undefined');
+      
+      // Initialize immediately after loading
+      setTimeout(initializeAllRaty, 50);
     }).catch(error => {
-      console.error('Error loading jQuery Raty (local file):', error);
+      console.error('Error loading jQuery Raty (importmap):', error);
     });
   } else {
     console.log('jQuery not available at DOMContentLoaded');
   }
 });
 
+// Also try loading Raty on turbo:load for SPA-like behavior
+document.addEventListener('turbo:load', function() {
+  if (typeof window.$ !== 'undefined' && typeof window.$.fn.raty === 'undefined') {
+    import("jquery.raty").then((RatyModule) => {
+      console.log('jQuery Raty loaded on turbo:load');
+      
+      // Register Raty as jQuery plugin
+      window.$.fn.raty = function(options) {
+        return this.each(function() {
+          const raty = new RatyModule.default(this, options);
+          raty.init();
+          this.raty = raty;
+        });
+      };
+      
+      // Initialize immediately after loading
+      setTimeout(initializeAllRaty, 50);
+    }).catch(error => {
+      console.error('Error loading jQuery Raty on turbo:load:', error);
+    });
+  } else {
+    initializeAllRaty();
+  }
+});
+
 function initializeAllRaty() {
   if (typeof window.$ !== 'undefined' && typeof window.$.fn.raty !== 'undefined') {
+    console.log('Initializing Raty for all star-rating elements');
     document.querySelectorAll('.star-rating').forEach(function(el) {
       if (!el.classList.contains('raty-initialized')) {
         const score = el.getAttribute('data-score') || 0;
+        console.log('Initializing Raty for element with score:', score);
+        
+        // Use appropriate image path based on environment
+        let imagePath;
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          imagePath = '/assets/';
+        } else {
+          // For production, try multiple paths
+          imagePath = '/assets/images/';
+        }
+        
         window.$(el).raty({
           readOnly: true,
           score: score,
-          starOff: '/images/star-off.png',
-          starOn: '/images/star-on.png',
-          starHalf: '/images/star-half.png',
+          starOff: imagePath + 'star-off.png',
+          starOn: imagePath + 'star-on.png',
+          starHalf: imagePath + 'star-half.png',
           size: 24,
           hints: ['1점', '2점', '3점', '4점', '5점']
         });
         el.classList.add('raty-initialized');
       }
     });
+  } else {
+    console.log('jQuery or Raty not available for initialization');
+    // Retry after a short delay
+    setTimeout(initializeAllRaty, 100);
   }
 }
 
+// Initialize on both events for maximum compatibility
 document.addEventListener('turbo:load', initializeAllRaty);
 document.addEventListener('DOMContentLoaded', initializeAllRaty);
 
