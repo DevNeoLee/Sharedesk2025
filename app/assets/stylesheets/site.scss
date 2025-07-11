@@ -135,12 +135,12 @@ footer {
   font-size: 18px;
 }
 
-// Footer hover effects
-footer a:hover .blueplane {
+// Blueplane icon hover effects (applies to all pages)
+a:hover .blueplane {
   transform: rotate(18deg) translateX(3px) !important;
 }
 
-footer a:hover img[src*="blueplane_icon.svg"] {
+a:hover img[src*="blueplane_icon.svg"] {
   transform: rotate(18deg) translateX(3px) !important;
 }
 
