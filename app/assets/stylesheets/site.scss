@@ -59,6 +59,8 @@ $primary: #1100ff; // resetting primary color of bootstrap
 .star-rating[data-score="4.5"]::after { width: 90%; }
 .star-rating[data-score="5"]::after { width: 100%; }
 
+
+
 // Interactive Star Rating for Review Forms
 .interactive-star-rating {
   display: inline-block;
@@ -552,13 +554,13 @@ a .card:hover {
 .review-user-name {
   font-weight: 600;
   color: #333;
-  font-size: 18px;
+  font-size: 20px;
   margin-bottom: 4px;
 }
 
 .review-date {
   color: #666;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .review-card-body {
@@ -568,18 +570,24 @@ a .card:hover {
 .review-comment {
   color: #555;
   line-height: 1.6;
-  font-size: 16px;
+  font-size: 18px;
   font-style: italic;
 }
 
-.review-card-horizontal .star-rating {
-  margin: 0;
-  font-size: 20px;
+.review-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
 }
 
-.review-card-horizontal .star-rating::before,
-.review-card-horizontal .star-rating::after {
-  font-size: 20px;
+.review-rating-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  line-height: 1;
 }
 
 /* Responsive adjustments */
@@ -594,20 +602,19 @@ a .card:hover {
   }
   
   .review-user-name {
-    font-size: 16px;
+    font-size: 18px;
   }
   
   .review-date {
-    font-size: 12px;
+    font-size: 14px;
   }
   
   .review-comment {
-    font-size: 15px;
+    font-size: 16px;
   }
   
-  .review-card-horizontal .star-rating::before,
-  .review-card-horizontal .star-rating::after {
-    font-size: 18px;
+  .review-rating-text {
+    font-size: 14px;
   }
 }
 
@@ -665,10 +672,13 @@ a .card:hover {
 
 .room-card-content {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 120px;
 }
 
 .room-title {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   color: #333;
   margin-bottom: 8px;
@@ -681,7 +691,7 @@ a .card:hover {
 
 .room-location {
   color: #666;
-  font-size: 14px;
+  font-size: 16px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -690,7 +700,7 @@ a .card:hover {
 
 .room-location i {
   color: #ff5a5f;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .room-rating-bottom {
@@ -698,20 +708,23 @@ a .card:hover {
   align-items: center;
   gap: 8px;
   padding-top: 8px;
+  justify-content: flex-end;
+  margin-top: auto;
+  flex-shrink: 0;
 }
 
 .room-rating-bottom .star-rating {
-  font-size: 16px;
+  font-size: 18px;
   margin: 0;
 }
 
 .room-rating-bottom .star-rating::before,
 .room-rating-bottom .star-rating::after {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .rating-text {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: #333;
 }
@@ -727,10 +740,14 @@ a .card:hover {
   }
   
   .room-title {
-    font-size: 16px;
+    font-size: 18px;
   }
   
   .room-location {
+    font-size: 15px;
+  }
+  
+  .room-location i {
     font-size: 13px;
   }
   
@@ -740,11 +757,11 @@ a .card:hover {
   
   .room-rating-bottom .star-rating::before,
   .room-rating-bottom .star-rating::after {
-    font-size: 14px;
+    font-size: 16px;
   }
   
   .rating-text {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
 
@@ -991,6 +1008,11 @@ a .card:hover {
   border-color: #007bff;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   outline: none;
+}
+
+/* Reserve Your Desk location field clear(x) 버튼 커서 스타일 */
+input[type="search"]::-webkit-search-clear-button {
+  cursor: pointer !important;
 }
 
 /* Room Detail Page Styles */
@@ -1626,4 +1648,49 @@ a .card:hover {
   .search-no-results {
     padding: 2rem 1rem;
   }
+}
+
+.input-with-clear {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.input-with-clear .form-control {
+  padding-right: 2.2em;
+}
+.custom-clear {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 2em;
+  color: #aaa;
+  user-select: none;
+  display: none;
+  z-index: 2;
+}
+.input-with-clear input:not(:placeholder-shown) + .custom-clear,
+.input-with-clear input:focus:not(:placeholder-shown) + .custom-clear {
+  display: block;
+}
+input[type="search"]::-webkit-search-clear-button {
+  display: none;
+}
+
+/* 모든 브라우저에서 기본 x(지우기) 버튼 숨김 */
+input[type="search"]::-webkit-search-clear-button,
+input[type="search"]::-webkit-search-cancel-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+input[type="search"]::-moz-search-clear {
+  display: none !important;
+}
+input[type="search"]::-ms-clear {
+  display: none !important;
+}
+
+.custom-photo-shadow {
+  box-shadow: 0 8px 32px 0 rgba(60, 60, 90, 0.18), 0 1.5px 6px 0 rgba(60, 60, 90, 0.10);
 }

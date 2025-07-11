@@ -6,13 +6,18 @@
     
     // Initialize all star rating elements
     document.querySelectorAll('.star-rating').forEach(function(element, index) {
-      const score = parseFloat(element.dataset.score) || 0;
+      const originalScore = parseFloat(element.dataset.score) || 0;
       
       // Round to nearest 0.5
-      const roundedScore = Math.round(score * 2) / 2;
+      const roundedScore = Math.round(originalScore * 2) / 2;
       element.setAttribute('data-score', roundedScore);
       
-      console.log(`[Star Rating Debug] Element ${index + 1} initialized with score: ${roundedScore}`);
+      console.log(`[Star Rating Debug] Element ${index + 1}: Original=${originalScore}, Rounded=${roundedScore}, Final data-score="${element.getAttribute('data-score')}"`);
+      
+      // Check if the element is in a review card
+      if (element.closest('.review-card-horizontal')) {
+        console.log(`[Star Rating Debug] This is a review card star rating`);
+      }
     });
     
     console.log('[Star Rating Debug] Pure CSS star ratings completed (home)');
@@ -31,10 +36,10 @@
   </div>
   <div class="row">
     <div class="col-md-6 mb-4">
-      <%= image_tag "main_image2.jpg", class: "img-fluid rounded shadow" %>
+      <%= image_tag "main_image2.jpg", class: "img-fluid rounded" %>
     </div>
     <div class="col-md-6 mb-4">
-      <%= image_tag "main_image1.jpg", class: "img-fluid rounded shadow" %>
+      <%= image_tag "main_image1.jpg", class: "img-fluid rounded" %>
     </div>
   </div>
   <div class="text-start mt-4">
@@ -50,8 +55,6 @@
     <div class="text-center">
         <h2>Workspaces in Every City</h2>
         <p class="lead text-muted" style="letter-spacing: 1px; margin-top: 0.5rem">Find top-rated desks and offices wherever you are.</p>
-
-
     </div>
     <br>
     <div class="row">
@@ -70,122 +73,40 @@
                 </div>
             <% end %>    
         </div>    
-    <div class="col-md-4 col-sm-12">
-        <%= link_to search_path(q:{"address_cont": "Kolkata"}) do %>
-            <div class="card shadow mb-2 city-card">
-                <div class="card-header">                    
-                    <h2><strong>Kolkata</strong></h2>                    
-                </div>
-                <%= image_tag "kolkata_home_page_pexels-neosiam-.jpg", class: "img-fluid image-medium image_response"%>
-                <div class="card-body">
-                    <div class="card-text">
-                        Professional Cowork Space in Busy Diverse Dinamic City
+        <div class="col-md-4 col-sm-12">
+            <%= link_to search_path(q:{"address_cont": "Kolkata"}) do %>
+                <div class="card shadow mb-2 city-card">
+                    <div class="card-header">                    
+                        <h2><strong>Kolkata</strong></h2>                    
+                    </div>
+                    <%= image_tag "kolkata_home_page_pexels-neosiam-.jpg", class: "img-fluid image-medium image_response"%>
+                    <div class="card-body">
+                        <div class="card-text">
+                            Professional Cowork Space in Busy Diverse Dinamic City
+                        </div>
                     </div>
                 </div>
-            </div>
-        <% end %>
+            <% end %>
         </div>
-    <div class="col-md-4 col-sm-12">
-        <%= link_to search_path(q:{"address_cont": "Bangkok"}) do %>
-            <div class="card shadow mb-2 city-card">
-                <div class="card-header">                    
-                    <h2><strong>Bangkok</strong></h2>                    
-                </div>
+        <div class="col-md-4 col-sm-12">
+            <%= link_to search_path(q:{"address_cont": "Bangkok"}) do %>
+                <div class="card shadow mb-2 city-card">
+                    <div class="card-header">                    
+                        <h2><strong>Bangkok</strong></h2>                    
+                    </div>
                     <%= image_tag "bangkok_home_page_pexels-nick-wehrli.jpg" , class: "img-fluid image-medium"%>                         
-                <div class="card-body">
-                    <div class="card-text">
-                        Remote Work Desk Spot in This Beautiful Backpackers Heaven 
-                    </div>
-                </div>
-            </div>
-        <% end %>
-        </div>
-    </div>
-    
-    <div class="row mt-4">
-        <div class="col-md-4 col-sm-12">
-            <%= link_to search_path(q:{"address_cont": "Seattle"}) do %>
-                <div class="card shadow mb-2 city-card">
-                    <div class="card-header">
-                        <h2><strong>Seattle</strong></h2>
-                    </div>
-                    <%= image_tag "nyc_home_page_pexels-ono-kosuki.jpg", class: "img-fluid image-medium image_response" %>
                     <div class="card-body">
                         <div class="card-text">
-                            Tech Hub Workspaces in the Emerald City
+                            Remote Work Desk Spot in This Beautiful Backpackers Heaven 
                         </div>
                     </div>
                 </div>
             <% end %>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <%= link_to search_path(q:{"address_cont": "Tokyo"}) do %>
-                <div class="card shadow mb-2 city-card">
-                    <div class="card-header">
-                        <h2><strong>Tokyo</strong></h2>
-                    </div>
-                    <%= image_tag "kolkata_home_page_pexels-neosiam-.jpg", class: "img-fluid image-medium image_response" %>
-                    <div class="card-body">
-                        <div class="card-text">
-                            Modern Workspaces in the Heart of Japan
-                        </div>
-                    </div>
-                </div>
-            <% end %>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <%= link_to search_path(q:{"address_cont": "Vancouver"}) do %>
-                <div class="card shadow mb-2 city-card">
-                    <div class="card-header">
-                        <h2><strong>Vancouver</strong></h2>
-                    </div>
-                    <%= image_tag "bangkok_home_page_pexels-nick-wehrli.jpg", class: "img-fluid image-medium" %>
-                    <div class="card-body">
-                        <div class="card-text">
-                            Coastal Workspaces in Beautiful British Columbia
-                        </div>
-                    </div>
-                </div>
-            <% end %>
-        </div>
-    </div>
-    
-    <div class="row mt-4">
-        <div class="col-md-4 col-sm-12">
-            <%= link_to search_path(q:{"address_cont": "Los Angeles"}) do %>
-                <div class="card shadow mb-2 city-card">
-                    <div class="card-header">
-                        <h2><strong>Los Angeles</strong></h2>
-                    </div>
-                    <%= image_tag "nyc_home_page_pexels-ono-kosuki.jpg", class: "img-fluid image-medium image_response" %>
-                    <div class="card-body">
-                        <div class="card-text">
-                            Creative Workspaces in the City of Angels
-                        </div>
-                    </div>
-                </div>
-            <% end %>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <%= link_to search_path(q:{"address_cont": "Toronto"}) do %>
-                <div class="card shadow mb-2 city-card">
-                    <div class="card-header">
-                        <h2><strong>Toronto</strong></h2>
-                    </div>
-                    <%= image_tag "kolkata_home_page_pexels-neosiam-.jpg", class: "img-fluid image-medium image_response" %>
-                    <div class="card-body">
-                        <div class="card-text">
-                            Dynamic Workspaces in Canada's Largest City
-                        </div>
-                    </div>
-                </div>
-            <% end %>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <!-- Empty space for balance -->
         </div>
     </div>
 </div>
+    
+
 
 <%# Ad for Hosting your Space %>
 <div class="bg-light p-5 rounded  mb-5 section">
@@ -206,7 +127,10 @@
             <div class="row align-items-end">
                 <div class="col-md-5 mb-3">
                     <label class="form-label text-muted mb-2">Destination</label>
-                    <%= f.search_field :address_cont, placeholder: "Where are you going?", class: "form-control reserve-search-field"%>
+                    <div class="input-with-clear">
+                      <%= f.search_field :address_cont, placeholder: "Where are you going?", class: "form-control reserve-search-field", autocomplete: "off" %>
+                      <span class="custom-clear" onclick="clearLocationField()" title="Clear">×</span>
+                    </div>
                 </div>
                 <div class="col-md-2 mb-3">
                     <label class="form-label text-muted mb-2">Start Date</label>
@@ -343,4 +267,30 @@
         console.log('Start Date:', startDate);
         console.log('End Date:', endDate);
     }
+
+function clearLocationField() {
+  var input = document.getElementById('q_address_cont');
+  if (input) {
+    input.value = '';
+    input.focus();
+    var event = new Event('input', { bubbles: true });
+    input.dispatchEvent(event);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var input = document.getElementById('q_address_cont');
+  var clearBtn = document.querySelector('.custom-clear');
+  if (input && clearBtn) {
+    function toggleClear() {
+      clearBtn.style.display = input.value ? 'block' : 'none';
+    }
+    input.addEventListener('input', toggleClear);
+    input.addEventListener('focus', toggleClear);
+    input.addEventListener('blur', function() {
+      setTimeout(() => clearBtn.style.display = 'none', 100);
+    });
+    toggleClear();
+  }
+});
 </script>
