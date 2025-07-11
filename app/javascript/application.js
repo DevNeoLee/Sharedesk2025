@@ -9,32 +9,9 @@ import "bootstrap"
 
 // jQuery is loaded via CDN, so import is not needed
 
-// Assign star image paths to window global (needs to be inserted in application.html.erb)
-window.RATY_STAR_ON = window.RATY_STAR_ON || '/assets/star-on.png';
-window.RATY_STAR_OFF = window.RATY_STAR_OFF || '/assets/star-off.png';
-window.RATY_STAR_HALF = window.RATY_STAR_HALF || '/assets/star-half.png';
+// Font Awesome star rating system is now used instead of Raty
 
-function initializeAllRaty() {
-  if (typeof window.$ !== 'undefined' && typeof window.$.fn.raty !== 'undefined') {
-    document.querySelectorAll('.star-rating').forEach(function(el) {
-      if (!el.classList.contains('raty-initialized')) {
-        const score = el.getAttribute('data-score') || 0;
-        window.$(el).raty({
-          readOnly: true,
-          score: score,
-          starOff: window.RATY_STAR_OFF,
-          starOn: window.RATY_STAR_ON,
-          starHalf: window.RATY_STAR_HALF,
-          size: 24,
-          hints: ['1 star', '2 stars', '3 stars', '4 stars', '5 stars']
-        });
-        el.classList.add('raty-initialized');
-      }
-    });
-  }
-}
-document.addEventListener('turbo:load', initializeAllRaty);
-document.addEventListener('DOMContentLoaded', initializeAllRaty);
+// Font Awesome star rating system is now used instead of Raty
 
 // Google Maps API with Stimulus.js
 window.dispatchMapsEvent = function (...args) {
@@ -43,6 +20,19 @@ window.dispatchMapsEvent = function (...args) {
   event.args = args
   window.dispatchEvent(event)
 }
+
+// Star rating initialization function
+function initializeStarRatings() {
+  document.querySelectorAll('.star-rating').forEach(function(element, index) {
+    const score = parseFloat(element.dataset.score) || 0;
+    const roundedScore = Math.round(score * 2) / 2;
+    element.setAttribute('data-score', roundedScore);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initializeStarRatings);
+document.addEventListener('turbo:load', initializeStarRatings);
+document.addEventListener('turbo:render', initializeStarRatings);
 
 document.addEventListener('DOMContentLoaded', function() {
   if (typeof google !== 'undefined' && google.maps) {

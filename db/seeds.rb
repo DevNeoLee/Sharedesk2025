@@ -883,7 +883,7 @@ reviews_data = [
     user: users.find_by(name: "Mike Chen"),
     room: rooms.find_by(listing_name: "Manhattan Cozy Office"),
     comment: "Excellent workspace with amazing views. The facilities are top-notch and the price is reasonable for Manhattan. Will definitely book again!",
-    star: 5
+    star: 4
   },
   {
     user: users.find_by(name: "Emma Wilson"),
@@ -909,7 +909,7 @@ reviews_data = [
     user: users.find_by(name: "James Taylor"),
     room: rooms.find_by(listing_name: "Kolkata Business Center"),
     comment: "Great business center with all amenities. The security is excellent and the staff is very professional. Highly recommended for business travelers.",
-    star: 5
+    star: 4
   },
   {
     user: users.find_by(name: "Anna Rodriguez"),
@@ -935,7 +935,7 @@ reviews_data = [
     user: users.find_by(name: "Mike Chen"),
     room: rooms.find_by(listing_name: "Bangkok Digital Nomad Hub"),
     comment: "Amazing workspace with a great community. Met many fellow digital nomads here. The shared table setup is perfect for networking.",
-    star: 5
+    star: 4
   },
   {
     user: users.find_by(name: "Emma Wilson"),
@@ -953,13 +953,13 @@ reviews_data = [
     user: users.find_by(name: "Lisa Garcia"),
     room: rooms.find_by(listing_name: "Bangkok Quiet Workspace"),
     comment: "Great quiet space for deep work. The location is convenient and the price is very reasonable. Will definitely return!",
-    star: 4
+    star: 3.5
   },
   {
     user: users.find_by(name: "James Taylor"),
     room: rooms.find_by(listing_name: "Bangkok Quiet Workspace"),
     comment: "Simple but effective workspace. Good for getting work done without distractions. The WiFi is reliable and the space is clean.",
-    star: 5
+    star: 4.5
   },
   
   # Seattle Room Reviews
@@ -967,13 +967,13 @@ reviews_data = [
     user: users.find_by(name: "Yuki Tanaka"),
     room: rooms.find_by(listing_name: "Seattle Tech Hub"),
     comment: "Perfect workspace for tech professionals! Great location in the heart of Seattle's tech district. All amenities are top-notch.",
-    star: 5
+    star: 4
   },
   {
     user: users.find_by(name: "Min Park"),
     room: rooms.find_by(listing_name: "Seattle Tech Hub"),
     comment: "Excellent facilities and very professional environment. The conference rooms are perfect for client meetings. Highly recommended!",
-    star: 5
+    star: 4.5
   },
   {
     user: users.find_by(name: "Hans Mueller"),
@@ -1005,7 +1005,7 @@ reviews_data = [
     user: users.find_by(name: "Sarah Johnson"),
     room: rooms.find_by(listing_name: "Tokyo Ginza Business Center"),
     comment: "Luxury workspace in prestigious Ginza! Perfect for high-end business meetings. The service is impeccable and facilities are world-class.",
-    star: 5
+    star: 4.5
   },
   {
     user: users.find_by(name: "Mike Chen"),
@@ -1063,7 +1063,7 @@ reviews_data = [
     user: users.find_by(name: "Sarah Johnson"),
     room: rooms.find_by(listing_name: "LA Hollywood Creative Studio"),
     comment: "Perfect for creative professionals! Great location in Hollywood. The workspace is modern and has everything you need for your creative work.",
-    star: 5
+    star: 4.5
   },
   {
     user: users.find_by(name: "Mike Chen"),
@@ -1099,7 +1099,7 @@ reviews_data = [
     user: users.find_by(name: "Anna Rodriguez"),
     room: rooms.find_by(listing_name: "LA Downtown Business Center"),
     comment: "Professional and spacious workspace in downtown LA. Perfect for business meetings and team collaboration. The location is ideal.",
-    star: 5
+    star: 4.5
   },
   {
     user: users.find_by(name: "Robert Lee"),

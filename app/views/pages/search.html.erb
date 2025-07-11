@@ -1,33 +1,22 @@
-
+<!-- Star rating CSS is now centralized in site.scss -->
 
 <script>
-  console.log('[Raty Debug] Star rating initialization started (search)');
-  $('.star-rating').each(function(index) {
-    var score = $(this).data('score') || 0;
-    var starOff = '<%= asset_path('star-off.png') %>';
-    var starOn = '<%= asset_path('star-on.png') %>';
-    var starHalf = '<%= asset_path('star-half.png') %>';
-    console.log(`[Raty Debug] Element ${index + 1}:`, {
-      element: this,
-      score: score,
-      starOff: starOff,
-      starOn: starOn,
-      starHalf: starHalf
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('[Star Rating Debug] Initializing pure CSS star ratings (search)');
+    
+    // Initialize all star rating elements
+    document.querySelectorAll('.star-rating').forEach(function(element, index) {
+      const score = parseFloat(element.dataset.score) || 0;
+      
+      // Round to nearest 0.5 for better display
+      const roundedScore = Math.round(score * 2) / 2;
+      element.setAttribute('data-score', roundedScore);
+      
+      console.log(`[Star Rating Debug] Element ${index + 1} initialized with score: ${roundedScore}`);
     });
-    try {
-      $(this).raty({
-        readOnly: true,
-        score: score,
-        starOff: starOff,
-        starOn: starOn,
-        starHalf: starHalf
-      });
-      console.log(`[Raty Debug] Element ${index + 1} star rating initialization successful`);
-    } catch (error) {
-      console.error(`[Raty Debug] Element ${index + 1} star rating initialization error:`, error);
-    }
+    
+    console.log('[Star Rating Debug] Pure CSS star ratings completed (search)');
   });
-  console.log('[Raty Debug] Star rating initialization completed (search)');
 </script>
 
 <div class="h2 mb-4">

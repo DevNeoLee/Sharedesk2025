@@ -13,9 +13,31 @@
                         <div class="card-text">
                             <%= room.address %>
                         </div>
+                        <div class="star-rating star-rating-large my-2 mx-auto d-block" data-score="<%= room.average_rating || 0 %>"></div>
                     </div>
-                    <div class="star-rating star-rating-large pb-3" data-score="<%= room.average_rating || 0 %>"></div>
                 </div>
             <% end %>
         </div>    
     <% end %>
+
+
+<!-- Star rating CSS is now centralized in site.scss -->
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('[Star Rating Debug] Initializing pure CSS star ratings (rooms)');
+    
+    // Initialize all star rating elements
+    document.querySelectorAll('.star-rating').forEach(function(element, index) {
+      const score = parseFloat(element.dataset.score) || 0;
+      
+      // Round to nearest 0.5 for better display
+      const roundedScore = Math.round(score * 2) / 2;
+      element.setAttribute('data-score', roundedScore);
+      
+      console.log(`[Star Rating Debug] Element ${index + 1} initialized with score: ${roundedScore}`);
+    });
+    
+    console.log('[Star Rating Debug] Pure CSS star ratings completed (rooms)');
+  });
+</script>

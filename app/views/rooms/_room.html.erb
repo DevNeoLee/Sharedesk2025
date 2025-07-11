@@ -14,11 +14,7 @@
             <div class="card-text mb-2">
                 <%= room.address %>
             </div>
-        </div>
-        <div data-controller="raty">
-            <div class="star-rating star-rating-large mb-3 mt-2" 
-                 data-raty-target="rating" 
-                 data-score="<%= room.average_rating || 0 %>"></div>
+            <div class="star-rating star-rating-large my-2 mx-auto d-block" data-score="<%= room.average_rating || 0 %>"></div>
         </div>
     </div>
 

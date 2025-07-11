@@ -168,75 +168,25 @@
     <% end %>    
   </div>
 </div>
+<!-- Star rating CSS is now centralized in site.scss -->
+
 <script>
-console.log('[Raty Room Show Debug] Room show script loaded');
-
-function initializeShowRaty() {
-    console.log('[Raty Room Show Debug] initializeShowRaty called');
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('[Star Rating Debug] Initializing pure CSS star ratings (room show)');
     
-    if (typeof $ !== 'undefined' && typeof $.fn.raty !== 'undefined') {
-        console.log('[Raty Room Show Debug] jQuery and Raty available in room show');
-        
-        // Find correct elements - elements with .star-rating class
-        const starRatingElements = document.querySelectorAll('.star-rating');
-        console.log('[Raty Room Show Debug] Star rating elements found:', starRatingElements.length);
-        
-        const starOff = '<%= asset_path('star-off.png') %>';
-        const starOn = '<%= asset_path('star-on.png') %>';
-        const starHalf = '<%= asset_path('star-half.png') %>';
-        
-        console.log('[Raty Room Show Debug] Image paths:', {
-            starOff: starOff,
-            starOn: starOn,
-            starHalf: starHalf
-        });
-        
-        console.log('[Raty Room Show Debug] Room average rating:', <%= @room.average_rating %>);
-        
-        // Initialize all star-rating elements
-        starRatingElements.forEach((element, index) => {
-            if (!element.classList.contains('raty-initialized')) {
-                const score = element.getAttribute('data-score') || <%= @room.average_rating %>;
-                console.log(`[Raty Room Show Debug] Initializing element ${index + 1} with score:`, score);
-                
-                try {
-                    $(element).raty({
-                        readOnly: true,
-                        score: score,
-                        starOff: starOff,
-                        starOn: starOn,
-                        starHalf: starHalf,
-                    });
-                    element.classList.add('raty-initialized');
-                    console.log(`[Raty Room Show Debug] Successfully initialized element ${index + 1}`);
-                } catch (error) {
-                    console.error(`[Raty Room Show Debug] Error initializing element ${index + 1}:`, error);
-                }
-            } else {
-                console.log(`[Raty Room Show Debug] Element ${index + 1} already initialized, skipping`);
-            }
-        });
-        
-        console.log('[Raty Room Show Debug] Room show raty initialization completed');
-    } else {
-        console.log('[Raty Room Show Debug] Dependencies not available:', {
-            jquery: typeof $,
-            raty: typeof $.fn?.raty
-        });
-        setTimeout(initializeShowRaty, 200);
-    }
-}
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('[Raty Room Show Debug] DOMContentLoaded event fired for room show');
-    initializeShowRaty();
-});
-
-document.addEventListener('turbo:load', function() {
-    console.log('[Raty Room Show Debug] turbo:load event fired for room show');
-    initializeShowRaty();
-});
+    // Initialize all star rating elements
+    document.querySelectorAll('.star-rating').forEach(function(element, index) {
+      const score = parseFloat(element.dataset.score) || 0;
+      
+      // Round to nearest 0.5 for better display
+      const roundedScore = Math.round(score * 2) / 2;
+      element.setAttribute('data-score', roundedScore);
+      
+      console.log(`[Star Rating Debug] Element ${index + 1} initialized with score: ${roundedScore}`);
+    });
+    
+    console.log('[Star Rating Debug] Pure CSS star ratings completed (room show)');
+  });
 </script>
 
 

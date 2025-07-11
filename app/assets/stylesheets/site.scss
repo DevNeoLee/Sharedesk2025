@@ -8,6 +8,101 @@ $primary: #1100ff; // resetting primary color of bootstrap
 // Bootstrap and FontAwesome are loaded via CDN, so remove SCSS import
 // @import "toastr";
 
+// Star Rating System
+.star-rating,
+.star-rating::before,
+.star-rating::after {
+  font-family: 'Arial Unicode MS', 'Arial', 'sans-serif';
+  font-size: 24px;
+  letter-spacing: 2px;
+  line-height: 1;
+  display: block;
+  width: max-content;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+.star-rating {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+.star-rating::before {
+  content: '★★★★★';
+  color: #e4e5e9;
+  z-index: 1;
+}
+.star-rating::after {
+  content: '★★★★★';
+  color: #ffc107;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
+.star-rating-large::before,
+.star-rating-large::after {
+  font-size: 28px;
+}
+
+// Star rating width rules (ensure these are last for specificity)
+.star-rating[data-score="0"]::after { width: 0%; }
+.star-rating[data-score="0.5"]::after { width: 10%; }
+.star-rating[data-score="1"]::after { width: 20%; }
+.star-rating[data-score="1.5"]::after { width: 30%; }
+.star-rating[data-score="2"]::after { width: 40%; }
+.star-rating[data-score="2.5"]::after { width: 50%; }
+.star-rating[data-score="3"]::after { width: 60%; }
+.star-rating[data-score="3.5"]::after { width: 70%; }
+.star-rating[data-score="4"]::after { width: 80%; }
+.star-rating[data-score="4.5"]::after { width: 90%; }
+.star-rating[data-score="5"]::after { width: 100%; }
+
+// Interactive Star Rating for Review Forms
+.interactive-star-rating {
+  display: inline-block;
+  font-size: 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.interactive-star-rating::before {
+  content: '★★★★★';
+  font-size: 24px;
+  color: #e4e5e9;
+  letter-spacing: 3px;
+}
+
+.interactive-star-rating::after {
+  content: '★★★★★';
+  font-size: 24px;
+  color: #ffc107;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  letter-spacing: 3px;
+  transition: width 0.2s ease;
+}
+
+.interactive-star-rating[data-rating="0"]::after { width: 0%; }
+.interactive-star-rating[data-rating="1"]::after { width: 20%; }
+.interactive-star-rating[data-rating="2"]::after { width: 40%; }
+.interactive-star-rating[data-rating="3"]::after { width: 60%; }
+.interactive-star-rating[data-rating="4"]::after { width: 80%; }
+.interactive-star-rating[data-rating="5"]::after { width: 100%; }
+
+.interactive-star-rating:hover::after {
+  width: 100%;
+}
+
+.interactive-star-rating[data-rating="1"]:hover::after { width: 20%; }
+.interactive-star-rating[data-rating="2"]:hover::after { width: 40%; }
+.interactive-star-rating[data-rating="3"]:hover::after { width: 60%; }
+.interactive-star-rating[data-rating="4"]:hover::after { width: 80%; }
+.interactive-star-rating[data-rating="5"]:hover::after { width: 100%; }
+
 /* -------------------- Resets --------------------- */
 body, form, fieldset, ol, ul, li, h1, h2, h3, h4, h5, h6, p {
   margin:0;

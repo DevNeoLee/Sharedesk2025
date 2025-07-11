@@ -13,139 +13,17 @@
     <!-- Load jQuery first -->
     <%= javascript_include_tag "https://code.jquery.com/jquery-3.7.1.min.js", crossorigin: "anonymous", integrity: "sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" %>
     
-    <!-- Load Raty after jQuery -->
-    <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/raty/2.7.1/jquery.raty.min.js", crossorigin: "anonymous" %>
+    <!-- Font Awesome is already loaded via CDN -->
     
     <%= javascript_importmap_tags %>
-    <script>
-      window.RATY_STAR_ON = "<%= asset_path('star-on.png') %>";
-      window.RATY_STAR_OFF = "<%= asset_path('star-off.png') %>";
-      window.RATY_STAR_HALF = "<%= asset_path('star-half.png') %>";
-    </script>
+
     <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ ENV['MAPS_API_KEY']}&libraries=places&loading=async",
                             async: true,
                             defer: true,
                             "data-turbo-eval": false %>
     <%= favicon_link_tag asset_path('orangePolygonLarge.png') %>
     
-    <!-- Global script for Raty initialization -->
-    <script>
-      console.log('[Raty Layout Debug] Layout script loaded');
-      
-      // Global raty initialization function (fallback)
-      window.initializeRatyGlobally = window.initializeRatyGlobally || function() {
-        console.log('[Raty Layout Debug] Fallback initializeRatyGlobally called');
-        if (typeof window.$ !== 'undefined' && typeof window.$.fn.raty !== 'undefined') {
-          const starElements = document.querySelectorAll('.star-rating:not(.raty-initialized)');
-          console.log('[Raty Layout Debug] Found', starElements.length, 'star elements to initialize');
-          
-          starElements.forEach((element, index) => {
-            const score = element.getAttribute('data-score') || 0;
-            const imagePath = '/assets/';
-            
-            try {
-              window.$(element).raty({
-                readOnly: true,
-                score: score,
-                starOff: imagePath + 'star-off.png',
-                starOn: imagePath + 'star-on.png',
-                starHalf: imagePath + 'star-half.png',
-                size: 24,
-                hints: ['1 star', '2 stars', '3 stars', '4 stars', '5 stars']
-              });
-              element.classList.add('raty-initialized');
-              console.log(`[Raty Layout Debug] Successfully initialized element ${index + 1}`);
-            } catch (error) {
-              console.error(`[Raty Layout Debug] Error initializing element ${index + 1}:`, error);
-            }
-          });
-        }
-      };
-      
-      // Global raty stabilization function (fallback)
-      window.ensureRatyInitialized = window.ensureRatyInitialized || function() {
-        console.log('[Raty Layout Debug] Fallback ensureRatyInitialized called');
-        let attempts = 0;
-        const maxAttempts = 10;
-        
-        function tryInitialize() {
-          if (typeof window.$ !== 'undefined' && typeof window.$.fn.raty !== 'undefined') {
-            window.initializeRatyGlobally();
-          } else if (attempts < maxAttempts) {
-            attempts++;
-            setTimeout(tryInitialize, 300);
-          }
-        }
-        
-        tryInitialize();
-      };
-      
-      // Direct raty initialization function (most stable)
-      function initializeAllRatyElements() {
-        console.log('[Raty Layout Debug] Direct initialization called');
-        if (typeof window.$ !== 'undefined' && typeof window.$.fn.raty !== 'undefined') {
-          const starElements = document.querySelectorAll('.star-rating:not(.raty-initialized)');
-          console.log('[Raty Layout Debug] Direct init - Found', starElements.length, 'star elements');
-          
-          starElements.forEach((element, index) => {
-            const score = element.getAttribute('data-score') || 0;
-            const imagePath = '/assets/';
-            
-            console.log(`[Raty Layout Debug] Direct init - Element ${index + 1}:`, {
-              element: element,
-              score: score,
-              imagePath: imagePath
-            });
-            
-            try {
-              window.$(element).raty({
-                readOnly: true,
-                score: score,
-                starOff: imagePath + 'star-off.png',
-                starOn: imagePath + 'star-on.png',
-                starHalf: imagePath + 'star-half.png',
-                size: 24,
-                hints: ['1 star', '2 stars', '3 stars', '4 stars', '5 stars']
-              });
-              element.classList.add('raty-initialized');
-              console.log(`[Raty Layout Debug] Direct init - Successfully initialized element ${index + 1}`);
-            } catch (error) {
-              console.error(`[Raty Layout Debug] Direct init - Error initializing element ${index + 1}:`, error);
-            }
-          });
-        } else {
-          console.log('[Raty Layout Debug] Direct init - Dependencies not available');
-        }
-      }
-      
-      // Execute global initialization function after jQuery and Raty are loaded
-      window.addEventListener('load', function() {
-        console.log('[Raty Layout Debug] Window load event fired');
-        setTimeout(initializeAllRatyElements, 100);
-      });
-      
-      // Ensure additional initialization in production
-      document.addEventListener('DOMContentLoaded', function() {
-        console.log('[Raty Layout Debug] DOMContentLoaded event fired in layout');
-        setTimeout(initializeAllRatyElements, 200);
-      });
-      
-      // Additional handling for Turbo events
-      document.addEventListener('turbo:load', function() {
-        console.log('[Raty Layout Debug] turbo:load event fired in layout');
-        setTimeout(initializeAllRatyElements, 100);
-      });
-      
-      // Check jQuery and Raty loading status
-      document.addEventListener('DOMContentLoaded', function() {
-        console.log('[Raty Layout Debug] Checking jQuery and Raty availability:', {
-          jquery: typeof window.$,
-          raty: typeof window.$.fn?.raty,
-          jqueryVersion: window.$?.fn?.jquery,
-          ratyVersion: window.$.fn?.raty ? 'available' : 'not available'
-        });
-      });
-    </script>
+    <!-- Font Awesome star rating system is now handled in individual pages -->
   </head>
 
   <body>
