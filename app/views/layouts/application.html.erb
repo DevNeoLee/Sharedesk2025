@@ -27,37 +27,108 @@
     <script>
       console.log('[Raty Layout Debug] Layout script loaded');
       
+      // 전역 raty 초기화 함수 (fallback)
+      window.initializeRatyGlobally = window.initializeRatyGlobally || function() {
+        console.log('[Raty Layout Debug] Fallback initializeRatyGlobally called');
+        if (typeof window.$ !== 'undefined' && typeof window.$.fn.raty !== 'undefined') {
+          const starElements = document.querySelectorAll('.star-rating:not(.raty-initialized)');
+          console.log('[Raty Layout Debug] Found', starElements.length, 'star elements to initialize');
+          
+          starElements.forEach((element, index) => {
+            const score = element.getAttribute('data-score') || 0;
+            const imagePath = '/assets/';
+            
+            try {
+              window.$(element).raty({
+                readOnly: true,
+                score: score,
+                starOff: imagePath + 'star-off.png',
+                starOn: imagePath + 'star-on.png',
+                starHalf: imagePath + 'star-half.png',
+                size: 24,
+                hints: ['1 star', '2 stars', '3 stars', '4 stars', '5 stars']
+              });
+              element.classList.add('raty-initialized');
+              console.log(`[Raty Layout Debug] Successfully initialized element ${index + 1}`);
+            } catch (error) {
+              console.error(`[Raty Layout Debug] Error initializing element ${index + 1}:`, error);
+            }
+          });
+        }
+      };
+      
+      // 전역 raty 안정화 함수 (fallback)
+      window.ensureRatyInitialized = window.ensureRatyInitialized || function() {
+        console.log('[Raty Layout Debug] Fallback ensureRatyInitialized called');
+        let attempts = 0;
+        const maxAttempts = 10;
+        
+        function tryInitialize() {
+          if (typeof window.$ !== 'undefined' && typeof window.$.fn.raty !== 'undefined') {
+            window.initializeRatyGlobally();
+          } else if (attempts < maxAttempts) {
+            attempts++;
+            setTimeout(tryInitialize, 300);
+          }
+        }
+        
+        tryInitialize();
+      };
+      
+      // 직접적인 raty 초기화 함수 (가장 안정적)
+      function initializeAllRatyElements() {
+        console.log('[Raty Layout Debug] Direct initialization called');
+        if (typeof window.$ !== 'undefined' && typeof window.$.fn.raty !== 'undefined') {
+          const starElements = document.querySelectorAll('.star-rating:not(.raty-initialized)');
+          console.log('[Raty Layout Debug] Direct init - Found', starElements.length, 'star elements');
+          
+          starElements.forEach((element, index) => {
+            const score = element.getAttribute('data-score') || 0;
+            const imagePath = '/assets/';
+            
+            console.log(`[Raty Layout Debug] Direct init - Element ${index + 1}:`, {
+              element: element,
+              score: score,
+              imagePath: imagePath
+            });
+            
+            try {
+              window.$(element).raty({
+                readOnly: true,
+                score: score,
+                starOff: imagePath + 'star-off.png',
+                starOn: imagePath + 'star-on.png',
+                starHalf: imagePath + 'star-half.png',
+                size: 24,
+                hints: ['1 star', '2 stars', '3 stars', '4 stars', '5 stars']
+              });
+              element.classList.add('raty-initialized');
+              console.log(`[Raty Layout Debug] Direct init - Successfully initialized element ${index + 1}`);
+            } catch (error) {
+              console.error(`[Raty Layout Debug] Direct init - Error initializing element ${index + 1}:`, error);
+            }
+          });
+        } else {
+          console.log('[Raty Layout Debug] Direct init - Dependencies not available');
+        }
+      }
+      
       // jQuery와 Raty가 로드된 후 전역 초기화 함수 실행
       window.addEventListener('load', function() {
         console.log('[Raty Layout Debug] Window load event fired');
-        if (typeof window.initializeRatyGlobally === 'function') {
-          console.log('[Raty Layout Debug] Calling initializeRatyGlobally after window load');
-          setTimeout(window.initializeRatyGlobally, 100);
-        } else {
-          console.warn('[Raty Layout Debug] initializeRatyGlobally function not available');
-        }
+        setTimeout(initializeAllRatyElements, 100);
       });
       
       // 프로덕션에서 추가적인 초기화 보장
       document.addEventListener('DOMContentLoaded', function() {
         console.log('[Raty Layout Debug] DOMContentLoaded event fired in layout');
-        if (typeof window.ensureRatyInitialized === 'function') {
-          console.log('[Raty Layout Debug] Calling ensureRatyInitialized after DOMContentLoaded');
-          setTimeout(window.ensureRatyInitialized, 200);
-        } else {
-          console.warn('[Raty Layout Debug] ensureRatyInitialized function not available');
-        }
+        setTimeout(initializeAllRatyElements, 200);
       });
       
       // Turbo 이벤트에 대한 추가 처리
       document.addEventListener('turbo:load', function() {
         console.log('[Raty Layout Debug] turbo:load event fired in layout');
-        if (typeof window.ensureRatyInitialized === 'function') {
-          console.log('[Raty Layout Debug] Calling ensureRatyInitialized after turbo:load');
-          setTimeout(window.ensureRatyInitialized, 100);
-        } else {
-          console.warn('[Raty Layout Debug] ensureRatyInitialized function not available');
-        }
+        setTimeout(initializeAllRatyElements, 100);
       });
       
       // jQuery와 Raty 로딩 상태 확인

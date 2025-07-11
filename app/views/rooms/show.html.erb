@@ -177,8 +177,9 @@ function initializeShowRaty() {
     if (typeof $ !== 'undefined' && typeof $.fn.raty !== 'undefined') {
         console.log('[Raty Room Show Debug] jQuery and Raty available in room show');
         
-        const averageRatingElement = document.getElementById('average_rating');
-        console.log('[Raty Room Show Debug] Average rating element found:', averageRatingElement);
+        // 올바른 요소 찾기 - .star-rating 클래스를 가진 요소들
+        const starRatingElements = document.querySelectorAll('.star-rating');
+        console.log('[Raty Room Show Debug] Star rating elements found:', starRatingElements.length);
         
         const starOff = '<%= asset_path('star-off.png') %>';
         const starOn = '<%= asset_path('star-on.png') %>';
@@ -192,18 +193,31 @@ function initializeShowRaty() {
         
         console.log('[Raty Room Show Debug] Room average rating:', <%= @room.average_rating %>);
         
-        try {
-            $('#average_rating').raty({
-                readOnly: true,
-                score: <%= @room.average_rating %>,
-                starOff: starOff,
-                starOn: starOn,
-                starHalf: starHalf,
-            });
-            console.log('[Raty Room Show Debug] Room show raty initialized successfully');
-        } catch (error) {
-            console.error('[Raty Room Show Debug] Error initializing room show raty:', error);
-        }
+        // 모든 star-rating 요소들을 초기화
+        starRatingElements.forEach((element, index) => {
+            if (!element.classList.contains('raty-initialized')) {
+                const score = element.getAttribute('data-score') || <%= @room.average_rating %>;
+                console.log(`[Raty Room Show Debug] Initializing element ${index + 1} with score:`, score);
+                
+                try {
+                    $(element).raty({
+                        readOnly: true,
+                        score: score,
+                        starOff: starOff,
+                        starOn: starOn,
+                        starHalf: starHalf,
+                    });
+                    element.classList.add('raty-initialized');
+                    console.log(`[Raty Room Show Debug] Successfully initialized element ${index + 1}`);
+                } catch (error) {
+                    console.error(`[Raty Room Show Debug] Error initializing element ${index + 1}:`, error);
+                }
+            } else {
+                console.log(`[Raty Room Show Debug] Element ${index + 1} already initialized, skipping`);
+            }
+        });
+        
+        console.log('[Raty Room Show Debug] Room show raty initialization completed');
     } else {
         console.log('[Raty Room Show Debug] Dependencies not available:', {
             jquery: typeof $,
