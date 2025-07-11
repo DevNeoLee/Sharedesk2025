@@ -10,42 +10,42 @@
       <div class="col-6 col-md">
         <h5 class="mb-2">Features</h5>
         <ul class="list-unstyled text-small">
-          <%= link_to new_user_session_path, class: "text-muted mb-2" do %>
-            <li class="mb-1">Log in </li>
-          <% end %>
-          <%= link_to new_user_registration_path, class: "text-muted " do %>
-            <li class="mb-1">Sign up </li>
-          <% end %>
-          <%= link_to search_path(q: {"address_cont": @location_received }) do %>
-            <li class="mb-1 text-muted">Advanced Search</li>
-          <% end %>
-          <%= link_to search_path(q: {"address_cont": @location_received }) do %>
-            <li class="mb-1 text-muted">Local Search</li>
-          <% end %>
-          <%= link_to new_room_path, class: "text-muted" do %>
-            <li class="mb-1">Hosting New Location </li>
-          <% end %>
-          <%= link_to edit_user_registration_path, class: "text-muted " do %>
-            <li class="mb-1">Profile Update </li>
-          <% end %>
-          <%= link_to rooms_path, class: "text-muted " do %>
-            <li class="mb-1">Your Hosting List</li>
-          <% end %>
-          <%= link_to yourlisting_reservations_path, class: "text-muted " do %>
-            <li class="mb-1">Your Customer Reservation</li>
-          <% end %>
-          <%= link_to your_trips_path, class: "text-muted " do %>
-            <li class="mb-1">Your Cart</li>
-          <% end %>
+          <li class="mb-1">
+            <%= link_to "Log in", new_user_session_path, class: "text-muted" %>
+          </li>
+          <li class="mb-1">
+            <%= link_to "Sign up", new_user_registration_path, class: "text-muted" %>
+          </li>
+          <li class="mb-1">
+            <%= link_to "Advanced Search", search_path(q: {"address_cont": @location_received }), class: "text-muted" %>
+          </li>
+          <li class="mb-1">
+            <%= link_to "Local Search", search_path(q: {"address_cont": @location_received }), class: "text-muted" %>
+          </li>
+          <li class="mb-1">
+            <%= link_to "Hosting New Location", new_room_path, class: "text-muted" %>
+          </li>
+          <li class="mb-1">
+            <%= link_to "Profile Update", edit_user_registration_path, class: "text-muted" %>
+          </li>
+          <li class="mb-1">
+            <%= link_to "Your Hosting List", rooms_path, class: "text-muted" %>
+          </li>
+          <li class="mb-1">
+            <%= link_to "Your Customer Reservation", yourlisting_reservations_path, class: "text-muted" %>
+          </li>
+          <li class="mb-1">
+            <%= link_to "Your Cart", your_trips_path, class: "text-muted" %>
+          </li>
         </ul>
       </div>
       <div class="col-6 col-md">
         <h5 class="mb-2">Resources</h5>
         <ul class="list-unstyled text-small">
           <li class="mb-2">Photos from <a class="text-muted" href="https://www.pexels.com/" target="_blank">Pexels</a></li>
-          <%= link_to attribution_path, class: "text-muted", target: "_blank" do %>
-            <li class="mb-2">Photo Artists</li>
-          <% end %>
+          <li class="mb-2">
+            <%= link_to "Photo Artists", attribution_path, class: "text-muted", target: "_blank" %>
+          </li>
           <li class="mb-2">People vector Created by <a class="text-muted" href="https://www.freepik.com/vectors/people" target="_blank"> Freepik</a></li>
           <li class="mb-2">Logo Design Created with <a class="text-muted" href="https://www.LogoMakr.com" target="_blank"> LogoMakr</a></li>
         </ul>
