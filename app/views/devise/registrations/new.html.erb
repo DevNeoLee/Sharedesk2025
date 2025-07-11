@@ -62,7 +62,7 @@
           <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { id: "demo_user_signup", data: { turbo: false } }) do |f| %>
             <%= f.hidden_field :email, value: 'demo@email.com' %>
             <%= f.hidden_field :password, value: '111111', id: "demo_user_password_signup" %>
-            <%= f.submit "🚀 TRY DEMO", class: "btn btn-success w-100 py-2" %>
+            <%= f.submit "🚀 TRY DEMO", class: "btn btn-success w-100 py-3" %>
           <% end %>
         </div>
 

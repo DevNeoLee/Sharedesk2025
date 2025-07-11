@@ -3,21 +3,71 @@
         <% flash.each do |f| %>
             <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
             console.log('Flash message detected:', '<%= type %>', '<%= j f[1] %>');
-            if (typeof window.toastr !== 'undefined') {
-                console.log('Toastr is available, showing message immediately');
-                toastr['<%= type %>']('<%= j f[1] %>');
-            } else {
-                console.log('Toastr not available, queuing message');
-                // Store in localStorage for persistence across redirects
-                const message = {type: '<%= type %>', message: '<%= j f[1] %>'};
-                if (!window.toastrQueue) window.toastrQueue = [];
-                window.toastrQueue.push(message);
+            
+            // Function to show toast message
+            function showToast(type, message) {
+                console.log('Attempting to show toast:', type, message);
+                console.log('Toastr available:', typeof window.toastr !== 'undefined');
                 
-                // Also store in localStorage
-                const storedMessages = JSON.parse(localStorage.getItem('toastrQueue') || '[]');
-                storedMessages.push(message);
-                localStorage.setItem('toastrQueue', JSON.stringify(storedMessages));
+                if (typeof window.toastr !== 'undefined') {
+                    console.log('Toastr is available, showing message immediately');
+                    // Simple toastr call without complex options
+                    toastr[type](message);
+                } else {
+                    console.log('Toastr not available, creating fallback notification');
+                    // Create a simple fallback notification
+                    const notification = document.createElement('div');
+                    notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'info' ? 'info' : 'success'} alert-dismissible fade show position-fixed`;
+                    notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+                    notification.innerHTML = `
+                        ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    document.body.appendChild(notification);
+                    
+                    // Auto remove after 5 seconds
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.remove();
+                        }
+                    }, 5000);
+                }
             }
+            
+            // Show the message
+            showToast('<%= type %>', '<%= j f[1] %>');
         <% end %>
     </script>
 <% end %>
+
+<!-- Initialize toastr and check for queued messages on page load -->
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM loaded, checking toastr availability');
+        console.log('Toastr available:', typeof window.toastr !== 'undefined');
+        
+        // Simple toastr initialization
+        if (typeof window.toastr !== 'undefined') {
+            console.log('Initializing toastr options');
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                timeOut: 5000
+            };
+        }
+        
+        // Check localStorage for queued messages
+        const storedMessages = JSON.parse(localStorage.getItem('toastrQueue') || '[]');
+        console.log('Stored messages:', storedMessages);
+        if (storedMessages.length > 0) {
+            storedMessages.forEach(function(msg) {
+                if (typeof window.toastr !== 'undefined') {
+                    console.log('Showing stored message:', msg);
+                    toastr[msg.type](msg.message);
+                }
+            });
+            // Clear stored messages
+            localStorage.removeItem('toastrQueue');
+        }
+    });
+</script>

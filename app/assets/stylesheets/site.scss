@@ -8,6 +8,13 @@ $primary: #1100ff; // resetting primary color of bootstrap
 // Bootstrap and FontAwesome are loaded via CDN, so remove SCSS import
 // @import "toastr";
 
+// Toastr positioning - simple override
+#toast-container {
+  top: 110px !important;
+  right: 20px !important;
+  z-index: 9999 !important;
+}
+
 // Star Rating System
 .star-rating,
 .star-rating::before,
@@ -174,6 +181,14 @@ a:hover img[src*="blueplane_icon.svg"] {
   border-color: #007bff;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   outline: none;
+}
+
+// Demo button hover effects (matching OAuth buttons)
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  background-color: #1e7e34 !important;
+  border-color: #1e7e34 !important;
 }
 
 a {
