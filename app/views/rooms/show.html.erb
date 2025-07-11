@@ -1,173 +1,301 @@
-
-<div class="card mb-3 shadow room-section-card">
-  <div class="card-header bg-light">
-    <div class="d-flex justify-content-between align-items-center flex-wrap room-header-row">
-      <div class="d-flex align-items-center flex-wrap">
-        <h1 class="ml-2 p-2 m-2 mb-0 room-title"><%= @room.listing_name %></h1>
-        <div class="star-rating ml-3 mt-1" data-score="<%= @room.average_rating || 0 %>"></div>
-      </div>
-      <div class="room-address text-right pr-3">
-        <h5 class="mb-0"><%= @room.address %></h5>
+<!-- Room Detail Page -->
+<div class="room-detail-container">
+  <!-- Main Room Header -->
+  <div class="room-detail-header mb-4">
+    <div class="room-detail-title-section">
+      <h1 class="room-detail-title"><%= @room.listing_name %></h1>
+      <div class="room-detail-meta">
+        <div class="room-detail-location">
+          <i class="fas fa-map-marker-alt"></i>
+          <span><%= @room.address %></span>
+        </div>
+        <div class="room-detail-rating">
+          <div class="star-rating" data-score="<%= @room.average_rating || 0 %>"></div>
+          <span class="rating-text"><%= format_rating(@room.average_rating) %>/5</span>
+        </div>
       </div>
     </div>
   </div>
-  <div class="room-image-slider p-4 text-center">
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">                    
-      <% if @room.images.attached? %>
-        <ol class="carousel-indicators">
-          <% @room.images.each do |image| %>
-            <li data-target="#carouselExampleIndicators" data-slide-to="<%= image.id %>"></li>
-          <% end %>
-        </ol>
-      <% end %>
-      <div class="carousel-inner">
+
+  <!-- Image Carousel -->
+  <div class="room-detail-image-section mb-4">
+    <div class="room-image-carousel">
+      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">                    
         <% if @room.images.attached? %>
-          <% @room.images.each_with_index do |image, i| %>
-            <div class="carousel-item <%='active' if i == 0%>">
-              <%= image_tag image, class: "image_carousel img-fluid rounded room-main-image"%>
-            </div>
-          <% end %>
+          <ol class="carousel-indicators">
+            <% @room.images.each do |image| %>
+              <li data-target="#carouselExampleIndicators" data-slide-to="<%= image.id %>"></li>
+            <% end %>
+          </ol>
         <% end %>
-      </div>
-      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
-  </div>
-</div>
-
-<div class="card mb-3 shadow room-section-card">
-  <div class="card-header bg-light"><h4>About & Manager</h4></div>
-  <div class="row p-4 align-items-center">
-    <div class="col-md-7">
-      <p class="about-text h5 mb-0"><%= @room.summary %></p>
-    </div>
-    <div class="col-md-5 manager-info text-center">
-      <div class="mb-2">Managed by:</div>
-      <%= link_to user_path(@room.user.id) do%>
-        <%= image_tag (@room.user.default_avatar), class: "img-circle avatar-large mb-2"%>                      
-      <% end %>
-      <div class="font-weight-bold"><%= @room.user.name %></div>
-      <div class="text-muted small"><%= @room.user.email %></div>
-    </div>
-  </div>
-</div>
-
-<div class="card shadow mb-3 room-section-card">
-  <div class="card-header bg-light"><h4>Info</h4></div>
-  <div class="row text-center info_text room-info-grid p-4">
-    <div class="col-md-3 mb-4 p-3">
-      <div class="info-icon mb-2"><i class="fas fa-building fa-2x"></i></div>
-      <div>Operating in <%= @room.space_type %></div>
-    </div>
-    <div class="col-md-3 mb-4 p-3">
-      <div class="info-icon mb-2"><i class="fas fa-chair fa-2x"></i></div>
-      <div><%= @room.desk_type %> Type</div>
-    </div>
-    <div class="col-md-3 mb-4 p-3">
-      <div class="info-icon mb-2"><i class="fas fa-users fa-2x"></i></div>
-      <div>Capacity: <%= @room.capacity %> <%= @room.capacity > 1 ? "Seats" : "Seat" %></div>
-    </div>
-    <div class="col-md-3 mb-4 p-3">
-      <div class="info-icon mb-2"><i class="fas fa-volume-up fa-2x"></i></div>
-      <div>Noise Level: <%= @room.noise_level %></div>
-    </div>
-    <div class="col-md-3 mb-4 p-3">
-      <div class="info-icon mb-2"><i class="fas fa-user-shield fa-2x"></i></div>
-      <div>Manager: <%= @room.manager_on %></div>
-    </div>
-    <div class="col-md-3 mb-4 p-3">
-      <div class="info-icon mb-2"><i class="fas fa-shield-alt fa-2x"></i></div>
-      <div>Security: <%= @room.security_level %></div>
-    </div>
-    <div class="col-md-3 mb-4 p-3">
-      <div class="info-icon mb-2"><i class="fas fa-bath fa-2x"></i></div>
-      <div><%= @room.bath_room %> <%= @room.bath_room > 1 ? "Bathrooms" : "Bathroom" %></div>
-    </div>
-    <div class="col-md-3 mb-4 p-3">
-      <div class="info-icon mb-2"><i class="fas fa-dollar-sign fa-2x"></i></div>
-      <div>Price: $<%= @room.price %> / day</div>
-    </div>
-  </div>
-</div>
-
-<div class="card shadow mb-3 room-section-card">
-  <div class="card-header bg-light"><h4>Amenities</h4></div>
-  <div class="row room-amenity-grid p-4">
-    <div class="col-md-4 text-center">
-      <ul class="amenities list-unstyled">
-        <li class="p-3 <%= 'text-line-through text-muted' if !@room.is_wifi %>"><i class="fas fa-wifi fa-lg"></i> Wifi/Internet</li>
-        <li class="p-3 <%= 'text-line-through text-muted' if !@room.is_conference %>"><i class="fas fa-phone-square-alt fa-lg"></i> Conference Call Space</li>
-        <li class="p-3 <%= 'text-line-through text-muted' if !@room.is_kitchen %>"><i class="fas fa-sink fa-lg"></i> Kitchen</li>
-      </ul>
-    </div>
-    <div class="col-md-4 text-center">
-      <ul class="amenities list-unstyled">
-        <li class="p-3 <%= 'text-line-through text-muted' if !@room.is_drinks %>"><i class="fas fa-wine-glass-alt fa-lg"></i> Free Drinks</li>
-        <li class="p-3 <%= 'text-line-through text-muted' if !@room.is_heating %>"><i class="fas fa-fire fa-lg"></i> Heating</li>
-        <li class="p-3 <%= 'text-line-through text-muted' if !@room.is_printing %>"><i class="fas fa-print fa-lg"></i> Printing Station</li>
-      </ul>
-    </div>
-    <div class="col-md-4 text-center">
-      <ul class="amenities list-unstyled">
-        <li class="p-3 <%= 'text-line-through text-muted' if !@room.is_parking %>"><i class="fas fa-parking fa-lg"></i> Parking</li>
-        <li class="p-3 <%= 'text-line-through text-muted' if !@room.is_air %>"><i class="fas fa-fan fa-lg"></i> Air-Conditioning</li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<div class="card shadow mb-3 room-section-card">
-  <div class="card-header bg-light"><h4>Location</h4></div>
-  <div class="p-4 text-center">
-    <%= image_tag map_image_room_path(@room), alt: "Map", class: "rounded shadow room-map-image" %>        
-  </div>
-</div>
-
-<%= render 'reservations/form' %>
-
-<%# Reviews %>
-<div class="card shadow room-section-card">
-  <div class="card-header bg-light">
-    <h4>Review (<%= @reviews.count %>)</h4>        
-  </div>
-  <div class="p-0"><%= render 'reviews/form' if @booked && !@hasReview %></div>
-  <%= render partial: 'reviews/review', locals: {reviews: @reviews} %>
-</div>
-
-<div class="bg-light p-5 rounded mt-5 room-section-card">
-  <div class="h3 mb-4 p-2">Other Spaces Near By: </div> 
-  <div class="row">
-    <% if @room.nearbys(15) == nil || @room.nearbys(15).length == 0 %>
-      <p class="ml-4">There is no space near by </p>
-    <% else %>
-      <% @room.nearbys(15).each do |room| %>
-        <div class="col-md-4 mb-3">
-          <%= link_to room_path(room.id) do %>
-            <div class="card shadow m-2 city-card text-center d-flex flex-column justify-content-between" style="min-height: 400px; max-width: 370px; margin: 0 auto;">
-              <% if room.images.attached? %>
-                <%= image_tag room.medium_image(room.images[0]), class: "img-fluid image-medium mt-3" %>
-              <% else %>
-                <div class="image-medium d-flex align-items-center justify-content-center bg-light mt-3 mb-2" style="height:200px; border-radius:8px; color:#bbb; font-size:2rem;">No Image</div>
-              <% end %>
-              <div class="card-body flex-grow-1 d-flex flex-column justify-content-center">
-                <div class="h5 mb-2"><%= room.listing_name %></div>
-                <div class="mb-2 text-muted small"><%= room.address %></div>
-                <div class="mb-2 text-muted small">(<%= room.distance.round(2) %> miles away)</div>
+        <div class="carousel-inner">
+          <% if @room.images.attached? %>
+            <% @room.images.each_with_index do |image, i| %>
+              <div class="carousel-item <%='active' if i == 0%>">
+                <%= image_tag image, class: "room-detail-main-image"%>
               </div>
-              <div class="star-rating star-rating-large pb-3" data-score="<%= room.average_rating || 0 %>"></div>
+            <% end %>
+          <% else %>
+            <div class="carousel-item active">
+              <div class="room-detail-no-image">
+                <i class="fas fa-image"></i>
+                <span>No Image Available</span>
+              </div>
             </div>
           <% end %>
         </div>
-      <% end %>
-    <% end %>    
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="room-detail-content">
+    <div class="row">
+      <!-- Left Column -->
+      <div class="col-lg-8">
+        <!-- About Section -->
+        <div class="room-detail-card mb-4">
+          <div class="room-detail-card-header">
+            <h3><i class="fas fa-info-circle"></i> About This Space</h3>
+          </div>
+          <div class="room-detail-card-body">
+            <p class="room-detail-description"><%= @room.summary %></p>
+          </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="room-detail-card mb-4">
+          <div class="room-detail-card-header">
+            <h3><i class="fas fa-cog"></i> Space Details</h3>
+          </div>
+          <div class="room-detail-card-body">
+            <div class="room-info-grid">
+              <div class="room-info-item">
+                <div class="room-info-icon">
+                  <i class="fas fa-building"></i>
+                </div>
+                <div class="room-info-content">
+                  <div class="room-info-label">Space Type</div>
+                  <div class="room-info-value"><%= @room.space_type %></div>
+                </div>
+              </div>
+              <div class="room-info-item">
+                <div class="room-info-icon">
+                  <i class="fas fa-chair"></i>
+                </div>
+                <div class="room-info-content">
+                  <div class="room-info-label">Desk Type</div>
+                  <div class="room-info-value"><%= @room.desk_type %></div>
+                </div>
+              </div>
+              <div class="room-info-item">
+                <div class="room-info-icon">
+                  <i class="fas fa-users"></i>
+                </div>
+                <div class="room-info-content">
+                  <div class="room-info-label">Capacity</div>
+                  <div class="room-info-value"><%= @room.capacity %> <%= @room.capacity > 1 ? "Seats" : "Seat" %></div>
+                </div>
+              </div>
+              <div class="room-info-item">
+                <div class="room-info-icon">
+                  <i class="fas fa-volume-up"></i>
+                </div>
+                <div class="room-info-content">
+                  <div class="room-info-label">Noise Level</div>
+                  <div class="room-info-value"><%= @room.noise_level %></div>
+                </div>
+              </div>
+              <div class="room-info-item">
+                <div class="room-info-icon">
+                  <i class="fas fa-user-shield"></i>
+                </div>
+                <div class="room-info-content">
+                  <div class="room-info-label">Manager</div>
+                  <div class="room-info-value"><%= @room.manager_on %></div>
+                </div>
+              </div>
+              <div class="room-info-item">
+                <div class="room-info-icon">
+                  <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="room-info-content">
+                  <div class="room-info-label">Security</div>
+                  <div class="room-info-value"><%= @room.security_level %></div>
+                </div>
+              </div>
+              <div class="room-info-item">
+                <div class="room-info-icon">
+                  <i class="fas fa-bath"></i>
+                </div>
+                <div class="room-info-content">
+                  <div class="room-info-label">Bathrooms</div>
+                  <div class="room-info-value"><%= @room.bath_room %> <%= @room.bath_room > 1 ? "Bathrooms" : "Bathroom" %></div>
+                </div>
+              </div>
+              <div class="room-info-item">
+                <div class="room-info-icon">
+                  <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="room-info-content">
+                  <div class="room-info-label">Price</div>
+                  <div class="room-info-value">$<%= @room.price %> / day</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Amenities Section -->
+        <div class="room-detail-card mb-4">
+          <div class="room-detail-card-header">
+            <h3><i class="fas fa-star"></i> Amenities</h3>
+          </div>
+          <div class="room-detail-card-body">
+            <div class="amenities-grid">
+              <div class="amenity-item <%= 'amenity-available' if @room.is_wifi %>">
+                <i class="fas fa-wifi"></i>
+                <span>Wifi/Internet</span>
+              </div>
+              <div class="amenity-item <%= 'amenity-available' if @room.is_conference %>">
+                <i class="fas fa-phone-square-alt"></i>
+                <span>Conference Call Space</span>
+              </div>
+              <div class="amenity-item <%= 'amenity-available' if @room.is_kitchen %>">
+                <i class="fas fa-sink"></i>
+                <span>Kitchen</span>
+              </div>
+              <div class="amenity-item <%= 'amenity-available' if @room.is_drinks %>">
+                <i class="fas fa-wine-glass-alt"></i>
+                <span>Free Drinks</span>
+              </div>
+              <div class="amenity-item <%= 'amenity-available' if @room.is_heating %>">
+                <i class="fas fa-fire"></i>
+                <span>Heating</span>
+              </div>
+              <div class="amenity-item <%= 'amenity-available' if @room.is_printing %>">
+                <i class="fas fa-print"></i>
+                <span>Printing Station</span>
+              </div>
+              <div class="amenity-item <%= 'amenity-available' if @room.is_parking %>">
+                <i class="fas fa-parking"></i>
+                <span>Parking</span>
+              </div>
+              <div class="amenity-item <%= 'amenity-available' if @room.is_air %>">
+                <i class="fas fa-fan"></i>
+                <span>Air-Conditioning</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Location Section -->
+        <div class="room-detail-card mb-4">
+          <div class="room-detail-card-header">
+            <h3><i class="fas fa-map-marked-alt"></i> Location</h3>
+          </div>
+          <div class="room-detail-card-body">
+            <div class="room-map-container">
+              <%= image_tag map_image_room_path(@room), alt: "Map", class: "room-map-image" %>        
+            </div>
+          </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="room-detail-card">
+          <div class="room-detail-card-header">
+            <h3><i class="fas fa-comments"></i> Reviews (<%= @reviews.count %>)</h3>
+          </div>
+          <div class="room-detail-card-body">
+            <%= render 'reviews/form' if @booked && !@hasReview %>
+            <%= render partial: 'reviews/review', locals: {reviews: @reviews} %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="col-lg-4">
+        <!-- Manager Info -->
+        <div class="room-detail-card mb-4">
+          <div class="room-detail-card-header">
+            <h3><i class="fas fa-user-tie"></i> Host</h3>
+          </div>
+          <div class="room-detail-card-body">
+            <div class="host-info">
+              <%= link_to user_path(@room.user.id) do%>
+                <%= image_tag (@room.user.default_avatar), class: "host-avatar"%>                      
+              <% end %>
+              <div class="host-details">
+                <div class="host-name"><%= @room.user.name %></div>
+                <div class="host-email"><%= @room.user.email %></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reservation Form -->
+        <div class="room-detail-card sticky-top">
+          <div class="room-detail-card-header">
+            <h3><i class="fas fa-calendar-check"></i> Reserve This Space</h3>
+          </div>
+          <div class="room-detail-card-body">
+            <%= render 'reservations/form' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nearby Spaces -->
+  <div class="nearby-spaces-section mt-5">
+    <div class="section-header">
+      <h2>Other Spaces Near By</h2>
+    </div>
+    <div class="nearby-spaces-grid">
+      <% if @room.nearbys(15) == nil || @room.nearbys(15).length == 0 %>
+        <div class="no-nearby-spaces">
+          <i class="fas fa-map-marker-alt"></i>
+          <p>No spaces available nearby</p>
+        </div>
+      <% else %>
+        <% @room.nearbys(15).each do |room| %>
+          <div class="nearby-space-card">
+            <%= link_to room_path(room.id) do %>
+              <div class="nearby-space-image">
+                <% if room.images.attached? %>
+                  <%= image_tag room.medium_image(room.images[0]), class: "nearby-space-img"%>
+                <% else %>
+                  <div class="nearby-space-placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>No Image</span>
+                  </div>
+                <% end %>
+              </div>
+              <div class="nearby-space-content">
+                <div class="nearby-space-title"><%= room.listing_name %></div>
+                <div class="nearby-space-location"><%= room.address %></div>
+                <div class="nearby-space-distance">(<%= room.distance.round(2) %> miles away)</div>
+                <div class="nearby-space-rating">
+                  <div class="star-rating" data-score="<%= room.average_rating || 0 %>"></div>
+                  <span class="rating-text"><%= format_rating(room.average_rating) %>/5</span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>    
+    </div>
   </div>
 </div>
+
 <!-- Star rating CSS is now centralized in site.scss -->
 
 <script>
