@@ -130,8 +130,18 @@ body {
 footer {
   // min-height: 20rem;
   margin-top: 3rem;
-  padding: 0 2rem;
+  padding: 2rem 0rem 4rem 2rem;
   background-color: white;
+  font-size: 18px;
+}
+
+// Footer hover effects
+footer a:hover .blueplane {
+  transform: rotate(18deg) translateX(3px) !important;
+}
+
+footer a:hover img[src*="blueplane_icon.svg"] {
+  transform: rotate(18deg) translateX(3px) !important;
 }
 
 a {

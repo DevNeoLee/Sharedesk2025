@@ -8,7 +8,7 @@
         <span class="d-block mb-3 text-muted">&copy; <%= Date.current.year %></span>
       </div>
       <div class="col-6 col-md">
-        <h5 class="mb-2">Features</h5>
+        <h5 class="mb-2" style="color: #333; font-weight: 700; font-size: 1.3rem;">Features</h5>
         <ul class="list-unstyled text-small">
           <li class="mb-1">
             <%= link_to "Log in", new_user_session_path, class: "text-muted" %>
@@ -40,7 +40,7 @@
         </ul>
       </div>
       <div class="col-6 col-md">
-        <h5 class="mb-2">Resources</h5>
+        <h5 class="mb-2" style="color: #333; font-weight: 700; font-size: 1.3rem;">Resources</h5>
         <ul class="list-unstyled text-small">
           <li class="mb-2">Photos from <a class="text-muted" href="https://www.pexels.com/" target="_blank">Pexels</a></li>
           <li class="mb-2">
@@ -51,25 +51,25 @@
         </ul>
       </div>
       <div class="col-6 col-md">
-        <h5 class="mb-2">About</h5>
+        <h5 class="mb-2" style="color: #333; font-weight: 700; font-size: 1.3rem;">About</h5>
         <ul class="list-unstyled text-small">
           <li>
             <div class="text-muted mt-2 mb-4 d-flex">
-              <a href="https://devneolee.github.io/justinklee/" target="_blank">
-                <span class="mr-1">© Justin K Lee </span>
-                <%= image_tag "blueplane_icon.svg", width: "25px", class: "blueplane"%> 
+              <a href="https://devneolee.github.io/justinklee/" target="_blank" style="display: flex; align-items: center; gap: 8px; transition: all 0.3s ease;">
+                <span>© Justin K Lee</span>
+                <%= image_tag "blueplane_icon.svg", width: "25px", class: "blueplane", style: "transition: transform 0.3s ease;"%> 
               </a>
             </div>
           </li>
           <li class="mb-4">
-            <a target="_blank" href="https://github.com/devneoLee" >
-              <span class="mr-2">GitHub</span>
+            <a target="_blank" href="https://github.com/devneoLee" style="display: flex; align-items: center; gap: 8px;">
+              <span>GitHub</span>
               <i class="fab fa-github fa-lg"></i>
             </a>
           </li>      								       
           <li class="mt-2 mb-4">
-            <a target="_blank" href="https://www.linkedin.com/in/justinklee215/">
-              <span class="mr-2">LinkedIn</span>
+            <a target="_blank" href="https://www.linkedin.com/in/justinklee215/" style="display: flex; align-items: center; gap: 8px;">
+              <span>LinkedIn</span>
               <i class="fab fa-linkedin fa-lg"></i>
             </a>
           </li>
