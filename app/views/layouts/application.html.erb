@@ -17,6 +17,11 @@
     <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/raty/2.7.1/jquery.raty.min.js", crossorigin: "anonymous" %>
     
     <%= javascript_importmap_tags %>
+    <script>
+      window.RATY_STAR_ON = "<%= asset_path('star-on.png') %>";
+      window.RATY_STAR_OFF = "<%= asset_path('star-off.png') %>";
+      window.RATY_STAR_HALF = "<%= asset_path('star-half.png') %>";
+    </script>
     <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ ENV['MAPS_API_KEY']}&libraries=places&loading=async",
                             async: true,
                             defer: true,
