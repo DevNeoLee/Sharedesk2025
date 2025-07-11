@@ -506,3 +506,546 @@ a .card:hover {
   border-radius: 10px;
   background-color: white;
 }
+
+/* Review Cards */
+.review-card-horizontal {
+  background: white;
+  border-radius: 12px;
+  box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+  padding: 25px;
+  width: 100%;
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.review-card-horizontal:hover {
+  box-shadow: rgba(67, 71, 85, 0.35) 0px 0px 0.5em, rgba(90, 125, 188, 0.1) 0px 0.5em 1.5em;
+  transform: translateY(-2px);
+}
+
+.review-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.review-user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.review-user-info .avatar-medium {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.review-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.review-user-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.review-date {
+  color: #666;
+  font-size: 14px;
+}
+
+.review-card-body {
+  flex: 1;
+}
+
+.review-comment {
+  color: #555;
+  line-height: 1.6;
+  font-size: 16px;
+  font-style: italic;
+}
+
+.review-card-horizontal .star-rating {
+  margin: 0;
+  font-size: 20px;
+}
+
+.review-card-horizontal .star-rating::before,
+.review-card-horizontal .star-rating::after {
+  font-size: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .review-card-horizontal {
+    padding: 20px;
+  }
+  
+  .review-user-info .avatar-medium {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .review-user-name {
+    font-size: 16px;
+  }
+  
+  .review-date {
+    font-size: 12px;
+  }
+  
+  .review-comment {
+    font-size: 15px;
+  }
+  
+  .review-card-horizontal .star-rating::before,
+  .review-card-horizontal .star-rating::after {
+    font-size: 18px;
+  }
+}
+
+/* Room Cards */
+.room-card {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+  height: 100%;
+  position: relative;
+}
+
+.room-card:hover {
+  box-shadow: rgba(67, 71, 85, 0.35) 0px 0px 0.5em, rgba(90, 125, 188, 0.1) 0px 0.5em 1.5em;
+  transform: translateY(-4px);
+}
+
+.room-card-image {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.room-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.room-card:hover .room-image {
+  transform: scale(1.05);
+}
+
+.room-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+.room-image-placeholder i {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  opacity: 0.6;
+}
+
+.room-card-content {
+  padding: 20px;
+}
+
+.room-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.room-location {
+  color: #666;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.room-location i {
+  color: #ff5a5f;
+  font-size: 12px;
+}
+
+.room-rating-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.room-rating-bottom .star-rating {
+  font-size: 16px;
+  margin: 0;
+}
+
+.room-rating-bottom .star-rating::before,
+.room-rating-bottom .star-rating::after {
+  font-size: 16px;
+}
+
+.rating-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Responsive adjustments for room cards */
+@media (max-width: 768px) {
+  .room-card-image {
+    height: 180px;
+  }
+  
+  .room-card-content {
+    padding: 15px;
+  }
+  
+  .room-title {
+    font-size: 16px;
+  }
+  
+  .room-location {
+    font-size: 13px;
+  }
+  
+  .room-rating-bottom {
+    padding-top: 6px;
+  }
+  
+  .room-rating-bottom .star-rating::before,
+  .room-rating-bottom .star-rating::after {
+    font-size: 14px;
+  }
+  
+  .rating-text {
+    font-size: 12px;
+  }
+}
+
+/* Navigation Search Field */
+.navbar-search-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 1.125rem;
+}
+
+.navbar-search-container .d-flex {
+  align-items: stretch;
+  height: auto;
+}
+
+.navbar-nav-container {
+  margin-left: auto;
+}
+
+.navbar-brand {
+  z-index: 10;
+  position: relative;
+}
+
+.navbar-search-field {
+  width: 100%;
+  min-width: 550px;
+  border-radius: 0.5rem;
+  border: 2px solid #e0e0e0;
+  padding: 0.4rem 0.8rem;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+}
+
+.navbar-search-field::placeholder {
+  font-size: 1.125rem;
+  color: #999;
+  font-weight: 400;
+}
+
+.navbar-search-field:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.navbar-search-container .btn-cta {
+  border-radius: 0.5rem;
+  padding: 0.8rem 2.5rem;
+  font-weight: 600;
+  white-space: nowrap;
+  height: 100%;
+  font-size: 1.125rem;
+  letter-spacing: 0.5px;
+  background-color: #1100ff;
+}
+
+.btn-cta {
+  border-radius: 0.5rem;
+  padding: 0.8rem 2.5rem;
+  font-weight: 600;
+  white-space: nowrap;
+  font-size: 1.125rem;
+  letter-spacing: 0.5px;
+  background-color: #1100ff;
+  border: none;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-cta:hover {
+  background-color: #0d00cc;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(17, 0, 255, 0.3);
+}
+
+/* Responsive adjustments for navbar */
+@media (max-width: 1200px) {
+  .navbar-search-container {
+    max-width: 700px;
+  }
+  
+  .navbar-search-field {
+    min-width: 400px;
+  }
+  
+  .navbar-search-field::placeholder {
+    font-size: 1.0625rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .navbar-search-container {
+    max-width: 600px;
+  }
+  
+  .navbar-search-field {
+    min-width: 350px;
+  }
+  
+  .navbar-search-field::placeholder {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-search-container {
+    position: relative;
+    left: auto;
+    transform: none;
+    max-width: 100%;
+    margin: 10px 0;
+    order: 3;
+  }
+  
+  .navbar-search-field {
+    min-width: 100%;
+    font-size: 1.25rem;
+  }
+  
+  .navbar-search-field::placeholder {
+    font-size: 1rem;
+  }
+  
+  .navbar-nav-container {
+    margin-left: 0;
+  }
+  
+  .navbar-brand {
+    z-index: auto;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-search-container {
+    margin: 15px 0;
+  }
+  
+  .navbar-search-field {
+    font-size: 1.125rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .navbar-search-container .btn-cta {
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+  }
+  
+  .navbar-brand img {
+    width: 140px !important;
+  }
+}
+
+/* City Cards */
+.city-card {
+  height: 400px;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.city-card:hover {
+  box-shadow: rgba(67, 71, 85, 0.35) 0px 0px 0.5em, rgba(90, 125, 188, 0.1) 0px 0.5em 1.5em;
+  transform: translateY(-4px);
+}
+
+.city-card .card-header {
+  background-color: white;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 15px;
+  text-align: center;
+}
+
+.city-card .card-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.city-card .image-medium {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.city-card .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+.city-card .card-text {
+  text-align: center;
+  color: #666;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Responsive adjustments for city cards */
+@media (max-width: 768px) {
+  .city-card {
+    height: 350px;
+  }
+  
+  .city-card .image-medium {
+    height: 180px;
+  }
+  
+  .city-card .card-header h2 {
+    font-size: 1.25rem;
+  }
+  
+  .city-card .card-text {
+    font-size: 1rem;
+  }
+}
+
+/* Reserve Your Desk Form */
+.reserve-search-field {
+  border-radius: 0.5rem;
+  border: 2px solid #e0e0e0;
+  padding: 0.4rem 0.8rem;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+}
+
+.reserve-search-field:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.reserve-search-field::placeholder {
+  font-size: 1rem;
+  color: #999;
+  font-weight: 400;
+}
+
+/* Date Input Container */
+.date-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.date-icon {
+  position: absolute;
+  right: 12px;
+  color: #666;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+  z-index: 10;
+}
+
+.date-icon:hover {
+  color: #007bff;
+}
+
+.date-input-container .reserve-search-field {
+  padding-right: 40px;
+  cursor: pointer;
+  background-color: white;
+  position: relative;
+}
+
+.date-input-container .reserve-search-field:hover {
+  border-color: #007bff;
+  background-color: #f8f9fa;
+}
+
+.date-input-container .reserve-search-field:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+  background-color: white;
+}
+
+.date-input-container .reserve-search-field:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.date-input-container .reserve-search-field:disabled:hover {
+  border-color: #e0e0e0;
+  background-color: #f8f9fa;
+}

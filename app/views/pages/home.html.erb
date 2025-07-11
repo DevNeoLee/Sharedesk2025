@@ -39,7 +39,7 @@
   </div>
   <div class="text-start mt-4">
     <%= link_to search_path(q: {"address_cont": @location_received }) do %>
-      <button class="btn btn-cta btn-lg">Find in Your Area</button>
+      <button class="btn btn-primary btn-cta">Find in Your Area</button>
     <% end %>
   </div>
 </div>
@@ -49,7 +49,7 @@
 <div class="bg-light p-5 rounded  mb-5 section">
     <div class="text-center">
         <h2>Workspaces in Every City</h2>
-        <p class="lead text-muted" style="letter-spacing: 1px;">Find top-rated desks and offices wherever you are.</p>
+        <p class="lead text-muted" style="letter-spacing: 1px; margin-top: 0.5rem">Find top-rated desks and offices wherever you are.</p>
 
 
     </div>
@@ -206,18 +206,24 @@
             <div class="row align-items-end">
                 <div class="col-md-5 mb-3">
                     <label class="form-label text-muted mb-2">Destination</label>
-                    <%= f.search_field :address_cont, placeholder: "Where are you going?", class: "form-control"%>
+                    <%= f.search_field :address_cont, placeholder: "Where are you going?", class: "form-control reserve-search-field"%>
                 </div>
                 <div class="col-md-2 mb-3">
                     <label class="form-label text-muted mb-2">Start Date</label>
-                    <%= text_field_tag :start_date, nil, {placeholder: "Start Date", id: "start_date", class: "form-control"}%>
+                    <div class="date-input-container">
+                        <%= text_field_tag :start_date, nil, {placeholder: "Start Date", id: "start_date", class: "form-control reserve-search-field"}%>
+                        <i class="fas fa-calendar-alt date-icon" onclick="openStartDatePicker()"></i>
+                    </div>
                 </div>
                 <div class="col-md-2 mb-3">
                     <label class="form-label text-muted mb-2">End Date</label>
-                    <%= text_field_tag :end_date, nil, placeholder: "End Date", class: "form-control", id: "end_date"%>
+                    <div class="date-input-container">
+                        <%= text_field_tag :end_date, nil, placeholder: "End Date", class: "form-control reserve-search-field", id: "end_date"%>
+                        <i class="fas fa-calendar-alt date-icon" onclick="openEndDatePicker()"></i>
+                    </div>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <%= f.submit "Check Availability", class: "btn btn-primary"%>
+                    <%= f.submit "Check Availability", class: "btn btn-primary btn-cta"%>
                 </div>
             </div>
         <% end %>
@@ -245,34 +251,82 @@
 </div>
 
 <script>
-    // Wait for jQuery UI to be fully loaded
-    function initializeDatepickers() {
+    // Date picker functions
+    function openStartDatePicker() {
+        $("#start_date").datepicker("show");
+    }
+    
+    function openEndDatePicker() {
+        $("#end_date").datepicker("show");
+    }
+    
+    // Wait for jQuery and jQuery UI to be loaded
+    function initDatepickers() {
         if (typeof $ !== 'undefined' && typeof $.fn.datepicker !== 'undefined') {
-            $('#start_date').datepicker({
+            console.log("Initializing datepickers...");
+            
+            $("#start_date").datepicker({
                 dateFormat: 'dd-mm-yy',
                 minDate: 0,
-                maxDate: '3m',
-                onSelect: function(select) {
-                    $('#end_date').datepicker("option", "minDate", select);
-                    $('#end_date').attr('disabled', false);
+                maxDate: '+3m',
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true,
+                closeText: 'Done',
+                currentText: 'Today',
+                onSelect: function(selectedDate) {
+                    $("#end_date").datepicker("option", "minDate", selectedDate);
+                    $("#end_date").removeAttr('disabled');
                 }
             });
             
-            $('#end_date').datepicker({
+            $("#end_date").datepicker({
                 dateFormat: 'dd-mm-yy',
                 minDate: 0,
-                maxDate: '3m',
-                onSelect: function(select) {
-                    $('#start_date').datepicker("option", "maxDate", select);
+                maxDate: '+6m',
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true,
+                closeText: 'Done',
+                currentText: 'Today',
+                onSelect: function(selectedDate) {
+                    $("#start_date").datepicker("option", "maxDate", selectedDate);
                 }
             });
+            
+            // Initially disable end date
+            $("#end_date").attr('disabled', true);
+            
+            // Add click handlers
+            $("#start_date").click(function() {
+                $(this).datepicker("show");
+            });
+            
+            $("#end_date").click(function() {
+                if (!$(this).attr('disabled')) {
+                    $(this).datepicker("show");
+                }
+            });
+            
+            console.log("Datepickers initialized successfully");
         } else {
-            // Retry after a short delay
-            setTimeout(initializeDatepickers, 100);
+            console.log("jQuery or jQuery UI not loaded yet, retrying...");
+            setTimeout(initDatepickers, 500);
         }
     }
     
+    // Try multiple ways to initialize
+    $(document).ready(function() {
+        initDatepickers();
+    });
+    
+    // Also try when window loads
+    window.addEventListener('load', function() {
+        initDatepickers();
+    });
+    
+    // Fallback for older browsers
     document.addEventListener('DOMContentLoaded', function() {
-        initializeDatepickers();
+        initDatepickers();
     });
 </script>

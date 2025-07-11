@@ -55,9 +55,10 @@ figure {
 }
 
 .form-control::placeholder {
-  font-size: 0.95rem;
+  font-size: 1.2rem;
   color: #aaa;
   font-style: italic;
+  letter-spacing: 1px;
 }
 
 // datepicker

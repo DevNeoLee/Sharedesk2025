@@ -4,7 +4,7 @@
       <%= image_tag 'orangeLogoSmall.png', width: "180" %>
     </a>
     
-    <!-- Search Form - Always visible -->
+    <!-- Search Form - Centered -->
     <div class="navbar-search-container">
       <%= search_form_for @browse, url: search_path, method: :get do |f|%>
         <div class="d-flex align-items-center">
@@ -18,46 +18,49 @@
       <% end %>
     </div>
     
-    <!-- Toggle Button -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    
     <!-- Navigation Menu -->
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav ms-auto">
-        <% if !user_signed_in? %>
-          <li class="nav-item">
-            <a class="nav-link" href="/users/login">Log in</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/users/signup">Sign up</a>
-          </li>
-        <% else %>
-          <li class="nav-item">
-            <%= link_to "Log out", destroy_user_session_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/users/edit">Edit Setting</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/users/<%= current_user.id %>">
-              Profile <%=image_tag current_user.default_avatar, class: "img-circle avatar-small" %>
-            </a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <%=current_user.name %>
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><%= link_to "Hosting List", rooms_path, class: "dropdown-item"%></li>
-              <li><%= link_to "Customer Reservations", yourlisting_reservations_path, class: "dropdown-item"%></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><%= link_to "Your Cart", your_trips_path, class: "dropdown-item"%></li>
-            </ul>
-          </li>
-        <% end %>
-      </ul>
+    <div class="navbar-nav-container">
+      <!-- Toggle Button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <!-- Navigation Menu -->
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ms-auto">
+          <% if !user_signed_in? %>
+            <li class="nav-item">
+              <a class="nav-link" href="/users/login">Log in</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/users/signup">Sign up</a>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "Log out", destroy_user_session_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/users/edit">Edit Setting</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/users/<%= current_user.id %>">
+                Profile <%=image_tag current_user.default_avatar, class: "img-circle avatar-small" %>
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <%=current_user.name %>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><%= link_to "Hosting List", rooms_path, class: "dropdown-item"%></li>
+                <li><%= link_to "Customer Reservations", yourlisting_reservations_path, class: "dropdown-item"%></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><%= link_to "Your Cart", your_trips_path, class: "dropdown-item"%></li>
+              </ul>
+            </li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   </div>
 </nav>

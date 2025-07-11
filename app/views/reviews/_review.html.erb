@@ -3,15 +3,19 @@
 <% else %>
     <% reviews.each do |review|%>
     <% if review.user %>
-    <div class="reviews-list-card">
-        <%= image_tag review.user.default_avatar, class: "avatar-medium" %>
-        <div class="review-content">
-            <div class="review-meta">
-                <div><%= review.user.name %></div>
-                <div><%= review.created_at.strftime("%d-%b-%Y") %></div>
+    <div class="review-card-horizontal mb-4">
+        <div class="review-card-header">
+            <div class="review-user-info">
+                <%= image_tag review.user.default_avatar, class: "avatar-medium" %>
+                <div class="review-meta">
+                    <div class="review-user-name"><%= review.user.name %></div>
+                    <div class="review-date"><%= review.created_at.strftime("%d-%b-%Y") %></div>
+                </div>
             </div>
-            <div class="review-comment"><%= review.comment %></div>
             <div class="star-rating star_min_width" data-score="<%= review.star %>"></div>
+        </div>
+        <div class="review-card-body">
+            <div class="review-comment"><%= review.comment %></div>
         </div>
     </div>
     <% end %>
