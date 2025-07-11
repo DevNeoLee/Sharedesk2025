@@ -1,19 +1,30 @@
                
     <% @browse_result.each do |room| %>  
-        <div class="col-md-4">
+        <div class="col-md-4 mb-4">
             <%=link_to room_path(room.id) do %>
-                <div class="card mb-2 shadow text-center mb-3 city-card">
-                    <div class="card-header text-center">
-                        <div class="h4"><%= room.listing_name %></div> 
+                <div class="room-card">
+                    <div class="room-card-image">
+                        <% if room.images.attached? %>
+                            <%= image_tag room.medium_image(room.images[0]), class: "room-image"%>
+                        <% else %>
+                            <div class="room-image-placeholder">
+                                <i class="fas fa-image"></i>
+                                <span>No Image</span>
+                            </div>
+                        <% end %>
                     </div>
-                    <% if room.images.attached? %>
-                        <%= image_tag room.medium_image(room.images[0]), class: "img-fluid image-medium"%>
-                    <% end %>
-                    <div class="card-body">
-                        <div class="card-text">
+                    <div class="room-card-content">
+                        <div class="room-title">
+                            <%= room.listing_name %>
+                        </div>
+                        <div class="room-location">
+                            <i class="fas fa-map-marker-alt"></i>
                             <%= room.address %>
                         </div>
-                        <div class="star-rating star-rating-large my-2 mx-auto d-block" data-score="<%= room.average_rating || 0 %>"></div>
+                        <div class="room-rating-bottom">
+                            <div class="star-rating" data-score="<%= room.average_rating || 0 %>"></div>
+                            <span class="rating-text"><%= format_rating(room.average_rating) %>/5</span>
+                        </div>
                     </div>
                 </div>
             <% end %>
@@ -31,7 +42,7 @@
     document.querySelectorAll('.star-rating').forEach(function(element, index) {
       const score = parseFloat(element.dataset.score) || 0;
       
-      // Round to nearest 0.5 for better display
+      // Round to nearest 0.5
       const roundedScore = Math.round(score * 2) / 2;
       element.setAttribute('data-score', roundedScore);
       

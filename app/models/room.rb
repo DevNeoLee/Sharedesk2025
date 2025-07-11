@@ -18,7 +18,13 @@ class Room < ApplicationRecord
   # validates_associated :images, presence: true
 
   def average_rating 
-    reviews.count == 0 ? 0 : reviews.average(:star).round(2)
+    if reviews.count == 0 
+      0 
+    else 
+      raw_rating = reviews.average(:star)
+      # Round to nearest 0.5
+      (raw_rating * 2).round / 2.0
+    end
   end
 
   def small_image(image)

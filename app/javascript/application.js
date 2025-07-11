@@ -25,6 +25,8 @@ window.dispatchMapsEvent = function (...args) {
 function initializeStarRatings() {
   document.querySelectorAll('.star-rating').forEach(function(element, index) {
     const score = parseFloat(element.dataset.score) || 0;
+    
+    // Round to nearest 0.5
     const roundedScore = Math.round(score * 2) / 2;
     element.setAttribute('data-score', roundedScore);
   });

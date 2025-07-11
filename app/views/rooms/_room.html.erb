@@ -22,7 +22,7 @@
             </div>
             <div class="room-rating-bottom">
                 <div class="star-rating" data-score="<%= room.average_rating || 0 %>"></div>
-                <span class="rating-text"><%= (room.average_rating || 0).to_i %>/5</span>
+                                            <span class="rating-text"><%= format_rating(room.average_rating) %>/5</span>
             </div>
         </div>
     </div>
