@@ -265,3 +265,16 @@
         });
     }
 </script>
+
+<script>
+  $('.star-rating').each(function() {
+    var score = $(this).data('score') || 0;
+    $(this).raty({
+      readOnly: true,
+      score: score,
+      starOff: '<%= asset_path('star-off.png') %>',
+      starOn: '<%= asset_path('star-on.png') %>',
+      starHalf: '<%= asset_path('star-half.png') %>'
+    });
+  });
+</script>
