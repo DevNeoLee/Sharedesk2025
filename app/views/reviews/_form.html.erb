@@ -17,8 +17,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('[Star Rating Debug] Initializing interactive pure CSS star ratings for review form');
-    
     const ratingContainer = document.getElementById('rating-container');
     if (!ratingContainer) return;
     
@@ -44,8 +42,6 @@
       currentRating = Math.min(5, Math.max(1, clickedStar));
       starRating.setAttribute('data-rating', currentRating);
       document.getElementById('review_rating').value = currentRating;
-      
-      console.log(`[Star Rating Debug] Rating set to: ${currentRating}`);
     });
     
     // Add hover effects
@@ -65,7 +61,5 @@
     });
     
     ratingContainer.appendChild(starRating);
-    
-    console.log('[Star Rating Debug] Interactive pure CSS star ratings initialized for review form');
   });
 </script>

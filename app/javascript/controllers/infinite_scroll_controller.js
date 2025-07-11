@@ -76,11 +76,7 @@ export default class extends Controller {
             // Round to nearest 0.5
             const roundedScore = Math.round(score * 2) / 2;
             element.setAttribute('data-score', roundedScore);
-            
-            console.log(`[Infinite Scroll] New star rating ${index + 1} initialized with score: ${roundedScore}`);
         });
-        
-        console.log(`[Infinite Scroll] Initialized ${newStarElements.length} new star ratings`);
     }
 }
 

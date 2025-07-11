@@ -36,8 +36,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('[Star Rating Debug] Initializing pure CSS star ratings (rooms)');
-    
     // Initialize all star rating elements
     document.querySelectorAll('.star-rating').forEach(function(element, index) {
       const score = parseFloat(element.dataset.score) || 0;
@@ -45,10 +43,6 @@
       // Round to nearest 0.5
       const roundedScore = Math.round(score * 2) / 2;
       element.setAttribute('data-score', roundedScore);
-      
-      console.log(`[Star Rating Debug] Element ${index + 1} initialized with score: ${roundedScore}`);
     });
-    
-    console.log('[Star Rating Debug] Pure CSS star ratings completed (rooms)');
   });
 </script>

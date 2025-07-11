@@ -27,28 +27,27 @@
       
       <!-- 데스크톱 네비게이션 메뉴 -->
       <div class="collapse navbar-collapse d-none d-md-block" id="navbarCollapse">
-        <ul class="navbar-nav ms-auto d-flex align-items-center gap-3">
+        <ul class="navbar-nav ms-auto d-flex align-items-center gap-3" style="margin-right: 0;">
           <% if user_signed_in? %>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; color: #333;">
                 <div class="profile-avatar">
                   <% if current_user.avatar.attached? %>
-                    <%= image_tag current_user.avatar, class: "rounded-circle", width: "32", height: "32", style: "object-fit: cover;" %>
+                    <%= image_tag current_user.avatar, class: "rounded-circle", width: "42", height: "42", style: "object-fit: cover;" %>
                   <% else %>
-                    <%= image_tag "default_avatar.jpg", class: "rounded-circle", width: "32", height: "32", style: "object-fit: cover;" %>
+                    <%= image_tag "default_avatar.jpg", class: "rounded-circle", width: "42", height: "42", style: "object-fit: cover;" %>
                   <% end %>
                 </div>
                 <span class="fw-medium"><%= current_user.name || current_user.email.split('@').first %></span>
-                <i class="fas fa-chevron-down" style="font-size: 12px; color: #666;"></i>
               </a>
               <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="navbarDropdown" style="border: none; border-radius: 12px; min-width: 200px;">
                 <li class="dropdown-header">
                   <div class="d-flex align-items-center gap-2">
                     <div class="profile-avatar">
                       <% if current_user.avatar.attached? %>
-                        <%= image_tag current_user.avatar, class: "rounded-circle", width: "40", height: "40", style: "object-fit: cover;" %>
+                        <%= image_tag current_user.avatar, class: "rounded-circle", width: "50", height: "50", style: "object-fit: cover;" %>
                       <% else %>
-                        <%= image_tag "default_avatar.jpg", class: "rounded-circle", width: "40", height: "40", style: "object-fit: cover;" %>
+                        <%= image_tag "default_avatar.jpg", class: "rounded-circle", width: "50", height: "50", style: "object-fit: cover;" %>
                       <% end %>
                     </div>
                     <div>

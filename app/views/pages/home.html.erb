@@ -2,8 +2,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('[Star Rating Debug] Initializing pure CSS star ratings (home)');
-    
     // Initialize all star rating elements
     document.querySelectorAll('.star-rating').forEach(function(element, index) {
       const originalScore = parseFloat(element.dataset.score) || 0;
@@ -11,29 +9,10 @@
       // Round to nearest 0.5
       const roundedScore = Math.round(originalScore * 2) / 2;
       element.setAttribute('data-score', roundedScore);
-      
-      console.log(`[Star Rating Debug] Element ${index + 1}: Original=${originalScore}, Rounded=${roundedScore}, Final data-score="${element.getAttribute('data-score')}"`);
-      
-      // Check if the element is in a review card
-      if (element.closest('.review-card-horizontal')) {
-        console.log(`[Star Rating Debug] This is a review card star rating`);
-      }
     });
-    
-    console.log('[Star Rating Debug] Pure CSS star ratings completed (home)');
   });
   
-  // Test toast function
-  function testToast() {
-    console.log('Test toast button clicked');
-    if (typeof window.toastr !== 'undefined') {
-      console.log('Toastr is available, showing test message');
-      toastr.success('This is a test toast message!');
-    } else {
-      console.log('Toastr is not available');
-      alert('Toastr is not available');
-    }
-  }
+
 </script>
 
 <%# front two main images with local access %>
@@ -58,7 +37,6 @@
     <%= link_to search_path(q: {"address_cont": @location_received }) do %>
       <button class="btn btn-primary btn-cta">Find in Your Area</button>
     <% end %>
-    <button class="btn btn-secondary ms-2" onclick="testToast()">Test Toast</button>
   </div>
 </div>
 
@@ -200,8 +178,6 @@
     // Wait for jQuery and jQuery UI to be loaded
     function initDatepickers() {
         if (typeof $ !== 'undefined' && typeof $.fn.datepicker !== 'undefined') {
-            console.log("Initializing datepickers...");
-            
             $("#start_date").datepicker({
                 dateFormat: 'dd-mm-yy',
                 minDate: 0,
@@ -214,7 +190,6 @@
                 onSelect: function(selectedDate) {
                     $("#end_date").datepicker("option", "minDate", selectedDate);
                     $("#end_date").removeAttr('disabled');
-                    console.log("Start date selected:", selectedDate);
                 }
             });
             
@@ -229,7 +204,6 @@
                 currentText: 'Today',
                 onSelect: function(selectedDate) {
                     $("#start_date").datepicker("option", "maxDate", selectedDate);
-                    console.log("End date selected:", selectedDate);
                 }
             });
             
@@ -246,10 +220,7 @@
                     $(this).datepicker("show");
                 }
             });
-            
-            console.log("Datepickers initialized successfully");
         } else {
-            console.log("jQuery or jQuery UI not loaded yet, retrying...");
             setTimeout(initDatepickers, 500);
         }
     }
@@ -275,10 +246,7 @@
         const endDate = document.getElementById('end_date').value;
         const destination = document.querySelector('input[name="q[address_cont]"]').value;
         
-        console.log('Form submission data:');
-        console.log('Destination:', destination);
-        console.log('Start Date:', startDate);
-        console.log('End Date:', endDate);
+        // Form validation can be added here if needed
     }
 
 function clearLocationField() {

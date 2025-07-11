@@ -2,19 +2,13 @@
     <script type="text/javascript">
         <% flash.each do |f| %>
             <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
-            console.log('Flash message detected:', '<%= type %>', '<%= j f[1] %>');
             
             // Function to show toast message
             function showToast(type, message) {
-                console.log('Attempting to show toast:', type, message);
-                console.log('Toastr available:', typeof window.toastr !== 'undefined');
-                
                 if (typeof window.toastr !== 'undefined') {
-                    console.log('Toastr is available, showing message immediately');
                     // Simple toastr call without complex options
                     toastr[type](message);
                 } else {
-                    console.log('Toastr not available, creating fallback notification');
                     // Create a simple fallback notification
                     const notification = document.createElement('div');
                     notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'info' ? 'info' : 'success'} alert-dismissible fade show position-fixed`;
@@ -43,12 +37,8 @@
 <!-- Initialize toastr and check for queued messages on page load -->
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM loaded, checking toastr availability');
-        console.log('Toastr available:', typeof window.toastr !== 'undefined');
-        
         // Simple toastr initialization
         if (typeof window.toastr !== 'undefined') {
-            console.log('Initializing toastr options');
             toastr.options = {
                 closeButton: true,
                 progressBar: true,
@@ -58,11 +48,9 @@
         
         // Check localStorage for queued messages
         const storedMessages = JSON.parse(localStorage.getItem('toastrQueue') || '[]');
-        console.log('Stored messages:', storedMessages);
         if (storedMessages.length > 0) {
             storedMessages.forEach(function(msg) {
                 if (typeof window.toastr !== 'undefined') {
-                    console.log('Showing stored message:', msg);
                     toastr[msg.type](msg.message);
                 }
             });

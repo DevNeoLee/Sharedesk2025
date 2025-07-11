@@ -843,6 +843,26 @@ a .card:hover {
 
 .navbar-nav-container {
   margin-left: auto;
+  margin-right: 0;
+}
+
+.navbar-nav {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+.navbar-nav .nav-item:last-child {
+  margin-right: 0;
+}
+
+.navbar-nav .dropdown-menu {
+  right: 0 !important;
+  left: auto !important;
+}
+
+.profile-avatar {
+  display: flex;
+  align-items: center;
 }
 
 .navbar-brand {
