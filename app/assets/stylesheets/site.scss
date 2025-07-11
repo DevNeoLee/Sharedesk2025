@@ -144,6 +144,38 @@ a:hover img[src*="blueplane_icon.svg"] {
   transform: rotate(18deg) translateX(3px) !important;
 }
 
+// OAuth button hover effects
+.oauth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.oauth-google:hover {
+  background-color: #f8f9fa !important;
+  border-color: #adb5bd !important;
+  color: #495057 !important;
+}
+
+.oauth-facebook:hover {
+  background-color: #166fe5 !important;
+  border-color: #166fe5 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
+}
+
+// Authentication form fields focus styles (matching homepage search field)
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.form-label-group input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
 a {
   color: rgba(10, 1, 1, 0.979);
   text-decoration: none;

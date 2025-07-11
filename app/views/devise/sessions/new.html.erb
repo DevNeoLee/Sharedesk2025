@@ -1,56 +1,79 @@
-<div class="row">
-  <div class="card  mx-auto shadow mb-5">
-    <div class="card-body">
-      <div class="card-title">
-        <h2 class=" text-center mt-4 mb-3">Welcome</h1>   
-      </div>
-      <hr>
-      <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2", html: { id: "new_user", data: { turbo: false } }) do |f| %>
-       <div class="m-2 border-none">
-              <div class=" d-flex">
-                <div class="pt-3 mt-1 font-weight-bold">Wherever you go</div>
-                <%= image_tag "orangePolygonLarge.png", width: "100"%>  
-                <div class="pt-4 mt-4 font-weight-bold">Have your desk instantly!</div>
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card mx-auto shadow-lg mb-5" style="border-radius: 16px; border: none;">
+      <div class="card-body p-4">
+        <div class="text-center mb-4">
+          <h2 class="h3 mb-0" style="color: #333; font-weight: 600;">Welcome Back</h2>
+          <p class="text-muted mt-2 mb-0">Sign in to your account</p>
+        </div>
+
+        <!-- Brand Message -->
+        <div class="text-center mb-4 p-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px;">
+          <div class="d-flex align-items-center justify-content-center">
+            <div class="me-3">
+              <div class="fw-bold text-primary">Wherever you go</div>
+            </div>
+            <%= image_tag "orangePolygonLarge.png", width: "80", style: "opacity: 0.8;" %>
+            <div class="ms-3">
+              <div class="fw-bold text-primary">Have your desk instantly!</div>
+            </div>
           </div>
         </div>
-        <%= render 'shared/devise_message' %>
-        <div class="form-label-group m-2">
-          <%= f.email_field :email, autocomplete: "email", class: "form-control", placeholder: "please do something", id: "inputEmail"%>
-          <label for="inputEmail">Email address</label>
-        </div>
-        <div class="form-label-group m-2">    
-          <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "please do something", id: "user_password" %>
-          <label for="user_password">Password</label>
-        </div>
-        <div class="m-2">
-          <% if devise_mapping.rememberable? %>
-          <div class="checkbox">
-            <%= f.check_box :remember_me %>
-            <%= f.label :remember_me %>
+        
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { id: "new_user", data: { turbo: false } }) do |f| %>
+          <%= render 'shared/devise_message' %>
+          
+          <div class="form-label-group mb-3">
+            <%= f.email_field :email, autocomplete: "email", class: "form-control", placeholder: "Enter your email", id: "inputEmail" %>
+            <label for="inputEmail">Email address</label>
           </div>
-          <% end %>
-          <%= f.submit "Log in", class: "btn btn-lg btn-primary btn-block p-2" %>
-        </div>
-      <% end %>
-
-      <div class="text-center m-2">
-        <%= render "devise/shared/links" %>
-      </div>
-
-      <div class="m-2">
-      <hr>
-      <div class="text-center mb-2">
-        <small class="text-muted">Want to try the app? Use our demo account!</small>
-      </div>
-        <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "form-signin2", html: { id: "demo_user", data: { turbo: false } }) do |f| %>
-              <%= f.hidden_field :email, value: 'demo@email.com' %>
-              <%= f.hidden_field :password, value: '111111', id: "demo_user_password" %>
-              <%= f.submit "🚀 TRY DEMO", class: "btn btn-lg btn-success btn-block p-2"  %>    
+          
+          <div class="form-label-group mb-4">
+            <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "Enter your password", id: "user_password" %>
+            <label for="user_password">Password</label>
+          </div>
+          
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <% if devise_mapping.rememberable? %>
+              <div class="form-check">
+                <%= f.check_box :remember_me, class: "form-check-input" %>
+                <%= f.label :remember_me, class: "form-check-label small" %>
+              </div>
+            <% end %>
+          </div>
+          
+          <div class="mb-4">
+            <%= f.submit "Sign In", class: "btn btn-primary w-100 py-2" %>
+          </div>
         <% end %>
-      </div>
 
-      <hr>
-      <div class="pt-3 mb-3 text-muted text-center"><a href="https://devneolee.github.io/JustinKLee/" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s ease;">© Justin K Lee <%= image_tag "blueplane_icon.svg", width: "25px", class: "blueplane", style: "transition: transform 0.3s ease;"%> </a> All Rights Reserved</div>
+        <!-- Links Section -->
+        <div class="text-center mb-4">
+          <%= render "devise/shared/links" %>
+        </div>
+
+        <!-- Demo Section -->
+        <div class="text-center">
+          <hr class="my-4">
+          <p class="text-muted mb-3 small">Want to try the app? Use our demo account!</p>
+          
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { id: "demo_user", data: { turbo: false } }) do |f| %>
+            <%= f.hidden_field :email, value: 'demo@email.com' %>
+            <%= f.hidden_field :password, value: '111111', id: "demo_user_password" %>
+            <%= f.submit "🚀 TRY DEMO", class: "btn btn-success w-100 py-2" %>
+          <% end %>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-4 pt-3">
+          <div class="text-muted" style="font-size: 16px;">
+            <a href="https://devneolee.github.io/JustinKLee/" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s ease; text-decoration: none;">
+              © Justin K Lee <%= image_tag "blueplane_icon.svg", width: "25px", class: "blueplane", style: "transition: transform 0.3s ease;" %>
+            </a>
+            <span style="margin-left: 12px;">All Rights Reserved</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
