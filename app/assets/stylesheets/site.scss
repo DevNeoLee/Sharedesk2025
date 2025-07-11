@@ -5,7 +5,7 @@
 
 @import "pages";
 $primary: #1100ff; // resetting primary color of bootstrap
-// Bootstrap과 FontAwesome은 CDN으로 로드되므로 SCSS import 제거
+// Bootstrap and FontAwesome are loaded via CDN, so remove SCSS import
 // @import "toastr";
 
 /* -------------------- Resets --------------------- */

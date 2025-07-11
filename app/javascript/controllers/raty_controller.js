@@ -12,7 +12,7 @@ export default class extends Controller {
 
   disconnect() {
     console.log('[Raty Controller Debug] Controller disconnecting');
-    // 컨트롤러가 제거될 때 raty 인스턴스 정리
+    // Clean up raty instance when controller is removed
     this.ratingTargets.forEach((element, index) => {
       if (element.classList.contains('raty-initialized')) {
         console.log(`[Raty Controller Debug] Destroying raty instance ${index + 1}`);

@@ -7,9 +7,9 @@ import "controllers"
 // Import third-party libraries
 import "bootstrap"
 
-// jQuery는 CDN으로 로드되므로 import 불필요
+// jQuery is loaded via CDN, so import is not needed
 
-// 별 이미지 경로를 window 전역에 할당 (application.html.erb에서 삽입 필요)
+// Assign star image paths to window global (needs to be inserted in application.html.erb)
 window.RATY_STAR_ON = window.RATY_STAR_ON || '/assets/star-on.png';
 window.RATY_STAR_OFF = window.RATY_STAR_OFF || '/assets/star-off.png';
 window.RATY_STAR_HALF = window.RATY_STAR_HALF || '/assets/star-half.png';

@@ -1,4 +1,36 @@
 
+
+
+<script>
+  console.log('[Raty Debug] Star rating initialization started (home)');
+  $('.star-rating').each(function(index) {
+    var score = $(this).data('score') || 0;
+    var starOff = '<%= asset_path('star-off.png') %>';
+    var starOn = '<%= asset_path('star-on.png') %>';
+    var starHalf = '<%= asset_path('star-half.png') %>';
+    console.log(`[Raty Debug] Element ${index + 1}:`, {
+      element: this,
+      score: score,
+      starOff: starOff,
+      starOn: starOn,
+      starHalf: starHalf
+    });
+    try {
+      $(this).raty({
+        readOnly: true,
+        score: score,
+        starOff: starOff,
+        starOn: starOn,
+        starHalf: starHalf
+      });
+      console.log(`[Raty Debug] Element ${index + 1} star rating initialization successful`);
+    } catch (error) {
+      console.error(`[Raty Debug] Element ${index + 1} star rating initialization error:`, error);
+    }
+  });
+  console.log('[Raty Debug] Star rating initialization completed (home)');
+</script>
+
 <%# front two main images with local access %>
 <div class="bg-light p-5 rounded home-section mb-5 section">
   <div class="text-center mb-4">
@@ -255,17 +287,4 @@
     document.addEventListener('DOMContentLoaded', function() {
         initializeDatepickers();
     });
-</script>
-
-<script>
-  $('.star-rating').each(function() {
-    var score = $(this).data('score') || 0;
-    $(this).raty({
-      readOnly: true,
-      score: score,
-      starOff: '<%= asset_path('star-off.png') %>',
-      starOn: '<%= asset_path('star-on.png') %>',
-      starHalf: '<%= asset_path('star-half.png') %>'
-    });
-  });
 </script>

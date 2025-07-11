@@ -177,7 +177,7 @@ function initializeShowRaty() {
     if (typeof $ !== 'undefined' && typeof $.fn.raty !== 'undefined') {
         console.log('[Raty Room Show Debug] jQuery and Raty available in room show');
         
-        // 올바른 요소 찾기 - .star-rating 클래스를 가진 요소들
+        // Find correct elements - elements with .star-rating class
         const starRatingElements = document.querySelectorAll('.star-rating');
         console.log('[Raty Room Show Debug] Star rating elements found:', starRatingElements.length);
         
@@ -193,7 +193,7 @@ function initializeShowRaty() {
         
         console.log('[Raty Room Show Debug] Room average rating:', <%= @room.average_rating %>);
         
-        // 모든 star-rating 요소들을 초기화
+        // Initialize all star-rating elements
         starRatingElements.forEach((element, index) => {
             if (!element.classList.contains('raty-initialized')) {
                 const score = element.getAttribute('data-score') || <%= @room.average_rating %>;
@@ -227,7 +227,7 @@ function initializeShowRaty() {
     }
 }
 
-// 페이지 로드 시 초기화
+// Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     console.log('[Raty Room Show Debug] DOMContentLoaded event fired for room show');
     initializeShowRaty();
