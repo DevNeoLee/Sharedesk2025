@@ -628,6 +628,9 @@ a .card:hover {
   border: 1px solid #f0f0f0;
   height: 100%;
   position: relative;
+  max-width: 350px;
+  width: 100%;
+  margin: 0;
 }
 
 .room-card:hover {
@@ -767,14 +770,13 @@ a .card:hover {
 
 /* Navigation Search Field */
 .navbar-search-container {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 600px;
-  width: 100%;
   display: flex;
   justify-content: center;
-  font-size: 1.125rem;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0.5rem 0;
 }
 
 .navbar-search-container .d-flex {
@@ -792,14 +794,14 @@ a .card:hover {
 }
 
 .navbar-search-field {
-  width: 100%;
-  min-width: 550px;
+  flex: 1 1 0;
+  min-width: 0;
   border-radius: 0.5rem;
   border: 2px solid #e0e0e0;
-  padding: 0.4rem 0.8rem;
-  font-size: 1.5rem;
-  transition: all 0.3s ease;
-  letter-spacing: 1px;
+  padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+  width: 500px;
 }
 
 .navbar-search-field::placeholder {
@@ -816,7 +818,7 @@ a .card:hover {
 
 .navbar-search-container .btn-cta {
   border-radius: 0.5rem;
-  padding: 0.8rem 2.5rem;
+  padding: 0.5rem 1.5rem;
   font-weight: 600;
   white-space: nowrap;
   height: 100%;
@@ -839,7 +841,7 @@ a .card:hover {
 }
 
 .btn-cta:hover {
-  background-color: #0d00cc;
+  background-color: #1b04ea;
   color: white;
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(17, 0, 255, 0.3);
@@ -853,6 +855,7 @@ a .card:hover {
   
   .navbar-search-field {
     min-width: 400px;
+    width: 100%;
   }
   
   .navbar-search-field::placeholder {
@@ -875,6 +878,29 @@ a .card:hover {
 }
 
 @media (max-width: 768px) {
+  .navbar-search-container {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 100%;
+    padding: 0.5rem 0.5rem;
+  }
+  .navbar-search-field,
+  .btn-cta {
+    height: 38px;
+    font-size: 0.98rem;
+    padding: 0 1rem;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+  }
+  .navbar-search-field {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  .btn-cta {
+    width: 100%;
+    margin-left: 0;
+    padding: 0;
+  }
   .navbar-search-container {
     position: relative;
     left: auto;
@@ -1530,12 +1556,21 @@ input[type="search"]::-webkit-search-clear-button {
 }
 
 .search-title {
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 1rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #222;
 }
-
+.search-count {
+  font-size: 1.1em;
+  // color: #1100ff;
+  font-weight: 600;
+  margin-left: 0.2em;
+}
+.search-result-simple {
+  font-size: 1.5rem;
+  color: #444;
+  margin-bottom: 1.2rem;
+}
 .search-form-card {
   background: white;
   border-radius: 16px;
@@ -1693,4 +1728,179 @@ input[type="search"]::-ms-clear {
 
 .custom-photo-shadow {
   box-shadow: 0 8px 32px 0 rgba(60, 60, 90, 0.18), 0 1.5px 6px 0 rgba(60, 60, 90, 0.10);
+}
+
+/* 네비게이션 버튼 반응형 및 스타일 개선 */
+.nav-btn {
+  min-width: 90px;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  transition: all 0.2s;
+  margin-left: 0.5rem;
+}
+
+.nav-btn:focus, .nav-btn:hover {
+  box-shadow: 0 2px 8px rgba(17,0,255,0.08);
+  outline: none;
+}
+
+/* 데스크톱 네비게이션 버튼 고정 크기 */
+.navbar-nav .nav-btn {
+  min-width: 100px;
+  max-width: 100px;
+  height: 40px;
+  font-size: 1rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .mobile-drawer .nav-btn {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    height: 38px;
+    font-size: 0.98rem;
+    margin-bottom: 0.7rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-nav.ms-auto {
+    flex-direction: column !important;
+    gap: 0.8rem !important;
+    align-items: stretch !important;
+    width: 100%;
+    padding: 1rem 0.5rem;
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    border-radius: 0 0 1rem 1rem;
+  }
+  .nav-btn {
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.08rem;
+    box-sizing: border-box;
+  }
+  .navbar-collapse {
+    width: 100%;
+  }
+}
+
+/* 네비게이션 메뉴가 열릴 때 부드러운 페이드/슬라이드 효과 */
+.navbar-collapse {
+  transition: box-shadow 0.3s, background 0.3s;
+  box-shadow: none;
+  background: transparent;
+}
+
+.navbar-collapse.show {
+  background: #fff;
+  box-shadow: 0 8px 32px rgba(60,60,90,0.10);
+  border-radius: 0 0 1rem 1rem;
+  z-index: 1001;
+  position: relative;
+  animation: navbarFadeIn 0.25s;
+}
+
+@keyframes navbarFadeIn {
+  from { opacity: 0; transform: translateY(-10px);}
+  to   { opacity: 1; transform: translateY(0);}
+}
+
+/* 메뉴가 열릴 때 바깥 어두운 오버레이 */
+.navbar-mobile-backdrop {
+  display: none;
+}
+.navbar-collapse.show ~ .navbar-mobile-backdrop {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.18);
+  animation: fadeInBackdrop 0.2s;
+}
+@keyframes fadeInBackdrop {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* 모바일 드로어 네비게이션 */
+.mobile-drawer {
+  position: fixed;
+  top: 0; right: -100vw;
+  width: 80vw; max-width: 340px;
+  height: 100vh;
+  background: #fff;
+  box-shadow: -2px 0 24px rgba(0,0,0,0.13);
+  z-index: 2001;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  transition: right 0.32s cubic-bezier(.4,0,.2,1);
+}
+.mobile-drawer.open {
+  right: 0;
+}
+.drawer-close {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #888;
+  align-self: flex-end;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+}
+.mobile-backdrop {
+  display: none;
+}
+.mobile-backdrop.show {
+  display: block;
+  position: fixed;
+  z-index: 2000;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.18);
+  animation: fadeInBackdrop 0.2s;
+}
+@keyframes fadeInBackdrop {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@media (min-width: 768px) {
+  .mobile-drawer, .mobile-backdrop { display: none !important; }
+}
+
+.search-result-count {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: #f6f8ff;
+  border-radius: 1.5rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 8px rgba(17,0,255,0.04);
+  gap: 0.7rem;
+  width: fit-content;
+}
+
+.result-number {
+  font-size: 1.35em;
+  font-weight: 700;
+  color: #1100ff;
+  margin-right: 0.3em;
+}
+
+.result-label {
+  font-size: 1em;
+  color: #444;
 }

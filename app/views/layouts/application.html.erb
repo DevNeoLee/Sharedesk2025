@@ -30,6 +30,16 @@
   </head>
 
   <body>
+    <script>
+function openMobileDrawer() {
+  document.getElementById('mobileDrawer').classList.add('open');
+  document.getElementById('mobileBackdrop').classList.add('show');
+}
+function closeMobileDrawer() {
+  document.getElementById('mobileDrawer').classList.remove('open');
+  document.getElementById('mobileBackdrop').classList.remove('show');
+}
+</script>
     <%# navbar %>
     <%= render 'shared/navbar' %>      
   

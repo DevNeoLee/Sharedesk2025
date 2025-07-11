@@ -32,6 +32,7 @@ class PagesController < ApplicationController
   def search 
     @browse = Room.ransack(params[:q])
     @pagy_search, @browse_result = pagy(@browse.result(distinct: true), items: 9)
+    @total_count = @browse.result(distinct: true).count
     
     # Debug logging
     Rails.logger.info "Search params: #{params.inspect}"

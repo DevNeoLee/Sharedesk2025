@@ -21,13 +21,19 @@
 
 <div class="search-page-container">
   <div class="search-header mb-5">
-    <h2 class="search-title">
+    <h2 class="search-title mb-3">
       <% if params[:q] && params[:q]["address_cont"].present? %>
-        Search results for "<%= params[:q]["address_cont"] %>"
+        Search results for "<%= params[:q]["address_cont"] %>" <span class="search-count">(<%= @total_count %>)</span>
       <% else %>
-        View All Spaces
+        View All Spaces <span class="search-count">(<%= @total_count %>)</span>
       <% end %>
     </h2>
+
+    <% if @browse_result.present? %>
+      <div class="search-result-simple mb-3">
+        <%= pluralize(@total_count, 'result') %> found
+      </div>
+    <% end %>
   </div>
 
   <div id="complex_search" class="search-form-card">

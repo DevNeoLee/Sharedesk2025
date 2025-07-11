@@ -31,14 +31,36 @@ export default class extends Controller {
                 // Store the current number of star elements before adding new content
                 const existingStarElements = this.entriesTarget.querySelectorAll('.star-rating').length;
                 
-                this.entriesTarget.insertAdjacentHTML('beforeend', data.entries)
-                this.paginationTarget.innerHTML = data.pagination
+                // Find the row container
+                const rowContainer = this.entriesTarget.querySelector('.row');
+                if (!rowContainer) {
+                    console.error('Row container not found');
+                    return;
+                }
                 
+                // 중복 room-card append 방지 로직
+                const existingIds = new Set([...this.entriesTarget.querySelectorAll('.col-md-4')].map(col => {
+                    const card = col.querySelector('.card');
+                    return card ? card.dataset.roomId : null;
+                }).filter(id => id !== null));
+                
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = data.entries;
+                const newCols = tempDiv.querySelectorAll('.col-md-4');
+                
+                newCols.forEach(col => {
+                    const card = col.querySelector('.card');
+                    if (card && card.dataset.roomId && !existingIds.has(card.dataset.roomId)) {
+                        rowContainer.appendChild(col);
+                    }
+                });
+                
+                this.paginationTarget.innerHTML = data.pagination;
                 // Initialize star ratings for newly loaded content only
                 this.initializeNewStarRatings(existingStarElements)
             },
             error: (message) => {
-                // Error handling
+                console.error('Error loading more content:', message);
             }
         })
     }

@@ -4,7 +4,20 @@ class RoomsController < ApplicationController
   
   def index
     @rooms = current_user.rooms
-        @pagy, @rooms_result = pagy(@rooms, items: 9)
+    @pagy, @rooms_result = pagy(@rooms, items: 9)
+    
+    respond_to do |format|
+      format.html
+      format.json do
+        entries_html = render_to_string(partial: 'room_result', collection: @rooms_result, as: :room)
+        pagination_html = render_to_string(partial: 'pagination', locals: { pagy: @pagy })
+        
+        render json: {
+          entries: entries_html,
+          pagination: pagination_html
+        }
+      end
+    end
   end
 
   def show

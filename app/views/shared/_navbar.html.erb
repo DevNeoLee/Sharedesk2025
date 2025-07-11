@@ -20,47 +20,29 @@
     
     <!-- Navigation Menu -->
     <div class="navbar-nav-container">
-      <!-- Toggle Button -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <!-- 햄버거 버튼 (모바일에서만 보임) -->
+      <button class="navbar-toggler d-md-none" type="button" onclick="openMobileDrawer()">
         <span class="navbar-toggler-icon"></span>
       </button>
       
-      <!-- Navigation Menu -->
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav ms-auto">
-          <% if !user_signed_in? %>
-            <li class="nav-item">
-              <a class="nav-link" href="/users/login">Log in</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/users/signup">Sign up</a>
-            </li>
-          <% else %>
-            <li class="nav-item">
-              <%= link_to "Log out", destroy_user_session_path, class: "nav-link" %>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/users/edit">Edit Setting</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/users/<%= current_user.id %>">
-                Profile <%=image_tag current_user.default_avatar, class: "img-circle avatar-small" %>
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <%=current_user.name %>
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><%= link_to "Hosting List", rooms_path, class: "dropdown-item"%></li>
-                <li><%= link_to "Customer Reservations", yourlisting_reservations_path, class: "dropdown-item"%></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><%= link_to "Your Cart", your_trips_path, class: "dropdown-item"%></li>
-              </ul>
-            </li>
+      <!-- 데스크톱 네비게이션 메뉴 -->
+      <div class="collapse navbar-collapse d-none d-md-block" id="navbarCollapse">
+        <ul class="navbar-nav ms-auto d-flex align-items-center gap-2">
+          <%= link_to new_user_session_path, class: "btn btn-outline-primary nav-btn" do %>
+            Log in
+          <% end %>
+          <%= link_to new_user_registration_path, class: "btn btn-primary nav-btn" do %>
+            Sign up
           <% end %>
         </ul>
       </div>
+      <!-- 모바일 드로어 메뉴 -->
+      <div class="mobile-drawer" id="mobileDrawer">
+        <button class="drawer-close" onclick="closeMobileDrawer()">×</button>
+        <%= link_to new_user_session_path, class: "btn btn-outline-primary nav-btn w-100 mb-2" do %>Log in<% end %>
+        <%= link_to new_user_registration_path, class: "btn btn-primary nav-btn w-100" do %>Sign up<% end %>
+      </div>
+      <div class="mobile-backdrop" id="mobileBackdrop" onclick="closeMobileDrawer()"></div>
     </div>
   </div>
 </nav>
