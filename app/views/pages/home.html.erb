@@ -223,7 +223,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <%= f.submit "Check Availability", class: "btn btn-primary btn-cta"%>
+                    <%= f.submit "Check Availability", class: "btn btn-primary btn-cta", onclick: "logFormData()"%>
                 </div>
             </div>
         <% end %>
@@ -277,6 +277,7 @@
                 onSelect: function(selectedDate) {
                     $("#end_date").datepicker("option", "minDate", selectedDate);
                     $("#end_date").removeAttr('disabled');
+                    console.log("Start date selected:", selectedDate);
                 }
             });
             
@@ -291,6 +292,7 @@
                 currentText: 'Today',
                 onSelect: function(selectedDate) {
                     $("#start_date").datepicker("option", "maxDate", selectedDate);
+                    console.log("End date selected:", selectedDate);
                 }
             });
             
@@ -329,4 +331,16 @@
     document.addEventListener('DOMContentLoaded', function() {
         initDatepickers();
     });
+    
+    // Function to log form data before submission
+    function logFormData() {
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date').value;
+        const destination = document.querySelector('input[name="q[address_cont]"]').value;
+        
+        console.log('Form submission data:');
+        console.log('Destination:', destination);
+        console.log('Start Date:', startDate);
+        console.log('End Date:', endDate);
+    }
 </script>
