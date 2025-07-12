@@ -1,6 +1,53 @@
 <div class="container my-5">
   <div class="trips-section" style="max-width: 900px; margin: 0 auto;">
     <div class="h2 text-center mb-4 title_font">Create Work Space</div>
+    
+    <!-- Google Maps 디버깅 로그 -->
+    <script>
+      console.log('=== Room Form Google Maps Debug ===');
+      console.log('Form page loaded');
+      console.log('Current user:', '<%= current_user&.email %>');
+      console.log('User authenticated:', <%= user_signed_in? %>);
+      
+      // Google Maps API 상태 확인
+      function checkGoogleMapsStatus() {
+        console.log('Checking Google Maps API status...');
+        
+        if (typeof google === 'undefined') {
+          console.error('❌ Google object is undefined');
+          return false;
+        }
+        
+        if (typeof google.maps === 'undefined') {
+          console.error('❌ Google Maps is undefined');
+          return false;
+        }
+        
+        console.log('✅ Google Maps API is available');
+        console.log('Available services:', Object.keys(google.maps));
+        
+        // Places API 확인
+        if (google.maps.places) {
+          console.log('✅ Places API is available');
+        } else {
+          console.error('❌ Places API is not available');
+        }
+        
+        return true;
+      }
+      
+      // 페이지 로드 후 확인
+      window.addEventListener('load', function() {
+        setTimeout(checkGoogleMapsStatus, 1000);
+      });
+      
+      // Google Maps 콜백 함수
+      window.googleMapsCallback = function() {
+        console.log('🎉 Google Maps callback triggered');
+        checkGoogleMapsStatus();
+      };
+    </script>
+    
     <%= form_with(model: @room, local: true, multi: true, data: { controller: :maps, action: "google-maps-callback@window->maps#initializeMap" }) do |f| %>
       <!-- Basic Information -->
       <div class="row mb-4">

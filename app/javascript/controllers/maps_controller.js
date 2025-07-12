@@ -4,26 +4,41 @@ export default class extends Controller {
   static targets = ["field", "map", "latitude", "longitude"]
 
   connect() {
-    console.log("Maps controller connected")
+    console.log("=== Maps Controller Connected ===")
+    console.log("Controller element:", this.element)
+    console.log("Controller targets found:", this.hasFieldTarget, this.hasMapTarget, this.hasLatitudeTarget, this.hasLongitudeTarget)
     console.log("Google object available:", typeof google !== "undefined")
+    console.log("Google Maps available:", typeof google !== "undefined" && google.maps)
+    console.log("Places API available:", typeof google !== "undefined" && google.maps && google.maps.places)
     
-    if (typeof google !== "undefined") {
-      console.log("Google Maps API is loaded, initializing map...")
+    if (typeof google !== "undefined" && google.maps) {
+      console.log("✅ Google Maps API is loaded, initializing map...")
       this.initializeMap()
     } else {
-      console.log("Google Maps API not loaded yet, waiting...")
+      console.log("⏳ Google Maps API not loaded yet, waiting...")
       // Wait for Google Maps API to load
       this.waitForGoogleMaps()
     }
   }
 
   waitForGoogleMaps() {
+    let attempts = 0
+    const maxAttempts = 50 // 5 seconds max wait
+    
     const checkGoogleMaps = () => {
+      attempts++
+      console.log(`⏳ Waiting for Google Maps API... (attempt ${attempts}/${maxAttempts})`)
+      
       if (typeof google !== "undefined" && google.maps) {
-        console.log("Google Maps API loaded, initializing map...")
+        console.log("✅ Google Maps API loaded, initializing map...")
         this.initializeMap()
+      } else if (attempts >= maxAttempts) {
+        console.error("❌ Google Maps API failed to load after 5 seconds")
+        console.error("This might be due to:")
+        console.error("- API key restrictions")
+        console.error("- Network issues")
+        console.error("- Script loading problems")
       } else {
-        console.log("Still waiting for Google Maps API...")
         setTimeout(checkGoogleMaps, 100)
       }
     }

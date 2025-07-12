@@ -27,6 +27,52 @@
                             async: true,
                             defer: true,
                             "data-turbo-eval": false %>
+    
+    <script>
+      // Google Maps API 디버깅 로그
+      console.log('=== Google Maps API Debug ===');
+      console.log('Current page:', window.location.pathname);
+      console.log('Environment:', '<%= Rails.env %>');
+      console.log('API Key present:', '<%= ENV['MAPS_API_KEY'].present? %>');
+      console.log('API Key starts with:', '<%= ENV['MAPS_API_KEY']&.first(10) %>');
+      
+      // Google Maps API 로딩 상태 확인
+      window.addEventListener('load', function() {
+        console.log('Page loaded, checking Google Maps API...');
+        
+        // API 키 확인
+        const script = document.querySelector('script[src*="maps.googleapis.com"]');
+        if (script) {
+          console.log('✅ Google Maps script found:', script.src);
+        } else {
+          console.error('❌ Google Maps script not found');
+        }
+        
+        // Google Maps 객체 확인
+        setTimeout(function() {
+          if (typeof google !== 'undefined' && google.maps) {
+            console.log('✅ Google Maps API loaded successfully');
+            console.log('Available services:', Object.keys(google.maps));
+          } else {
+            console.error('❌ Google Maps API not loaded');
+            console.log('Google object:', typeof google);
+            if (typeof google !== 'undefined') {
+              console.log('Google maps object:', typeof google.maps);
+            }
+          }
+        }, 2000);
+      });
+      
+      // Google Maps API 에러 핸들링
+      window.gm_authFailure = function() {
+        console.error('❌ Google Maps API authentication failed');
+        console.log('This usually means the API key is invalid or has restrictions');
+      };
+      
+      window.gm_authFailure = function() {
+        console.error('❌ Google Maps API authentication failed');
+      };
+    </script>
     <%= favicon_link_tag asset_path('orangePolygonLarge.png') %>
     
     <!-- Font Awesome star rating system is now handled in individual pages -->
