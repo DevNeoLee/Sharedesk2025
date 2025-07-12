@@ -966,7 +966,8 @@ a .card:hover {
   border-radius: 0.5rem;
   border: 2px solid #e0e0e0;
   padding: 0.5rem 1rem;
-  font-size: 1.1rem;
+  font-size: 1.45rem !important;
+  letter-spacing: 2px;
   transition: all 0.3s;
   width: 500px;
 }
@@ -985,7 +986,7 @@ a .card:hover {
 
 .navbar-search-container .btn-cta {
   border-radius: 0.5rem;
-  padding: 0.6rem 1.5rem;
+  padding: 0.9rem 2.5rem;
   font-weight: 600;
   white-space: nowrap;
   height: 100%;
@@ -996,7 +997,7 @@ a .card:hover {
 
 .btn-cta {
   border-radius: 0.5rem;
-  padding: 0.8rem 2.5rem;
+  padding: 0.9rem 2.5rem;
   font-weight: 600;
   white-space: nowrap;
   font-size: 1.125rem;
@@ -1019,14 +1020,14 @@ a .card:hover {
   .navbar-search-container {
     max-width: 700px;
   }
-  
   .navbar-search-field {
     min-width: 400px;
     width: 100%;
+    font-size: 1.2rem !important;
   }
-  
   .navbar-search-field::placeholder {
-    font-size: 1.0625rem;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
   }
 }
 
@@ -1040,7 +1041,8 @@ a .card:hover {
   }
   
   .navbar-search-field::placeholder {
-    font-size: 1rem;
+    font-size: 1.05rem;
+    letter-spacing: 2px;
   }
 }
 
@@ -1054,7 +1056,7 @@ a .card:hover {
   .navbar-search-field,
   .btn-cta {
     height: 38px;
-    font-size: 0.98rem;
+    font-size: 0.98rem !important;
     padding: 0 1rem;
     border-radius: 0.5rem;
     box-sizing: border-box;
@@ -1079,11 +1081,12 @@ a .card:hover {
   
   .navbar-search-field {
     min-width: 100%;
-    font-size: 1.25rem;
+    font-size: 1.25rem !important;
+    letter-spacing: 2px;
   }
   
   .navbar-search-field::placeholder {
-    font-size: 1rem;
+    font-size: 1.0625rem;
   }
   
   .navbar-nav-container {
@@ -1101,7 +1104,8 @@ a .card:hover {
   }
   
   .navbar-search-field {
-    font-size: 1.125rem;
+    font-size: 1.125rem !important;
+    letter-spacing: 2px;
     padding: 0.5rem 1rem;
   }
   
