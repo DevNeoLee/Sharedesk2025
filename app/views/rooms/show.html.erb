@@ -1,7 +1,7 @@
 <!-- Room Detail Page -->
 <div class="room-detail-container">
   <!-- Main Room Header -->
-  <div class="room-detail-header mb-4">
+  <div class="room-detail-header">
     <div class="room-detail-title-section">
       <h1 class="room-detail-title"><%= @room.listing_name %></h1>
       <div class="room-detail-meta">
@@ -18,7 +18,7 @@
   </div>
 
   <!-- Image Carousel -->
-  <div class="room-detail-image-section mb-4">
+  <div class="room-detail-image-section">
     <div class="room-image-carousel">
       <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">                    
         <% if @room.images.attached? %>
@@ -55,7 +55,14 @@
       </div>
     </div>
   </div>
-
+    <!-- Full Width Reservation Section -->
+    <div class="row">
+      <div class="col-12">
+        <div class="full-width-reservation-section">
+          <%= render 'reservations/form' %>
+        </div>
+      </div>
+    </div>
   <!-- Main Content Grid -->
   <div class="room-detail-content">
     <div class="row">
@@ -240,17 +247,10 @@
             </div>
           </div>
         </div>
-
-        <!-- Reservation Form -->
-        <div class="room-detail-card sticky-top">
-          <div class="room-detail-card-header">
-            <h3><i class="fas fa-calendar-check"></i> Reserve This Space</h3>
-          </div>
-          <div class="room-detail-card-body">
-            <%= render 'reservations/form' %>
-          </div>
-        </div>
       </div>
+    </div>
+
+
     </div>
   </div>
 
