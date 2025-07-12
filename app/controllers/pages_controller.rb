@@ -57,4 +57,9 @@ class PagesController < ApplicationController
       render json: { success: true, message: 'Location consent declined' }
     end
   end
+  
+  def current_user_location
+    location = get_user_location
+    render json: { location: location }
+  end
 end

@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get '/search' => 'pages#search'
   get '/attribution' => 'pages#attribution'
   post '/location_consent' => 'pages#location_consent'
+  get '/current_user_location' => 'pages#current_user_location'
 
   resources :rooms do 
     member do

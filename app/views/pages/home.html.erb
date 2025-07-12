@@ -28,7 +28,16 @@
     sessionStorage.setItem('locationConsentShown', 'true');
     sessionStorage.setItem('locationConsent', 'true');
     
-    // Send consent to server
+    // Show loading state
+    const modal = document.getElementById('locationConsentModal');
+    if (modal) {
+      const acceptBtn = modal.querySelector('button[onclick="acceptLocationSharing()"]');
+      const originalText = acceptBtn.innerHTML;
+      acceptBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+      acceptBtn.disabled = true;
+    }
+    
+    // Send consent to server and get updated location
     fetch('/location_consent', {
       method: 'POST',
       headers: {
@@ -36,12 +45,34 @@
         'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
       },
       body: JSON.stringify({ consent: true })
-    }).then(() => {
-      // Reload page to update location
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Get updated location from server
+        return fetch('/current_user_location', {
+          method: 'GET',
+          headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+          }
+        });
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.location) {
+        // Update all location references on the page
+        updateLocationOnPage(data.location);
+      }
+    })
+    .catch(error => {
+      console.error('Error updating location:', error);
+      // Fallback to page reload if AJAX fails
       window.location.reload();
+    })
+    .finally(() => {
+      closeLocationModal();
     });
-    
-    closeLocationModal();
   }
   
   function declineLocationSharing() {
@@ -54,6 +85,88 @@
     const modal = document.getElementById('locationConsentModal');
     if (modal) {
       modal.style.display = 'none';
+    }
+  }
+
+  function updateLocationOnPage(location) {
+    // Add updating animation to location elements
+    const locationElements = document.querySelectorAll('.display-4, .btn-cta, input[name="q[address_cont]"]');
+    locationElements.forEach(el => {
+      el.classList.add('location-update', 'updating');
+    });
+    
+    // Update the main heading with animation
+    const mainHeading = document.querySelector('.display-4');
+    if (mainHeading) {
+      setTimeout(() => {
+        mainHeading.innerHTML = `Need a Desk in ${location}—Fast?`;
+        mainHeading.classList.remove('updating');
+      }, 150);
+    }
+    
+    // Update the "Find in Your Area" button link
+    const findButton = document.querySelector('.btn-cta');
+    if (findButton) {
+      const link = findButton.closest('a');
+      if (link) {
+        link.href = `/search?q[address_cont]=${encodeURIComponent(location)}`;
+        setTimeout(() => {
+          findButton.classList.remove('updating');
+        }, 300);
+      }
+    }
+    
+    // Update search form location field
+    const searchField = document.querySelector('input[name="q[address_cont]"]');
+    if (searchField) {
+      setTimeout(() => {
+        searchField.value = location;
+        searchField.classList.remove('updating');
+      }, 450);
+    }
+    
+    // Remove updating class from all elements after animation
+    setTimeout(() => {
+      locationElements.forEach(el => {
+        el.classList.remove('location-update', 'updating');
+      });
+    }, 600);
+    
+    // Show success message
+    if (typeof toastr !== 'undefined') {
+      toastr.success(`Location updated to ${location}!`, 'Location Updated', {
+        timeOut: 3000,
+        extendedTimeOut: 1000,
+        closeButton: true,
+        progressBar: true
+      });
+    } else {
+      // Fallback notification
+      const notification = document.createElement('div');
+      notification.className = 'alert alert-success alert-dismissible fade show location-update-notification';
+      notification.innerHTML = `
+        <div class="d-flex align-items-center">
+          <i class="fas fa-check-circle me-2" style="color: #28a745;"></i>
+          <div>
+            <strong>Location Updated!</strong><br>
+            <small>Your location is now set to ${location}</small>
+          </div>
+          <button type="button" class="btn-close ms-auto" onclick="this.parentElement.parentElement.remove()"></button>
+        </div>
+      `;
+      document.body.appendChild(notification);
+      
+      // Auto-remove after 4 seconds
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.style.animation = 'slideOutRight 0.3s ease-out';
+          setTimeout(() => {
+            if (notification.parentNode) {
+              notification.parentNode.removeChild(notification);
+            }
+          }, 300);
+        }
+      }, 4000);
     }
   }
 </script>
