@@ -29,8 +29,8 @@
       <div class="collapse navbar-collapse d-none d-md-block" id="navbarCollapse">
         <ul class="navbar-nav ms-auto d-flex align-items-center gap-3" style="margin-right: 0;">
           <% if user_signed_in? %>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; color: #333;">
+            <li class="nav-item css-dropdown">
+              <a class="nav-link css-dropdown-toggle d-flex align-items-center gap-2" href="#" onclick="toggleDropdown(event)" style="text-decoration: none; color: #333;">
                 <div class="profile-avatar">
                   <% if current_user.avatar.attached? %>
                     <%= image_tag current_user.avatar, class: "rounded-circle", width: "45", height: "45", style: "object-fit: cover;" %>
@@ -39,8 +39,9 @@
                   <% end %>
                 </div>
                 <span class="fw-medium"><%= current_user.name || current_user.email.split('@').first %></span>
+                <i class="fas fa-chevron-down dropdown-icon" style="font-size: 12px; margin-left: 4px; transition: transform 0.2s ease;"></i>
               </a>
-              <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="navbarDropdown" style="border: none; border-radius: 12px; min-width: 200px;">
+              <ul class="css-dropdown-menu shadow-lg" id="profileDropdown" style="border: none; border-radius: 12px; min-width: 200px;">
                 <li class="dropdown-header">
                   <div class="d-flex align-items-center gap-2">
                     <div class="profile-avatar">
@@ -129,6 +130,43 @@
     const searchField = document.getElementById('navbar-search');
     if (searchField) {
       searchField.focus();
+    }
+  });
+
+  // Dropdown toggle function
+  function toggleDropdown(event) {
+    event.preventDefault();
+    const dropdown = document.getElementById('profileDropdown');
+    const icon = event.currentTarget.querySelector('.dropdown-icon');
+    
+    if (dropdown.classList.contains('show')) {
+      dropdown.classList.remove('show');
+      icon.style.transform = 'rotate(0deg)';
+    } else {
+      // Close any other open dropdowns
+      document.querySelectorAll('.css-dropdown-menu.show').forEach(menu => {
+        menu.classList.remove('show');
+      });
+      document.querySelectorAll('.dropdown-icon').forEach(icon => {
+        icon.style.transform = 'rotate(0deg)';
+      });
+      
+      dropdown.classList.add('show');
+      icon.style.transform = 'rotate(180deg)';
+    }
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('profileDropdown');
+    const dropdownToggle = document.querySelector('.css-dropdown-toggle');
+    
+    if (dropdown && !dropdown.contains(event.target) && !dropdownToggle.contains(event.target)) {
+      dropdown.classList.remove('show');
+      const icon = dropdownToggle.querySelector('.dropdown-icon');
+      if (icon) {
+        icon.style.transform = 'rotate(0deg)';
+      }
     }
   });
 </script>

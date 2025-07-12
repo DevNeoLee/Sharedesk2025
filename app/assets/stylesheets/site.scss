@@ -1867,6 +1867,103 @@ input[type="search"]::-ms-clear {
   }
 }
 
+/* CSS-only Dropdown Menu */
+.css-dropdown {
+  position: relative;
+}
+
+.css-dropdown-toggle {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.css-dropdown-toggle:hover {
+  color: #007bff !important;
+}
+
+.css-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
+  z-index: 1000;
+  margin-top: 8px;
+  box-shadow: 0 8px 32px rgba(60, 60, 90, 0.18), 0 1.5px 6px 0 rgba(60, 60, 90, 0.10);
+}
+
+.css-dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.css-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: 20px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid white;
+  z-index: 1001;
+}
+
+.css-dropdown-menu::after {
+  content: '';
+  position: absolute;
+  top: -9px;
+  right: 20px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #e0e0e0;
+  z-index: 1000;
+}
+
+.css-dropdown-menu .dropdown-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 0;
+}
+
+.css-dropdown-menu .dropdown-item {
+  padding: 10px 16px;
+  color: #333;
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.2s ease;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+.css-dropdown-menu .dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.css-dropdown-menu .dropdown-item.text-danger:hover {
+  background-color: #fff5f5;
+  color: #dc3545;
+}
+
+.css-dropdown-menu .dropdown-divider {
+  margin: 8px 0;
+  border-top: 1px solid #e0e0e0;
+}
+
 /* 네비게이션 메뉴가 열릴 때 부드러운 페이드/슬라이드 효과 */
 .navbar-collapse {
   transition: box-shadow 0.3s, background 0.3s;
@@ -1903,6 +2000,13 @@ input[type="search"]::-ms-clear {
 @keyframes fadeInBackdrop {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+/* 모바일에서 CSS 드롭다운 숨김 */
+@media (max-width: 768px) {
+  .css-dropdown {
+    display: none;
+  }
 }
 
 /* 모바일 드로어 네비게이션 */
