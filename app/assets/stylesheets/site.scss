@@ -407,12 +407,128 @@ input[type="checkbox"] {
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/* Remove red mark when checkbox is checked */
-input[type="checkbox"]:checked:before {
-  content: none;
+input[type="checkbox"]:checked {
+  background-color: #007bff;
+  border-color: #007bff;
 }
+
+input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.8em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  margin-bottom: 0;
+  font-weight: 500;
+  color: #495057;
+}
+
+.checkbox-label:hover {
+  background-color: #f8f9fa;
+}
+
+.checkbox-label input[type="checkbox"] {
+  margin-right: 8px;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.checkbox-label span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-label i {
+  color: #6c757d;
+  font-size: 0.9em;
+}
+
+/* Radio button styles */
+input[type="radio"] {
+  height: 1.25em;
+  width: 1.25em;
+  margin-bottom: -0.25em;
+  vertical-align: top;
+  border: 1px solid #c4c4c4;
+  border-radius: 50%;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+input[type="radio"]:checked {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.5em;
+  height: 0.5em;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  margin-bottom: 0;
+  font-weight: 500;
+  color: #495057;
+}
+
+.radio-label:hover {
+  background-color: #f8f9fa;
+}
+
+.radio-label input[type="radio"] {
+  margin-right: 8px;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.radio-label span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.radio-label i {
+  color: #6c757d;
+  font-size: 0.9em;
+}
+
+
 
 .btn-file {
   position: relative;

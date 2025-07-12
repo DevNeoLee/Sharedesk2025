@@ -32,159 +32,193 @@
 
   <div id="complex_search" class="search-form-card">
       <div class="d-flex justify-content-end align-items-center mb-3">
-          <button id="complex_search_button" class="btn btn-secondary">Advanced Search</button>
+          <button id="complex_search_button" class="btn btn-secondary btn-lg" style="border-radius: 0.5rem; padding: 0.8rem 2.5rem; font-weight: 600; font-size: 1.125rem; letter-spacing: 0.5px; border: none; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(108, 117, 125, 0.2);">
+              <i class="fas fa-cog me-2"></i>Advanced Search
+          </button>
       </div>
 
       <div id="complex_search_menu" class="col-md-12" style="display: none;">
          
-          <div class="mt-3">
+          <div class="mt-1">
               <%= search_form_for @browse, url: search_path do |f| %>
-                  <div class="row mb-3">
+                  <div class="row mb-2">
                       <div class="col-md-6">
-                          <label class="form-label">Location:</label>
+                          <label class="form-label mb-1">Location:</label>
                           <%=f.search_field :address_cont, class: "form-control input-lg mr-sm-2", placeholder: "Where are you going?", id: "search_location" %>
                       </div>
                       <div class="col-md-3">
-                          <label class="form-label">Start Date:</label>
+                          <label class="form-label mb-1">Start Date:</label>
                           <%= text_field_tag :start_date, nil, {placeholder: "Start Date", id: "start_date", class: "form-control"}%>
                       </div>
                       <div class="col-md-3">
-                          <label class="form-label">End Date:</label>
+                          <label class="form-label mb-1">End Date:</label>
                           <%= text_field_tag :end_date, nil, placeholder: "End Date", class: "form-control", id: "end_date"%>
                       </div>
                   </div>
-                  <hr>
-                  <div class="row mt-3">
-                      <div class="col-md-3">
-                          <label class="form-label">Space Name:</label>
+                  
+                  <div class="row mb-4">
+                      <div class="col-md-4">
+                          <label class="form-label mb-1">Space Name:</label>
                           <%= f.text_field :listing_name, placeholder: "Listing Name", class: "form-control"%>
                       </div>
-                  </div>
-                  <hr>
-                  <div class="row mt-3">
-                      <div class="col-md-3">
-                          <label class="form-label">Price (min $):</label>
+                      <div class="col-md-4">
+                          <label class="form-label mb-1">Price (min $):</label>
                           <%= f.number_field :price_gteq, placeholder: "min price", class: "form-control", id: "price_min"%>
                       </div>
-                      <div class="col-md-3">
-                          <label class="form-label">Price (max $):</label>
+                      <div class="col-md-4">
+                          <label class="form-label mb-1">Price (max $):</label>
                           <%= f.number_field :price_lteq, placeholder: "max price", class: "form-control", id: "price_max"%>
                       </div>
                   </div>
-                  <hr>      
-                  <div class="row">
-                      <span class="col-md-2 form-label">Space Type: </span>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[space_type_eq_any][]", "Apartment", false, id: "space_type_apartment"%> Apartment <i class="far fa-building"></i>
-                      </div>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[space_type_eq_any][]", "House", false, id: "space_type_house"%> House <i class="fas fa-house-user"></i>
-                      </div>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[space_type_eq_any][]", "Office", false, id: "space_type_office"%> Office <i class="fas fa-briefcase"></i>
-                      </div>                
-                  </div>
-                  <hr>
-                  <div class="row">
-                      <span class="col-md-2 form-label">Desk Type: </span>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[desk_type_eq_any][]", "Single Desk", false, id: "desk_type_single"%> Single Desk <i class="far fa-user"></i>
-                      </div>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[desk_type_eq_any][]", "Private Room Office", false, id: "desk_type_private"%> Private Room Office <i class="fas fa-person-booth"></i>
-                      </div>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[desk_type_eq_any][]", "Sharing Table", false, id: "desk_type_sharing"%> Sharing Table <i class="fas fa-users"></i>
-                      </div>                
-                  </div>
-                  <hr>
-                   <div class="row">
-                      <span class="col-md-2 form-label">Noise Level: </span>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[noise_level_eq_any][]", "Silent Mode", false, id: "noise_silent"%> Silent Mode <i class="fas fa-volume-mute"></i>
-                      </div>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[noise_level_eq_any][]", "Quiet", false, id: "noise_quiet"%> Quiet <i class="fas fa-volume-off"></i>
-                      </div>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[noise_level_eq_any][]", "Casual", false, id: "noise_casual"%> Casual <i class="fas fa-volume-down"></i>
-                      </div>                
-                  </div>
-                  <hr>
-                  <div class="row">
-                      <span class="col-md-2 form-label">Manager on Premise: </span>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[manager_on_eq_any][]", "Fulltime", false, id: "manager_fulltime"%> Fulltime <i class="fas fa-user-shield"></i>
-                      </div>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[manager_on_eq_any][]", "Parttime", false, id: "manager_parttime"%> Parttime <i class="fas fa-user-clock"></i>
-                      </div>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[manager_on_eq_any][]", "No Stay", false, id: "manager_nostay"%> No Stay <i class="fas fa-comment-slash"></i>
-                      </div>                
-                  </div>
-                  <hr>
-                  <div class="row">
-                      <span class="col-md-2 form-label">Security Level: </span>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[security_level_eq_any][]", "Maximum", false, id: "security_maximum"%> Maximum <i class="fas fa-shield-alt"></i>
-                      </div>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[security_level_eq_any][]", "High", false, id: "security_high"%> High <i class="fas fa-shield-alt"></i>
-                      </div>
-                      <div class="col-md-3">
-                          <%= check_box_tag "q[security_level_eq_any][]", "Good", false, id: "security_good"%> Good <i class="fas fa-shield-alt"></i>
-                      </div>                
-                  </div>
-                  <hr>
-                  <div class="row">
-                      <div class="col-md-4">
-                          <div class="form-group">
-                              <label class="form-label">How many seats needed?</label>
-                              <%= f.number_field :capacity_gteq, class: "form-control", placeholder: "How many people?" %>
-                          </div>
-                      </div>
-                      <div class="col-md-4">
-                          <div class="form-group">
-                              <label class="form-label">Bathrooms</label>
-                              <%= f.select :bath_room_gteq, [["1",1], ["2",2], ["3",3], ["4+",4]], prompt: "Need more bathrooms?", class: "form-control"%>
+                  <div class="row mb-4">
+                      <div class="col-md-12">
+                          <label class="form-label mb-1">Space Type:</label>
+                          <div class="d-flex flex-wrap gap-2">
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[space_type_eq]", "Apartment", false, id: "space_type_apartment"%>
+                                  <span>Apartment <i class="far fa-building"></i></span>
+                              </label>
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[space_type_eq]", "House", false, id: "space_type_house"%>
+                                  <span>House <i class="fas fa-house-user"></i></span>
+                              </label>
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[space_type_eq]", "Office", false, id: "space_type_office"%>
+                                  <span>Office <i class="fas fa-briefcase"></i></span>
+                              </label>
                           </div>
                       </div>
                   </div>
-                  <hr>
-                  <div class="row pl-3 pb-3">
-                          <span class="form-label">Amenity: </span>
+                  <div class="row mb-4">
+                      <div class="col-md-12">
+                          <label class="form-label">Desk Type:</label>
+                          <div class="d-flex flex-wrap gap-2">
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[desk_type_eq]", "Single Desk", false, id: "desk_type_single"%>
+                                  <span>Single Desk <i class="far fa-user"></i></span>
+                              </label>
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[desk_type_eq]", "Private Room Office", false, id: "desk_type_private"%>
+                                  <span>Private Room Office <i class="fas fa-person-booth"></i></span>
+                              </label>
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[desk_type_eq]", "Sharing Table", false, id: "desk_type_sharing"%>
+                                  <span>Sharing Table <i class="fas fa-users"></i></span>
+                              </label>
+                          </div>
                       </div>
-                  <div class="row">
-                      <div class="col-md-4 mb-2">
-                          <%= check_box_tag "q[is_conference_eq]", true, false, id: "amenity_conference"%> Conference Call <i class="fas fa-headset ml-3"></i>
-                      </div>
-                      <div class="col-md-4 mb-2">
-                          <%= check_box_tag "q[is_kitchen_eq]", true, false, id: "amenity_kitchen"%> Kitchen <i class="fas fa-sink ml-3"></i>
-                      </div>
-                      <div class="col-md-4 mb-2">
-                          <%= check_box_tag "q[is_wifi_eq]", true, false, id: "amenity_wifi"%> Wifi <i class="fas fa-wifi ml-3 mb-1"></i>
-                      </div>
-                      <div class="col-md-4 mb-2">
-                          <%= check_box_tag "q[is_heating_eq]", true, false, id: "amenity_heating"%> Heating <i class="fas fa-fire ml-3"></i>
-                      </div>
-                      <div class="col-md-4 mb-2">
-                          <%= check_box_tag "q[is_air_eq]", true, false, id: "amenity_air"%> Air Condition <i class="fas fa-fan ml-3"></i>
-                      </div>
-                      <div class="col-md-4 mb-2">
-                          <%= check_box_tag "q[is_printing_eq]", true, false, id: "amenity_printing"%> Printing Station <i class="fas fa-print ml-3"></i>
-                      </div>
-                      <div class="col-md-4 mb-2">
-                          <%= check_box_tag "q[is_drinks_eq]", true, false, id: "amenity_drinks"%> Free Drinks <i class="fas fa-print ml-3"></i>
-                      </div>
-                      <div class="col-md-4 mb-2">
-                          <%= check_box_tag "q[is_parking_eq]", true, false, id: "amenity_parking"%> parking <i class="fas fa-parking ml-3"></i>
-                      </div>           
                   </div>
-                  <br>
-                  <div class="row">
-                      <div class="col-md-4">
-                          <%= f.submit "Search", class: "btn btn-primary"%>
+                   <div class="row mb-4">
+                      <div class="col-md-12">
+                          <label class="form-label">Noise Level:</label>
+                          <div class="d-flex flex-wrap gap-2">
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[noise_level_eq]", "Silent Mode", false, id: "noise_silent"%>
+                                  <span>Silent Mode <i class="fas fa-volume-mute"></i></span>
+                              </label>
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[noise_level_eq]", "Quiet", false, id: "noise_quiet"%>
+                                  <span>Quiet <i class="fas fa-volume-off"></i></span>
+                              </label>
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[noise_level_eq]", "Casual", false, id: "noise_casual"%>
+                                  <span>Casual <i class="fas fa-volume-down"></i></span>
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row mb-4">
+                      <div class="col-md-12">
+                          <label class="form-label">Manager on Premise:</label>
+                          <div class="d-flex flex-wrap gap-2">
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[manager_on_eq]", "Fulltime", false, id: "manager_fulltime"%>
+                                  <span>Fulltime <i class="fas fa-user-shield"></i></span>
+                              </label>
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[manager_on_eq]", "Parttime", false, id: "manager_parttime"%>
+                                  <span>Parttime <i class="fas fa-user-clock"></i></span>
+                              </label>
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[manager_on_eq]", "No Stay", false, id: "manager_nostay"%>
+                                  <span>No Stay <i class="fas fa-comment-slash"></i></span>
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row mb-4">
+                      <div class="col-md-12">
+                          <label class="form-label">Security Level:</label>
+                          <div class="d-flex flex-wrap gap-2">
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[security_level_eq]", "Maximum", false, id: "security_maximum"%>
+                                  <span>Maximum <i class="fas fa-shield-alt"></i></span>
+                              </label>
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[security_level_eq]", "High", false, id: "security_high"%>
+                                  <span>High <i class="fas fa-shield-alt"></i></span>
+                              </label>
+                              <label class="radio-label">
+                                  <%= radio_button_tag "q[security_level_eq]", "Good", false, id: "security_good"%>
+                                  <span>Good <i class="fas fa-shield-alt"></i></span>
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row mb-4">
+                      <div class="col-md-6">
+                          <label class="form-label">How many seats needed?</label>
+                          <%= f.number_field :capacity_gteq, class: "form-control", placeholder: "How many people?" %>
+                      </div>
+                      <div class="col-md-6">
+                          <label class="form-label">Bathrooms</label>
+                          <%= f.select :bath_room_gteq, [["1",1], ["2",2], ["3",3], ["4+",4]], prompt: "Need more bathrooms?", class: "form-control"%>
+                      </div>
+                  </div>
+                  <div class="row mb-4">
+                      <div class="col-md-12">
+                          <label class="form-label">Amenities:</label>
+                          <div class="d-flex flex-wrap gap-2">
+                              <label class="checkbox-label">
+                                  <%= check_box_tag "q[is_conference_eq]", true, false, id: "amenity_conference"%>
+                                  <span>Conference Call <i class="fas fa-headset"></i></span>
+                              </label>
+                              <label class="checkbox-label">
+                                  <%= check_box_tag "q[is_kitchen_eq]", true, false, id: "amenity_kitchen"%>
+                                  <span>Kitchen <i class="fas fa-sink"></i></span>
+                              </label>
+                              <label class="checkbox-label">
+                                  <%= check_box_tag "q[is_wifi_eq]", true, false, id: "amenity_wifi"%>
+                                  <span>Wifi <i class="fas fa-wifi"></i></span>
+                              </label>
+                              <label class="checkbox-label">
+                                  <%= check_box_tag "q[is_heating_eq]", true, false, id: "amenity_heating"%>
+                                  <span>Heating <i class="fas fa-fire"></i></span>
+                              </label>
+                              <label class="checkbox-label">
+                                  <%= check_box_tag "q[is_air_eq]", true, false, id: "amenity_air"%>
+                                  <span>Air Condition <i class="fas fa-fan"></i></span>
+                              </label>
+                              <label class="checkbox-label">
+                                  <%= check_box_tag "q[is_printing_eq]", true, false, id: "amenity_printing"%>
+                                  <span>Printing Station <i class="fas fa-print"></i></span>
+                              </label>
+                              <label class="checkbox-label">
+                                  <%= check_box_tag "q[is_drinks_eq]", true, false, id: "amenity_drinks"%>
+                                  <span>Free Drinks <i class="fas fa-wine-glass-alt"></i></span>
+                              </label>
+                              <label class="checkbox-label">
+                                  <%= check_box_tag "q[is_parking_eq]", true, false, id: "amenity_parking"%>
+                                  <span>Parking <i class="fas fa-parking"></i></span>
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row mt-3">
+                      <div class="col-md-12">
+                          <div class="d-flex justify-content-end">
+                              <%= f.submit "🔍 Search Spaces", class: "btn btn-cta btn-lg" %>
+                          </div>
                       </div>
                   </div>
               <% end %>
