@@ -12,7 +12,7 @@ export default class extends Controller {
       this.initializeMap()
     } else {
       console.log("Google Maps API not loaded yet, waiting...")
-      // Google Maps API가 로드될 때까지 대기
+      // Wait for Google Maps API to load
       this.waitForGoogleMaps()
     }
   }
@@ -98,10 +98,10 @@ export default class extends Controller {
         this._autocomplete.bindTo('bounds', this.map())
         this._autocomplete.setFields(['address_components', 'geometry', 'icon', 'name'])
         
-        // Autocomplete 이벤트 리스너 추가
+        // Add autocomplete event listener
         this._autocomplete.addListener('place_changed', this.locationChanged.bind(this))
         
-        // 추가 이벤트 리스너들
+        // Additional event listeners
         this.fieldTarget.addEventListener('input', (e) => {
           console.log("Input event triggered:", e.target.value)
         })

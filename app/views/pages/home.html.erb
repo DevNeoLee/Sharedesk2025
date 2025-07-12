@@ -10,10 +10,77 @@
       const roundedScore = Math.round(originalScore * 2) / 2;
       element.setAttribute('data-score', roundedScore);
     });
+    
+    // Check if user has consented to location sharing
+    if (!sessionStorage.getItem('locationConsentShown')) {
+      showLocationConsentModal();
+    }
   });
   
-
+  function showLocationConsentModal() {
+    const modal = document.getElementById('locationConsentModal');
+    if (modal) {
+      modal.style.display = 'block';
+    }
+  }
+  
+  function acceptLocationSharing() {
+    sessionStorage.setItem('locationConsentShown', 'true');
+    sessionStorage.setItem('locationConsent', 'true');
+    
+    // Send consent to server
+    fetch('/location_consent', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ consent: true })
+    }).then(() => {
+      // Reload page to update location
+      window.location.reload();
+    });
+    
+    closeLocationModal();
+  }
+  
+  function declineLocationSharing() {
+    sessionStorage.setItem('locationConsentShown', 'true');
+    sessionStorage.setItem('locationConsent', 'false');
+    closeLocationModal();
+  }
+  
+  function closeLocationModal() {
+    const modal = document.getElementById('locationConsentModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
 </script>
+
+<!-- Location Consent Modal -->
+<div id="locationConsentModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3><i class="fas fa-map-marker-alt"></i> Location Permission</h3>
+    </div>
+    <div class="modal-body">
+      <p>We would like to use your approximate location (city) information to provide better service.</p>
+      <ul>
+        <li>🔍 <strong>Nearby Workspace Search</strong></li>
+        <li>📍 <strong>Personalized Recommendations</strong></li>
+        <li>⚡ <strong>Quick Local Search</strong></li>
+      </ul>
+      <p><small>• Only approximate city information is collected using IP address<br>
+      • No exact address or personal information is collected<br>
+      • You can withdraw consent at any time in settings</small></p>
+    </div>
+    <div class="modal-footer">
+      <button onclick="declineLocationSharing()" class="btn btn-outline-secondary">Decline</button>
+      <button onclick="acceptLocationSharing()" class="btn btn-primary">Accept</button>
+    </div>
+  </div>
+</div>
 
 <%# front two main images with local access %>
 <div class="bg-light p-5 rounded  mb-5 section">

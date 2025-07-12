@@ -432,7 +432,7 @@ input[type="checkbox"] {
   -webkit-appearance: none;
 }
 
-/* 체크박스 체크 시 빨간색 마크 제거 */
+/* Remove red mark when checkbox is checked */
 input[type="checkbox"]:checked:before {
   content: none;
 }
@@ -892,7 +892,7 @@ a .card:hover {
 
 .navbar-search-container .btn-cta {
   border-radius: 0.5rem;
-  padding: 0.5rem 1.5rem;
+  padding: 0.6rem 1.5rem;
   font-weight: 600;
   white-space: nowrap;
   height: 100%;
@@ -1110,7 +1110,7 @@ a .card:hover {
   outline: none;
 }
 
-/* Reserve Your Desk location field clear(x) 버튼 커서 스타일 */
+/* Reserve Your Desk location field clear(x) button cursor style */
 input[type="search"]::-webkit-search-clear-button {
   cursor: pointer !important;
 }
@@ -1787,7 +1787,7 @@ input[type="search"]::-webkit-search-clear-button {
   display: none;
 }
 
-/* 모든 브라우저에서 기본 x(지우기) 버튼 숨김 */
+/* Hide default x(clear) button in all browsers */
 input[type="search"]::-webkit-search-clear-button,
 input[type="search"]::-webkit-search-cancel-button {
   display: none !important;
@@ -1804,7 +1804,7 @@ input[type="search"]::-ms-clear {
   box-shadow: 0 8px 32px 0 rgba(60, 60, 90, 0.18), 0 1.5px 6px 0 rgba(60, 60, 90, 0.10);
 }
 
-/* 네비게이션 버튼 반응형 및 스타일 개선 */
+/* Navigation button responsive and style improvements */
 .nav-btn {
   min-width: 90px;
   font-weight: 600;
@@ -1820,7 +1820,7 @@ input[type="search"]::-ms-clear {
   outline: none;
 }
 
-/* 데스크톱 네비게이션 버튼 고정 크기 */
+/* Desktop navigation button fixed size */
 .navbar-nav .nav-btn {
   min-width: 100px;
   max-width: 100px;
@@ -1964,7 +1964,7 @@ input[type="search"]::-ms-clear {
   border-top: 1px solid #e0e0e0;
 }
 
-/* 네비게이션 메뉴가 열릴 때 부드러운 페이드/슬라이드 효과 */
+/* Smooth fade/slide effect when navigation menu opens */
 .navbar-collapse {
   transition: box-shadow 0.3s, background 0.3s;
   box-shadow: none;
@@ -1985,7 +1985,7 @@ input[type="search"]::-ms-clear {
   to   { opacity: 1; transform: translateY(0);}
 }
 
-/* 메뉴가 열릴 때 바깥 어두운 오버레이 */
+/* Dark overlay outside when menu opens */
 .navbar-mobile-backdrop {
   display: none;
 }
@@ -2002,14 +2002,107 @@ input[type="search"]::-ms-clear {
   to   { opacity: 1; }
 }
 
-/* 모바일에서 CSS 드롭다운 숨김 */
+/* Hide CSS dropdown on mobile */
 @media (max-width: 768px) {
   .css-dropdown {
     display: none;
   }
 }
 
-/* 모바일 드로어 네비게이션 */
+/* Location Consent Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 3000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 0;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 32px rgba(60, 60, 90, 0.18), 0 1.5px 6px 0 rgba(60, 60, 90, 0.10);
+  animation: slideIn 0.3s ease;
+}
+
+.modal-header {
+  padding: 20px 24px 0 24px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.modal-header i {
+  color: #007bff;
+  margin-right: 8px;
+}
+
+.modal-body {
+  padding: 20px 24px;
+}
+
+.modal-body p {
+  margin-bottom: 16px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.modal-body ul {
+  margin: 16px 0;
+  padding-left: 20px;
+}
+
+.modal-body li {
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.modal-body small {
+  color: #666;
+  line-height: 1.5;
+}
+
+.modal-footer {
+  padding: 16px 24px 24px 24px;
+  text-align: right;
+  border-top: 1px solid #e0e0e0;
+}
+
+.modal-footer .btn {
+  margin-left: 12px;
+  min-width: 80px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile drawer navigation */
 .mobile-drawer {
   position: fixed;
   top: 0; right: -100vw;

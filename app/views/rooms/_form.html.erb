@@ -2,7 +2,7 @@
   <div class="trips-section" style="max-width: 900px; margin: 0 auto;">
     <div class="h2 text-center mb-4 title_font">Create Work Space</div>
     <%= form_with(model: @room, local: true, multi: true, data: { controller: :maps, action: "google-maps-callback@window->maps#initializeMap" }) do |f| %>
-      <!-- 기본 정보 -->
+      <!-- Basic Information -->
       <div class="row mb-4">
         <div class="col-md-4 mb-3 p">
           <label class="form-label">Space Name</label>
@@ -45,7 +45,7 @@
           <%= f.select :security_level, [["high", "high"], ["good", "good"], ["maximum", "maximum"]], prompt: 'Select...', class: "form-control" %>
         </div>
       </div>
-      <!-- 위치 정보 -->
+      <!-- Location Information -->
       <div class="card bg-dark mb-4">
         <div class="card-body">
           <div class="row">
@@ -68,7 +68,7 @@
           <div data-maps-target="map" class="map mt-3"></div>
         </div>
       </div>
-      <!-- 옵션 체크박스 -->
+      <!-- Option Checkboxes -->
       <div class="card mb-4 px-3">
         <div class="card-body">
           <div class="row g-3">
@@ -123,14 +123,14 @@
           </div>
         </div>
       </div>
-      <!-- 가격 -->
+      <!-- Price -->
       <div class="row mb-4">
         <div class="col-md-4">
           <label class="form-label">Price($)</label>
           <%= f.number_field :price, placeholder: "Enter dollar amount", class: "form-control" %>
         </div>
       </div>
-      <!-- 사진 업로드 -->
+      <!-- Photo Upload -->
       <div class="row mb-4">
         <div class="col-md-12">
           <label class="form-label">Upload Photos of Your Space</label>
@@ -142,7 +142,7 @@
         </div>
       </div>
       <div id="photos"> <%= render 'shared/images' %> </div>
-      <!-- 공개 여부 -->
+      <!-- Public Status -->
       <div class="card mb-4">
         <div class="card-body py-3 px-4">
           <div class="d-flex flex-row align-items-center justify-content-between">

@@ -210,10 +210,10 @@
   <% else %>
       <div class="search-results-container" data-controller="infinite-scroll" data-action="scroll@window->infinite-scroll#scroll">
           <div class="row search-results-row" data-infinite-scroll-target="entries">
-              <%= render 'rooms/rooms'%> 
+              <%= render 'rooms/rooms' %> 
           </div>
           <div data-infinite-scroll-target="pagination" class="pagination_type">
-              <%== pagy_bootstrap_nav(@pagy_search).html_safe %>
+              <%== pagy_bootstrap_nav(@pagy).html_safe %>
           </div>
       </div>
   <% end %>

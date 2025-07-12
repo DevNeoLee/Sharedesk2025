@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   get '/yourlisting_reservations' => 'reservations#yourlisting_reservations'
   get '/search' => 'pages#search'
   get '/attribution' => 'pages#attribution'
+  post '/location_consent' => 'pages#location_consent'
 
   resources :rooms do 
     member do

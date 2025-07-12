@@ -38,7 +38,7 @@ export default class extends Controller {
                     return;
                 }
                 
-                // 중복 room-card append 방지 로직
+                // Prevent duplicate room-card append logic
                 const existingIds = new Set([...this.entriesTarget.querySelectorAll('.col-md-4')].map(col => {
                     const card = col.querySelector('.card');
                     return card ? card.dataset.roomId : null;

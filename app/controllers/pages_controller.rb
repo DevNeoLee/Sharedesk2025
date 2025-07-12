@@ -29,49 +29,32 @@ class PagesController < ApplicationController
   def attribution
   end
   
-  def search 
-    @browse = Room.ransack(params[:q])
-    @pagy_search, @browse_result = pagy(@browse.result(distinct: true), items: 9)
-    @total_count = @browse.result(distinct: true).count
+  def search
+    @search = Room.ransack(params[:q])
+    @pagy, @rooms_result = pagy(@search.result(distinct: true), items: 9)
     
-    # Debug logging
-    Rails.logger.info "Search params: #{params.inspect}"
-    Rails.logger.info "Search query: #{params[:q].inspect}"
-    Rails.logger.info "Initial results count: #{@browse_result.count}"
+    # Set total count for search results display
+    @total_count = @search.result(distinct: true).count
+    @browse_result = @rooms_result
     
-    # Date-based filtering
-    if params[:start_date].present? && params[:end_date].present?
-      begin
-        # Parse dates from dd-mm-yy format
-        start_date = Date.strptime(params[:start_date], '%d-%m-%y')
-        end_date = Date.strptime(params[:end_date], '%d-%m-%y')
-        
-        # Find rooms that are available during the requested date range
-        # A room is available if it has no reservations that overlap with the requested dates
-        # Overlap occurs when: reservation_start <= requested_end AND reservation_end >= requested_start
-        conflicting_room_ids = Reservation.where(
-          'start_date <= ? AND end_date >= ?',
-          end_date, start_date
-        ).pluck(:room_id).uniq
-        
-        # Filter out rooms with conflicting reservations
-        @browse_result = @browse_result.where.not(id: conflicting_room_ids)
-        
-        Rails.logger.info "Date filtering: start_date=#{start_date}, end_date=#{end_date}, conflicting_rooms=#{conflicting_room_ids.count}, available_rooms=#{@browse_result.count}"
-        
-      rescue Date::Error => e
-        Rails.logger.error "Date parsing error: #{e.message}"
-        # Use default search results on date parsing error
-      end
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: {
+          entries: render_to_string(partial: @rooms_result, formats: [:html]), 
+          pagination: view_context.pagy_nav(@pagy)
+        }
+      }
     end
-    
-    # Handle when no search results found - only show message if there's a search query
-    if params[:q].present? && @browse_result.empty?
-      if params[:start_date].present? && params[:end_date].present?
-        flash.now[:notice] = "No available rooms found for #{params[:q]['address_cont']} during the selected dates. Try different dates or locations."
-      else
-        flash.now[:notice] = "No search results found for #{params[:q]['address_cont']}. Try searching for NYC, Bangkok, or Kolkata."
-      end
+  end
+  
+  def location_consent
+    if params[:consent] == 'true'
+      session[:location_consent] = true
+      render json: { success: true, message: 'Location consent granted' }
+    else
+      session[:location_consent] = false
+      render json: { success: true, message: 'Location consent declined' }
     end
   end
 end
