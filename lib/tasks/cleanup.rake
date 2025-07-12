@@ -463,6 +463,7 @@ namespace :db do
     puts "Total users: #{User.count}"
     puts "Total rooms: #{Room.count}"
   end
+  end
   
   desc "Show current database statistics"
   task stats: :environment do
