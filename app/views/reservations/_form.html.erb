@@ -102,152 +102,254 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  let unavailableDates = [];
-  let startDate = null;
-  let endDate = null;
+// Global variables for datepicker functionality
+window.reservationApp = {
+  unavailableDates: [],
+  startDate: null,
+  endDate: null,
+  roomId: <%= @room.id %>,
+  roomPrice: <%= @room.price %>,
+  initialized: false
+};
 
-  function initializeDatepickers() {
-    if (typeof $ !== 'undefined' && typeof $.fn.datepicker !== 'undefined') {
-      // Load unavailable dates
-      $.ajax({
-        url: '/preload',
-        data: {'room_id': <%= @room.id %>},
-        dataType: 'json',
-        success: function(data) {
-          $.each(data, function(arrId, arrValue) {
-            for(let d = new Date(arrValue.start_date); d <= new Date(arrValue.end_date); d.setDate(d.getDate() + 1)) {
-              unavailableDates.push($.datepicker.formatDate('d-m-yy', d));
-            }
-          });
-          
-          setupDatepickers();
-        },
-        error: function() {
-          console.log('Error loading unavailable dates');
-          setupDatepickers();
+// Multiple initialization strategies for better reliability
+function initializeReservationForm() {
+  // Strategy 1: Check if jQuery and datepicker are available
+  if (typeof $ !== 'undefined' && typeof $.fn.datepicker !== 'undefined') {
+    setupReservationForm();
+  } else {
+    // Strategy 2: Wait for jQuery to load
+    if (typeof $ === 'undefined') {
+      // Check if jQuery is being loaded
+      if (document.querySelector('script[src*="jquery"]')) {
+        setTimeout(initializeReservationForm, 200);
+      } else {
+        // Load jQuery if not present
+        loadJQuery();
+      }
+    } else {
+      // Strategy 3: Wait for datepicker to load
+      setTimeout(initializeReservationForm, 100);
+    }
+  }
+}
+
+function loadJQuery() {
+  // Load jQuery if not already loaded
+  if (!document.querySelector('script[src*="jquery"]')) {
+    const jqueryScript = document.createElement('script');
+    jqueryScript.src = 'https://code.jquery.com/jquery-3.7.1.min.js';
+    jqueryScript.integrity = 'sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=';
+    jqueryScript.crossOrigin = 'anonymous';
+    
+    jqueryScript.onload = function() {
+      // Load jQuery UI after jQuery
+      const jqueryUIScript = document.createElement('script');
+      jqueryUIScript.src = 'https://code.jquery.com/ui/1.13.2/jquery-ui.min.js';
+      jqueryUIScript.crossOrigin = 'anonymous';
+      
+      jqueryUIScript.onload = function() {
+        // Load jQuery UI CSS
+        const jqueryUICSS = document.createElement('link');
+        jqueryUICSS.rel = 'stylesheet';
+        jqueryUICSS.href = 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css';
+        document.head.appendChild(jqueryUICSS);
+        
+        setTimeout(initializeReservationForm, 100);
+      };
+      
+      document.head.appendChild(jqueryUIScript);
+    };
+    
+    document.head.appendChild(jqueryScript);
+  }
+}
+
+function setupReservationForm() {
+  if (window.reservationApp.initialized) return;
+  
+  console.log('Setting up reservation form...');
+  
+  // Load unavailable dates first
+  $.ajax({
+    url: '/preload',
+    data: {'room_id': window.reservationApp.roomId},
+    dataType: 'json',
+    success: function(data) {
+      $.each(data, function(arrId, arrValue) {
+        for(let d = new Date(arrValue.start_date); d <= new Date(arrValue.end_date); d.setDate(d.getDate() + 1)) {
+          window.reservationApp.unavailableDates.push($.datepicker.formatDate('d-m-yy', d));
         }
       });
-    } else {
-      setTimeout(initializeDatepickers, 100);
+      
+      setupDatepickers();
+      window.reservationApp.initialized = true;
+    },
+    error: function() {
+      console.log('Error loading unavailable dates, proceeding with empty dates');
+      setupDatepickers();
+      window.reservationApp.initialized = true;
     }
+  });
+}
+
+function setupDatepickers() {
+  function unavailable(date) {
+    let dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    return [$.inArray(dmy, window.reservationApp.unavailableDates) == -1];
   }
 
-  function setupDatepickers() {
-    function unavailable(date) {
-      let dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
-      return [$.inArray(dmy, unavailableDates) == -1];
+  // Destroy existing datepickers if they exist
+  $('#reservation_start_date').datepicker('destroy');
+  $('#reservation_end_date').datepicker('destroy');
+
+  $('#reservation_start_date').datepicker({
+    dateFormat: 'dd-mm-yy',
+    minDate: 0,
+    maxDate: '3m',
+    beforeShowDay: unavailable,
+    showAnim: 'fadeIn',
+    duration: 200,
+    onSelect: function(selected) {
+      window.reservationApp.startDate = $(this).datepicker('getDate');
+      $('#reservation_end_date').datepicker("option", "minDate", selected);
+      $('#reservation_end_date').attr('disabled', false);
+      $('#reservation_end_date').focus();
+      
+      checkAvailability();
     }
+  });
 
-    $('#reservation_start_date').datepicker({
-      dateFormat: 'dd-mm-yy',
-      minDate: 0,
-      maxDate: '3m',
-      beforeShowDay: unavailable,
-      onSelect: function(selected) {
-        startDate = $(this).datepicker('getDate');
-        $('#reservation_end_date').datepicker("option", "minDate", selected);
-        $('#reservation_end_date').attr('disabled', false);
-        $('#reservation_end_date').focus();
-        
-        checkAvailability();
-      }
-    });
-
-    $('#reservation_end_date').datepicker({
-      dateFormat: 'dd-mm-yy',
-      minDate: 0,
-      maxDate: '3m',
-      beforeShowDay: unavailable,
-      onSelect: function(selected) {
-        endDate = $(this).datepicker('getDate');
-        $('#reservation_start_date').datepicker("option", "maxDate", selected);
-        
-        checkAvailability();
-      }
-    });
-  }
-
-  function checkAvailability() {
-    if (!startDate || !endDate) return;
-
-    let days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
-    
-    if (days <= 0) {
-      showError("End date must be after start date");
-      return;
+  $('#reservation_end_date').datepicker({
+    dateFormat: 'dd-mm-yy',
+    minDate: 0,
+    maxDate: '3m',
+    beforeShowDay: unavailable,
+    showAnim: 'fadeIn',
+    duration: 200,
+    onSelect: function(selected) {
+      window.reservationApp.endDate = $(this).datepicker('getDate');
+      $('#reservation_start_date').datepicker("option", "maxDate", selected);
+      
+      checkAvailability();
     }
-
-    let input = {
-      'start_date': startDate,
-      'end_date': endDate,
-      'room_id': <%= @room.id %>
-    };
-
-    $.ajax({
-      url: "/preview",
-      data: input,
-      success: function(data) {
-        if (data.conflict) {
-          showError("This date range is not available. Please select different dates.");
-          hideBookingSummary();
-          disableBooking();
-        } else {
-          hideError();
-          showSuccess();
-          updateBookingSummary(days);
-          enableBooking();
-        }
-      },
-      error: function() {
-        showError("Error checking availability. Please try again.");
-        hideBookingSummary();
-        disableBooking();
-      }
-    });
-  }
-
-  function updateBookingSummary(days) {
-    let total = days * <%= @room.price %>;
-    $('#reservation_days').text(days);
-    $('#reservation_sum').text(total);
-    $('#reservation_total').val(total);
-    $('#booking-summary').show();
-  }
-
-  function showError(message) {
-    $('#message-text').text(message);
-    $('#reservation-message').show();
-    $('#reservation-success').hide();
-  }
-
-  function hideError() {
-    $('#reservation-message').hide();
-  }
-
-  function showSuccess() {
-    $('#reservation-success').show();
-    $('#reservation-message').hide();
-  }
-
-  function hideBookingSummary() {
-    $('#booking-summary').hide();
-  }
-
-  function enableBooking() {
-    $('#btn_book').prop('disabled', false);
-  }
-
-  function disableBooking() {
-    $('#btn_book').prop('disabled', true);
-  }
-
-  // Initialize datepickers
-  initializeDatepickers();
+  });
 
   // Add click handlers for date icons
-  $('.date-icon').on('click', function() {
+  $('.date-icon').off('click').on('click', function() {
     $(this).siblings('.date-input').focus();
   });
+
+  // Add click handlers for date inputs to ensure calendar pops up
+  $('#reservation_start_date, #reservation_end_date').off('click').on('click', function() {
+    $(this).datepicker('show');
+  });
+
+  console.log('Datepickers initialized successfully');
+}
+
+function checkAvailability() {
+  if (!window.reservationApp.startDate || !window.reservationApp.endDate) return;
+
+  let days = Math.ceil((window.reservationApp.endDate - window.reservationApp.startDate) / (1000 * 60 * 60 * 24)) + 1;
+  
+  if (days <= 0) {
+    showError("End date must be after start date");
+    return;
+  }
+
+  let input = {
+    'start_date': window.reservationApp.startDate,
+    'end_date': window.reservationApp.endDate,
+    'room_id': window.reservationApp.roomId
+  };
+
+  $.ajax({
+    url: "/preview",
+    data: input,
+    success: function(data) {
+      if (data.conflict) {
+        showError("This date range is not available. Please select different dates.");
+        hideBookingSummary();
+        disableBooking();
+      } else {
+        hideError();
+        showSuccess();
+        updateBookingSummary(days);
+        enableBooking();
+      }
+    },
+    error: function() {
+      showError("Error checking availability. Please try again.");
+      hideBookingSummary();
+      disableBooking();
+    }
+  });
+}
+
+function updateBookingSummary(days) {
+  let total = days * window.reservationApp.roomPrice;
+  $('#reservation_days').text(days);
+  $('#reservation_sum').text(total);
+  $('#reservation_total').val(total);
+  $('#booking-summary').show();
+}
+
+function showError(message) {
+  $('#message-text').text(message);
+  $('#reservation-message').show();
+  $('#reservation-success').hide();
+}
+
+function hideError() {
+  $('#reservation-message').hide();
+}
+
+function showSuccess() {
+  $('#reservation-success').show();
+  $('#reservation-message').hide();
+}
+
+function hideBookingSummary() {
+  $('#booking-summary').hide();
+}
+
+function enableBooking() {
+  $('#btn_book').prop('disabled', false);
+}
+
+function disableBooking() {
+  $('#btn_book').prop('disabled', true);
+}
+
+// Multiple initialization triggers for better reliability
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM Content Loaded - Initializing reservation form');
+  initializeReservationForm();
 });
+
+// Also initialize when page is fully loaded
+window.addEventListener('load', function() {
+  console.log('Window Loaded - Checking reservation form');
+  if (!window.reservationApp.initialized) {
+    setTimeout(initializeReservationForm, 100);
+  }
+});
+
+// Initialize when Turbolinks/Turbo navigation completes (if using)
+if (typeof Turbo !== 'undefined') {
+  document.addEventListener('turbo:load', function() {
+    console.log('Turbo Load - Initializing reservation form');
+    window.reservationApp.initialized = false;
+    initializeReservationForm();
+  });
+}
+
+// Fallback initialization
+setTimeout(function() {
+  if (!window.reservationApp.initialized) {
+    console.log('Fallback initialization - Setting up reservation form');
+    initializeReservationForm();
+  }
+}, 1000);
 </script>
