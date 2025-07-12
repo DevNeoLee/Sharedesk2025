@@ -28,24 +28,25 @@
                             defer: true,
                             "data-turbo-eval": false %>
     
+    <!-- Backup Stimulus loading script -->
     <script>
-      // Google Maps API 디버깅 로그
+      // Google Maps API debugging logs
       console.log('=== Google Maps API Debug ===');
       console.log('Current page:', window.location.pathname);
       console.log('Environment:', '<%= Rails.env %>');
       console.log('API Key present:', '<%= ENV['MAPS_API_KEY'].present? %>');
       console.log('API Key starts with:', '<%= ENV['MAPS_API_KEY']&.first(10) %>');
       
-      // Stimulus 컨트롤러 로딩 상태 확인
+      // Check Stimulus controller loading status
       console.log('=== Stimulus Loading Check ===');
       console.log('Importmap available:', typeof window.importmap !== 'undefined');
       console.log('Stimulus available:', typeof window.Stimulus !== 'undefined');
       
-      // Google Maps API 로딩 상태 확인
+      // Check Google Maps API loading status
       window.addEventListener('load', function() {
         console.log('Page loaded, checking Google Maps API...');
         
-        // API 키 확인
+        // Check API key
         const script = document.querySelector('script[src*="maps.googleapis.com"]');
         if (script) {
           console.log('✅ Google Maps script found:', script.src);
@@ -53,24 +54,7 @@
           console.error('❌ Google Maps script not found');
         }
         
-        // Stimulus 컨트롤러 확인
-        setTimeout(function() {
-          console.log('=== Stimulus Controller Loading Check ===');
-          console.log('Stimulus application:', typeof window.Stimulus !== 'undefined' && window.Stimulus.application);
-          
-          if (typeof window.Stimulus !== 'undefined' && window.Stimulus.application) {
-            console.log('✅ Stimulus application loaded');
-            console.log('Registered controllers:', window.Stimulus.application.controllers);
-            
-            // maps 컨트롤러 등록 확인
-            const mapsController = window.Stimulus.application.controllers.find(c => c.identifier === 'maps');
-            console.log('Maps controller registered:', !!mapsController);
-          } else {
-            console.error('❌ Stimulus application not loaded');
-          }
-        }, 1000);
-        
-        // Google Maps 객체 확인
+        // Check Google Maps object
         setTimeout(function() {
           if (typeof google !== 'undefined' && google.maps) {
             console.log('✅ Google Maps API loaded successfully');
@@ -85,15 +69,63 @@
         }, 2000);
       });
       
-      // Google Maps API 에러 핸들링
+      // Google Maps API error handling
       window.gm_authFailure = function() {
         console.error('❌ Google Maps API authentication failed');
         console.log('This usually means the API key is invalid or has restrictions');
       };
       
-      window.gm_authFailure = function() {
-        console.error('❌ Google Maps API authentication failed');
-      };
+      // Backup loading if Stimulus is not loaded
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          if (typeof window.Stimulus === 'undefined') {
+            console.log('⚠️ Stimulus not loaded, attempting backup loading...');
+            
+            // Load Stimulus from CDN
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.2/dist/stimulus.js';
+            script.onload = function() {
+              console.log('✅ Stimulus loaded from CDN');
+              
+              // Initialize Stimulus application
+              if (typeof Stimulus !== 'undefined') {
+                window.Stimulus = Stimulus.Application.start();
+                window.Stimulus.debug = true;
+                console.log('✅ Stimulus application started');
+                
+                // Try manual controller registration
+                try {
+                  // Check if maps controller exists
+                  const form = document.querySelector('form[data-controller="maps"]');
+                  if (form) {
+                    console.log('Found form with maps controller, attempting to initialize...');
+                    // Try simple map initialization
+                    if (typeof google !== 'undefined' && google.maps) {
+                      console.log('Google Maps available, initializing basic map...');
+                      const mapContainer = form.querySelector('[data-maps-target="map"]');
+                      if (mapContainer) {
+                        const map = new google.maps.Map(mapContainer, {
+                          center: { lat: 37.7749, lng: -122.4194 },
+                          zoom: 17
+                        });
+                        console.log('✅ Basic map initialized');
+                      }
+                    }
+                  }
+                } catch (error) {
+                  console.error('Error initializing backup map:', error);
+                }
+              }
+            };
+            script.onerror = function() {
+              console.error('❌ Failed to load Stimulus from CDN');
+            };
+            document.head.appendChild(script);
+          } else {
+            console.log('✅ Stimulus already loaded');
+          }
+        }, 3000); // Check after 3 seconds
+      });
     </script>
     <%= favicon_link_tag asset_path('orangePolygonLarge.png') %>
     
