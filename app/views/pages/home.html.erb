@@ -170,8 +170,8 @@
     const capitalizedLocation = location.charAt(0).toUpperCase() + location.slice(1);
     console.log('Capitalized location:', capitalizedLocation);
     
-    // Add updating animation to location elements
-    const locationElements = document.querySelectorAll('.display-4, .btn-cta, input[name="q[address_cont]"]');
+    // Add updating animation to location elements (excluding navbar search field)
+    const locationElements = document.querySelectorAll('.display-4, .btn-cta, .reserve-search-field');
     console.log('Found location elements to update:', locationElements.length);
     locationElements.forEach((el, index) => {
       console.log(`Element ${index}:`, el.tagName, el.className);
@@ -215,18 +215,18 @@
       console.error('Find button element not found!');
     }
     
-    // Update search form location field
-    const searchField = document.querySelector('input[name="q[address_cont]"]');
+    // Update reserve search form location field (excluding navbar search field)
+    const searchField = document.querySelector('.reserve-search-field');
     if (searchField) {
-      console.log('Updating search form location field...');
+      console.log('Updating reserve search form location field...');
       console.log('Current field value:', searchField.value);
       setTimeout(() => {
         searchField.value = capitalizedLocation;
         searchField.classList.remove('updating');
-        console.log('Search field updated to:', searchField.value);
+        console.log('Reserve search field updated to:', searchField.value);
       }, 450);
     } else {
-      console.error('Search field element not found!');
+      console.log('Reserve search field element not found (this is normal if not on search page)');
     }
     
     // Remove updating class from all elements after animation

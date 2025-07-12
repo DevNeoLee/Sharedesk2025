@@ -9,11 +9,6 @@ bundle exec rake assets:precompile
 bundle exec rake assets:clean
 bundle exec rake db:migrate
 
-# Check if this is first deployment or if we need incremental seeding
-if bundle exec rails runner "puts Room.count" | grep -q "0"; then
-  echo "Database is empty, running full seeds..."
-  bundle exec rake db:seed
-else
-  echo "Database has existing data, running incremental seeds..."
-  bundle exec rake db:seed_incremental
-fi
+# Always run seeds to ensure all data is present
+echo "Running database seeds..."
+bundle exec rake db:seed_production
