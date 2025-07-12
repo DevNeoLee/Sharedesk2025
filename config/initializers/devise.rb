@@ -276,15 +276,31 @@ Devise.setup do |config|
   # config.omniauth :google_oauth2, Rails.application.credentials.dig(:google, :google_client_id), Rails.application.credentials.dig(:google, :google_client_secret)
 
   # OmniAuth Configuration
-  config.omniauth :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'], {
-    scope: 'email,profile',
-    prompt: 'select_account',
-    access_type: 'online'
-  }
-  
-  config.omniauth :facebook, ENV['FACEBOOK_CLIENT_ID'], ENV['FACEBOOK_CLIENT_SECRET'], {
-    scope: 'email,public_profile'
-  }
+  if Rails.env.production?
+    # Production OAuth settings
+    config.omniauth :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'], {
+      scope: 'email,profile',
+      prompt: 'select_account',
+      access_type: 'online',
+      redirect_uri: 'https://sharedesk1.onrender.com/users/auth/google_oauth2/callback'
+    }
+    
+    config.omniauth :facebook, ENV['FACEBOOK_CLIENT_ID'], ENV['FACEBOOK_CLIENT_SECRET'], {
+      scope: 'email,public_profile',
+      redirect_uri: 'https://sharedesk1.onrender.com/users/auth/facebook/callback'
+    }
+  else
+    # Development OAuth settings
+    config.omniauth :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'], {
+      scope: 'email,profile',
+      prompt: 'select_account',
+      access_type: 'online'
+    }
+    
+    config.omniauth :facebook, ENV['FACEBOOK_CLIENT_ID'], ENV['FACEBOOK_CLIENT_SECRET'], {
+      scope: 'email,public_profile'
+    }
+  end
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
