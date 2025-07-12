@@ -50,24 +50,57 @@ end
 
 puts "Users created/verified: #{user1.email}, #{user2.email}, #{user3.email}, #{user4.email}, #{user5.email}, #{user6.email}, #{user7.email}"
 
+# Helper method to extract city from address
+def extract_city_from_address(address)
+  # Extract city from various address formats
+  if address.include?('Vancouver, BC, Canada')
+    'Vancouver'
+  elsif address.include?('Tokyo, Japan')
+    'Tokyo'
+  elsif address.include?('New York, NYC, USA') || address.include?('Manhattan, NYC, USA') || address.include?('Brooklyn, NYC, USA') || address.include?('Queens, NYC, USA') || address.include?('Harlem, NYC, USA')
+    'New York'
+  elsif address.include?('Seattle, WA, USA')
+    'Seattle'
+  elsif address.include?('Toronto, ON, Canada')
+    'Toronto'
+  elsif address.include?('Bangkok, Thailand')
+    'Bangkok'
+  elsif address.include?('Los Angeles, CA, USA') || address.include?('Venice Beach, LA, USA') || address.include?('Hollywood, LA, USA') || address.include?('Santa Monica, LA, USA') || address.include?('Pasadena, LA, USA')
+    'Los Angeles'
+  elsif address.include?('San Francisco, CA, USA')
+    'San Francisco'
+  elsif address.include?('Chicago, IL, USA')
+    'Chicago'
+  else
+    # Fallback: extract first part before comma
+    address.split(',').first.strip
+  end
+end
+
 # Helper method to create room with default image (only if it doesn't exist)
 def create_room_with_image(attributes)
-  # Check if room already exists by listing_name and user_id
-  existing_room = Room.find_by(
-    listing_name: attributes[:listing_name],
-    user_id: attributes[:user].id
-  )
+  # Extract city from address
+  city = extract_city_from_address(attributes[:address])
+  
+  # Check if room with same name and city already exists
+  existing_room = Room.joins("JOIN users ON rooms.user_id = users.id")
+                     .where(listing_name: attributes[:listing_name])
+                     .where("rooms.address LIKE ?", "%#{city}%")
+                     .first
   
   if existing_room
-    puts "Room already exists: #{attributes[:listing_name]} (skipping)"
+    puts "Room with same name and city already exists: #{attributes[:listing_name]} in #{city} (skipping)"
     return existing_room
   end
   
-  # Also check by address to avoid duplicates
-  existing_by_address = Room.find_by(address: attributes[:address])
-  if existing_by_address
-    puts "Room with same address already exists: #{attributes[:listing_name]} at #{attributes[:address]} (skipping)"
-    return existing_by_address
+  # Check if we have enough rooms for this city
+  city_room_count = Room.where("address LIKE ?", "%#{city}%").count
+  puts "Current room count for #{city}: #{city_room_count}"
+  
+  # If we already have 5+ rooms for this city, skip
+  if city_room_count >= 5
+    puts "Already have #{city_room_count} rooms for #{city}, skipping #{attributes[:listing_name]}"
+    return nil
   end
   
   room = Room.new(attributes)
@@ -1303,6 +1336,14 @@ puts "Database seeding completed!"
 puts "Total users: #{User.count}"
 puts "Total rooms: #{Room.count}"
 puts "Total reviews: #{Review.count}"
+
+# Show breakdown by city
+puts "\n=== Rooms by City ==="
+cities = ['Vancouver', 'Tokyo', 'New York', 'Seattle', 'Toronto', 'Bangkok', 'Los Angeles', 'San Francisco', 'Chicago']
+cities.each do |city|
+  count = Room.where("address LIKE ?", "%#{city}%").count
+  puts "#{city}: #{count} rooms"
+end
 
 puts "\n=== Usage Instructions ==="
 puts "To clear existing data and recreate everything:"

@@ -39,6 +39,12 @@ namespace :db do
       puts "Total users: #{User.count}"
       puts "Total rooms: #{Room.count}"
       puts "Total reviews: #{Review.count}"
+      
+      # Show breakdown by city
+      puts "\n=== Rooms by City ==="
+      Room.group(:address).count.each do |address, count|
+        puts "#{address}: #{count} rooms"
+      end
     else
       puts "Not in production environment, use CLEAR_EXISTING=true rails db:seed instead"
     end
