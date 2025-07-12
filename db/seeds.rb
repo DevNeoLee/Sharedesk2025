@@ -6,6 +6,8 @@ puts "Starting database seeding..."
 # Always clear existing data before seeding (unless explicitly told not to)
 if ENV['KEEP_EXISTING'] != 'true'
   puts "Clearing existing data..."
+  puts "Deleting reservations..."
+  Reservation.delete_all
   puts "Deleting reviews..."
   Review.delete_all
   puts "Deleting rooms..."
