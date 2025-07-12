@@ -9,6 +9,10 @@
       console.log('Current user:', '<%= current_user&.email %>');
       console.log('User authenticated:', <%= user_signed_in? %>);
       
+      // Stimulus 컨트롤러 연결 상태 확인
+      console.log('Stimulus available:', typeof window.Stimulus !== 'undefined');
+      console.log('Application available:', typeof window.Stimulus !== 'undefined' && window.Stimulus.application);
+      
       // Google Maps API 상태 확인
       function checkGoogleMapsStatus() {
         console.log('Checking Google Maps API status...');
@@ -39,6 +43,33 @@
       // 페이지 로드 후 확인
       window.addEventListener('load', function() {
         setTimeout(checkGoogleMapsStatus, 1000);
+        
+        // Stimulus 컨트롤러 연결 확인
+        setTimeout(function() {
+          console.log('=== Stimulus Controller Check ===');
+          const form = document.querySelector('form[data-controller="maps"]');
+          console.log('Form with maps controller found:', form);
+          
+          if (form) {
+            console.log('Form data-controller attribute:', form.getAttribute('data-controller'));
+            console.log('Form data-action attribute:', form.getAttribute('data-action'));
+            
+            const addressField = form.querySelector('[data-maps-target="field"]');
+            const mapContainer = form.querySelector('[data-maps-target="map"]');
+            const latField = form.querySelector('[data-maps-target="latitude"]');
+            const lngField = form.querySelector('[data-maps-target="longitude"]');
+            
+            console.log('Address field found:', addressField);
+            console.log('Map container found:', mapContainer);
+            console.log('Latitude field found:', latField);
+            console.log('Longitude field found:', lngField);
+            
+            if (mapContainer) {
+              console.log('Map container dimensions:', mapContainer.offsetWidth, 'x', mapContainer.offsetHeight);
+              console.log('Map container styles:', window.getComputedStyle(mapContainer));
+            }
+          }
+        }, 2000);
       });
       
       // Google Maps 콜백 함수

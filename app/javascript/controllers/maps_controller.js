@@ -6,10 +6,38 @@ export default class extends Controller {
   connect() {
     console.log("=== Maps Controller Connected ===")
     console.log("Controller element:", this.element)
+    console.log("Controller element tag:", this.element.tagName)
+    console.log("Controller element classes:", this.element.className)
+    console.log("Controller element id:", this.element.id)
     console.log("Controller targets found:", this.hasFieldTarget, this.hasMapTarget, this.hasLatitudeTarget, this.hasLongitudeTarget)
     console.log("Google object available:", typeof google !== "undefined")
     console.log("Google Maps available:", typeof google !== "undefined" && google.maps)
     console.log("Places API available:", typeof google !== "undefined" && google.maps && google.maps.places)
+    
+    // 각 타겟 요소의 상세 정보 출력
+    if (this.hasFieldTarget) {
+      console.log("Field target element:", this.fieldTarget)
+      console.log("Field target type:", this.fieldTarget.type)
+      console.log("Field target name:", this.fieldTarget.name)
+      console.log("Field target value:", this.fieldTarget.value)
+    }
+    
+    if (this.hasMapTarget) {
+      console.log("Map target element:", this.mapTarget)
+      console.log("Map target classes:", this.mapTarget.className)
+      console.log("Map target dimensions:", this.mapTarget.offsetWidth, "x", this.mapTarget.offsetHeight)
+      console.log("Map target computed styles:", window.getComputedStyle(this.mapTarget))
+    }
+    
+    if (this.hasLatitudeTarget) {
+      console.log("Latitude target element:", this.latitudeTarget)
+      console.log("Latitude target value:", this.latitudeTarget.value)
+    }
+    
+    if (this.hasLongitudeTarget) {
+      console.log("Longitude target element:", this.longitudeTarget)
+      console.log("Longitude target value:", this.longitudeTarget.value)
+    }
     
     if (typeof google !== "undefined" && google.maps) {
       console.log("✅ Google Maps API is loaded, initializing map...")

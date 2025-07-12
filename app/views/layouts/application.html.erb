@@ -36,6 +36,11 @@
       console.log('API Key present:', '<%= ENV['MAPS_API_KEY'].present? %>');
       console.log('API Key starts with:', '<%= ENV['MAPS_API_KEY']&.first(10) %>');
       
+      // Stimulus 컨트롤러 로딩 상태 확인
+      console.log('=== Stimulus Loading Check ===');
+      console.log('Importmap available:', typeof window.importmap !== 'undefined');
+      console.log('Stimulus available:', typeof window.Stimulus !== 'undefined');
+      
       // Google Maps API 로딩 상태 확인
       window.addEventListener('load', function() {
         console.log('Page loaded, checking Google Maps API...');
@@ -47,6 +52,23 @@
         } else {
           console.error('❌ Google Maps script not found');
         }
+        
+        // Stimulus 컨트롤러 확인
+        setTimeout(function() {
+          console.log('=== Stimulus Controller Loading Check ===');
+          console.log('Stimulus application:', typeof window.Stimulus !== 'undefined' && window.Stimulus.application);
+          
+          if (typeof window.Stimulus !== 'undefined' && window.Stimulus.application) {
+            console.log('✅ Stimulus application loaded');
+            console.log('Registered controllers:', window.Stimulus.application.controllers);
+            
+            // maps 컨트롤러 등록 확인
+            const mapsController = window.Stimulus.application.controllers.find(c => c.identifier === 'maps');
+            console.log('Maps controller registered:', !!mapsController);
+          } else {
+            console.error('❌ Stimulus application not loaded');
+          }
+        }, 1000);
         
         // Google Maps 객체 확인
         setTimeout(function() {
