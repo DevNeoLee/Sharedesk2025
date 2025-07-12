@@ -81,11 +81,11 @@
           if (typeof window.Stimulus === 'undefined') {
             console.log('⚠️ Stimulus not loaded, attempting backup loading...');
             
-            // Load Stimulus from CDN
+            // Try loading Stimulus from unpkg CDN (more compatible)
             const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.2/dist/stimulus.js';
+            script.src = 'https://unpkg.com/@hotwired/stimulus@3.2.2/dist/stimulus.umd.js';
             script.onload = function() {
-              console.log('✅ Stimulus loaded from CDN');
+              console.log('✅ Stimulus loaded from unpkg CDN');
               
               // Initialize Stimulus application
               if (typeof Stimulus !== 'undefined') {
@@ -109,6 +109,32 @@
                           zoom: 17
                         });
                         console.log('✅ Basic map initialized');
+                        
+                        // Try to add basic autocomplete functionality
+                        const addressField = form.querySelector('[data-maps-target="field"]');
+                        if (addressField && google.maps.places) {
+                          try {
+                            const autocomplete = new google.maps.places.Autocomplete(addressField);
+                            autocomplete.addListener('place_changed', function() {
+                              const place = autocomplete.getPlace();
+                              if (place.geometry) {
+                                map.setCenter(place.geometry.location);
+                                map.setZoom(17);
+                                
+                                // Update hidden fields
+                                const latField = form.querySelector('[data-maps-target="latitude"]');
+                                const lngField = form.querySelector('[data-maps-target="longitude"]');
+                                if (latField) latField.value = place.geometry.location.lat();
+                                if (lngField) lngField.value = place.geometry.location.lng();
+                                
+                                console.log('✅ Autocomplete functionality added');
+                              }
+                            });
+                            console.log('✅ Autocomplete initialized');
+                          } catch (error) {
+                            console.error('Error initializing autocomplete:', error);
+                          }
+                        }
                       }
                     }
                   }
@@ -118,7 +144,45 @@
               }
             };
             script.onerror = function() {
-              console.error('❌ Failed to load Stimulus from CDN');
+              console.error('❌ Failed to load Stimulus from unpkg CDN');
+              
+              // Fallback: Direct Google Maps initialization without Stimulus
+              console.log('🔄 Attempting direct Google Maps initialization...');
+              try {
+                const form = document.querySelector('form[data-controller="maps"]');
+                if (form && typeof google !== 'undefined' && google.maps) {
+                  const mapContainer = form.querySelector('[data-maps-target="map"]');
+                  const addressField = form.querySelector('[data-maps-target="field"]');
+                  
+                  if (mapContainer) {
+                    const map = new google.maps.Map(mapContainer, {
+                      center: { lat: 37.7749, lng: -122.4194 },
+                      zoom: 17
+                    });
+                    console.log('✅ Direct map initialization successful');
+                    
+                    // Add autocomplete
+                    if (addressField && google.maps.places) {
+                      const autocomplete = new google.maps.places.Autocomplete(addressField);
+                      autocomplete.addListener('place_changed', function() {
+                        const place = autocomplete.getPlace();
+                        if (place.geometry) {
+                          map.setCenter(place.geometry.location);
+                          map.setZoom(17);
+                          
+                          const latField = form.querySelector('[data-maps-target="latitude"]');
+                          const lngField = form.querySelector('[data-maps-target="longitude"]');
+                          if (latField) latField.value = place.geometry.location.lat();
+                          if (lngField) lngField.value = place.geometry.location.lng();
+                        }
+                      });
+                      console.log('✅ Direct autocomplete initialization successful');
+                    }
+                  }
+                }
+              } catch (error) {
+                console.error('Error in direct initialization:', error);
+              }
             };
             document.head.appendChild(script);
           } else {
