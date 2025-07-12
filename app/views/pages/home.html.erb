@@ -22,6 +22,12 @@
       showLocationConsentModal();
     } else {
       console.log('Location consent modal already shown');
+      
+      // If user has already consented, try to get their current location
+      if (sessionStorage.getItem('locationConsent') === 'true') {
+        console.log('User has already consented, syncing with server...');
+        syncLocationConsentWithServer();
+      }
     }
   });
   
@@ -160,6 +166,10 @@
     console.log('=== Updating Location on Page ===');
     console.log('New location:', location);
     
+    // Capitalize first letter of location
+    const capitalizedLocation = location.charAt(0).toUpperCase() + location.slice(1);
+    console.log('Capitalized location:', capitalizedLocation);
+    
     // Add updating animation to location elements
     const locationElements = document.querySelectorAll('.display-4, .btn-cta, input[name="q[address_cont]"]');
     console.log('Found location elements to update:', locationElements.length);
@@ -174,7 +184,7 @@
       console.log('Updating main heading...');
       console.log('Current heading text:', mainHeading.innerHTML);
       setTimeout(() => {
-        mainHeading.innerHTML = `Need a Desk in ${location}—Fast?`;
+        mainHeading.innerHTML = `Need a Desk in ${capitalizedLocation}—Fast?`;
         mainHeading.classList.remove('updating');
         console.log('Main heading updated to:', mainHeading.innerHTML);
       }, 150);
@@ -189,13 +199,17 @@
       if (link) {
         console.log('Updating "Find in Your Area" button link...');
         console.log('Current link href:', link.href);
-        link.href = `/search?q[address_cont]=${encodeURIComponent(location)}`;
+        link.href = `/search?q[address_cont]=${encodeURIComponent(capitalizedLocation)}`;
         setTimeout(() => {
           findButton.classList.remove('updating');
           console.log('Button link updated to:', link.href);
         }, 300);
       } else {
-        console.error('Link element not found for button!');
+        console.log('Button is not inside a link, updating button text if needed...');
+        // If button is not inside a link, just remove the updating class
+        setTimeout(() => {
+          findButton.classList.remove('updating');
+        }, 300);
       }
     } else {
       console.error('Find button element not found!');
@@ -207,7 +221,7 @@
       console.log('Updating search form location field...');
       console.log('Current field value:', searchField.value);
       setTimeout(() => {
-        searchField.value = location;
+        searchField.value = capitalizedLocation;
         searchField.classList.remove('updating');
         console.log('Search field updated to:', searchField.value);
       }, 450);
@@ -227,7 +241,7 @@
     console.log('Showing success message...');
     if (typeof toastr !== 'undefined') {
       console.log('Using toastr for success message');
-      toastr.success(`Location updated to ${location}!`, 'Location Updated', {
+      toastr.success(`Location updated to ${capitalizedLocation}!`, 'Location Updated', {
         timeOut: 3000,
         extendedTimeOut: 1000,
         closeButton: true,
@@ -243,7 +257,7 @@
           <i class="fas fa-check-circle me-2" style="color: #28a745;"></i>
           <div>
             <strong>Location Updated!</strong><br>
-            <small>Your location is now set to ${location}</small>
+            <small>Your location is now set to ${capitalizedLocation}</small>
           </div>
           <button type="button" class="btn-close ms-auto" onclick="this.parentElement.parentElement.remove()"></button>
         </div>
@@ -266,6 +280,66 @@
     }
     
     console.log('=== Location Update Complete ===');
+  }
+
+  function fetchCurrentLocation() {
+    console.log('=== Fetching Current Location ===');
+    fetch('/current_user_location', {
+      method: 'GET',
+      headers: {
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      }
+    })
+    .then(response => {
+      console.log('Current location response status:', response.status);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Current location response data:', data);
+      if (data.location && data.location !== 'NYC') {
+        console.log('New location detected, updating page...');
+        updateLocationOnPage(data.location);
+      } else {
+        console.log('No new location detected or still NYC');
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching current location:', error);
+    });
+  }
+
+  function syncLocationConsentWithServer() {
+    console.log('=== Syncing Location Consent with Server ===');
+    fetch('/location_consent', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ consent: true })
+    })
+    .then(response => {
+      console.log('Sync response status:', response.status);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Sync response data:', data);
+      if (data.success) {
+        console.log('Location consent synced successfully, fetching current location...');
+        fetchCurrentLocation();
+      } else {
+        console.error('Failed to sync location consent');
+      }
+    })
+    .catch(error => {
+      console.error('Error syncing location consent:', error);
+    });
   }
 </script>
 

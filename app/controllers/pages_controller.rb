@@ -1,4 +1,6 @@
 class PagesController < ApplicationController
+  skip_before_action :set_global_search_variable, only: [:location_consent, :current_user_location]
+  
   def home
     @pagy, @rooms = pagy(Room.all, items: 3)
     @search = Room.ransack(params[:q])  # Use all rooms for search, not just paginated ones
@@ -52,10 +54,28 @@ class PagesController < ApplicationController
     Rails.logger.info "=== Location Consent Request ==="
     Rails.logger.info "Request method: #{request.method}"
     Rails.logger.info "Request params: #{params.inspect}"
+    Rails.logger.info "Raw params: #{request.raw_post}" if request.raw_post.present?
     Rails.logger.info "Current session consent: #{session[:location_consent]}"
     Rails.logger.info "Request IP: #{request.remote_ip}"
     
-    if params[:consent] == 'true'
+    # Parse JSON body if present
+    if request.content_type&.include?('application/json')
+      begin
+        json_params = JSON.parse(request.raw_post)
+        Rails.logger.info "Parsed JSON params: #{json_params.inspect}"
+        consent_value = json_params['consent']
+      rescue JSON::ParserError => e
+        Rails.logger.error "JSON parsing error: #{e.message}"
+        consent_value = params[:consent]
+      end
+    else
+      consent_value = params[:consent]
+    end
+    
+    Rails.logger.info "Final consent value: #{consent_value}"
+    Rails.logger.info "Consent value class: #{consent_value.class}"
+    
+    if consent_value == true || consent_value == 'true'
       session[:location_consent] = true
       Rails.logger.info "Location consent granted - session updated"
       render json: { success: true, message: 'Location consent granted' }
@@ -71,6 +91,8 @@ class PagesController < ApplicationController
   def current_user_location
     Rails.logger.info "=== Current User Location Request ==="
     Rails.logger.info "Session consent: #{session[:location_consent]}"
+    Rails.logger.info "Session consent class: #{session[:location_consent].class}"
+    Rails.logger.info "Session keys: #{session.keys}"
     Rails.logger.info "Request IP: #{request.remote_ip}"
     
     location = get_user_location
