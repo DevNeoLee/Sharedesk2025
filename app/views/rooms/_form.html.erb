@@ -1,182 +1,170 @@
-<div class="bg-light p-5 rounded shadow mt-4">
-   
-    
-        <div class="container">
-         <div class="h2 text-center mb-4">
-            Create Work Space
+<div class="container my-5">
+  <div class="trips-section" style="max-width: 900px; margin: 0 auto;">
+    <div class="h2 text-center mb-4 title_font">Create Work Space</div>
+    <%= form_with(model: @room, local: true, multi: true, data: { controller: :maps, action: "google-maps-callback@window->maps#initializeMap" }) do |f| %>
+      <!-- 기본 정보 -->
+      <div class="row mb-4">
+        <div class="col-md-4 mb-3 p">
+          <label class="form-label">Space Name</label>
+          <%= f.text_field :listing_name, placeholder: "Name your space creatively", class: "form-control" %>
         </div>
-        <%= form_with(model: @room, local: true, multi: true, data: { controller: :maps, action: "google-maps-callback@window->maps#initializeMap"}) do |f| %>
-            <div class="col-md-12">
-                <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <label>Space Name</label>
-                        <%= f.text_field :listing_name, placeholder: "Name your space creatively", class: "form-control"%>
-                    </div>
-                    <div class="form-group col-md-8">
-                        <label>Note and Message</label>
-                        <%= f.text_area :summary, placeholder: "Details about your work space", class: "form-control"%>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-md-4 select">
-                        <div class="form-group">
-                            <label>Space Type</label>
-                            <%= f.select :space_type, options_for_select([["Apartment", "Apartment"], ["House", "House"], ["Office", "Office" ]],  selected: @room.space_type || nil), include_blank: true, prompt: 'Select...', class: "form-control" %>
-                        </div>
-                    </div>
-                    <div class="col-md-4 select">
-                        <div class="form-group">
-                            <label>Desk Type</label>
-                            <%= f.select :desk_type, [["Single Desk", "Single Desk"], ["Private Room Office", "Private Room Office"], ["Sharing Table", "Sharing Table" ]], id: :desk_type, prompt: 'Select...', class: "form-control" %>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Capacity</label>
-                            <%= f.number_field :capacity, id: :capacity, placeholder: 'How many people can attend?', class: "form-control" %>
-                        </div>
-                    </div>                 
-                </div>
-                  <div class="form-row">
-                    <div class="col-md-3 select">
-                        <div class="form-group">
-                            <label>Noise Level</label>
-                            <%= f.select :noise_level, [["Silent Mode", "Silent Mode"], ["Quiet", "Quiet"], ["Casual", "Casual" ]], id: :noise_level, prompt: 'Select...', class: "form-control" %>
-                        </div>
-                    </div>
-                    <div class="col-md-3 select">
-                        <div class="form-group">
-                            <label>Bathrooms</label>
-                            <%= f.select :bath_room, [["1", 1], ["2", 2], ["3+", 3]], prompt: 'Select...', class: "form-control" %>
-                        </div>
-                    </div>
-                    <div class="col-md-3 select">
-                        <div class="form-group">
-                            <label>Manager on Premise</label>
-                            <%= f.select :manager_on, [["Fulltime", "Fulltime"], ["Parttime", "Parttime"], ["No Stay", "No Stay"]], prompt: 'Select...', class: "form-control" %>
-                        </div>
-                    </div>
-                     <div class="col-md-3 select">
-                        <div class="form-group">
-                            <label>Security</label>
-                            <%= f.select :security_level, [["high", "high"], ["good", "good"], ["maximum", "maximum"]], prompt: 'Select...', class: "form-control" %>
-                        </div>
-                    </div>  
-                  
-                </div>
-                <div class="card bg-dark">
-                    <div class="card-body">
-                        <div class="form-row">
-                            <div class="form-group col-md-7">
-                                <label class="text-white">Addrress</label>
-                                <%= f.search_field :address, placeholder: "address", class: "form-control", data: { target: "maps.field", action: "keydown->maps#preventSubmit" } %>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="text-white">Location</label>
-                                <%= f.text_field :latitude, placeholder: "Latitude", class: "form-control mb-2", data: { target: "maps.latitude" }%>
-                                <%= f.text_field :longitude, placeholder: "Longitude", class: "form-control", data: { target: "maps.longitude" }%>
-                            </div>
-                        
-                        </div>
-                        <%= content_tag :div, nil, data: { target: "maps.map" }, class: 'map' %>
-                    </div>
-                </div>
-
-                <div class="card mt-4">
-                    <div class="card-body">
-                        <div class="col-md-12">
-                            <div class="form-row ">
-                                <div class="col-md-3 mb-3 d-flex">
-                                    <i class="fas fa-wifi fa-lg"></i>
-                                    <div class="form-group">
-                                        <%= f.check_box :is_wifi, class: "align-middle" %>
-                                        wifi
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-3 d-flex">
-                                    <i class="fas fa-sink fa-lg"></i>
-                                    <div class="form-group">
-                                        <%= f.check_box :is_kitchen %> Kitchen
-                                    </div>         
-                                </div>
-                                <div class="col-md-3 mb-3 d-flex">
-                                <i class="fas fa-phone-square-alt fa-lg"></i>
-                                    <div class="form-group">
-                                        <%= f.check_box :is_conference %> Conference Call Space
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-3 d-flex">
-                                    <i class="fas fa-print fa-lg"></i>
-                                    <div class="form-group">
-                                        <%= f.check_box :is_printing %> Printing
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-3 d-flex">
-                                    <i class="fas fa-wine-glass-alt fa-lg"></i>
-                                    <div class="form-group">
-                                        <%= f.check_box :is_drinks %> Free Drinks
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-3 d-flex">
-                                    <i class="fas fa-fire fa-lg"></i>
-                                    <div class="form-group">
-                                        <%= f.check_box :is_heating %> Heating
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-3 d-flex">
-                                    <i class="fas fa-fan fa-lg"></i>
-                                    <div class="form-group">
-                                        <%= f.check_box :is_air %> Air-Conditioning
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mb-3 d-flex">
-                                    <i class="fas fa-parking fa-lg"></i>
-                                    <div class="form-group">
-                                        <%= f.check_box :is_parking %> Parking
-                                    </div>
-                                </div> 
-                            </div>
-                        </div>                  
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group d-flex mt-3">
-                        <div class="mt-2"><p>Price($)</p></div>
-                            <div class="input-group pl-2">
-                                <%= f.number_field :price, placeholder: "Enter dollar amount", class: "form-control pl-3" %>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 p-2 m-2">
-                        <div class="form-group">
-                                <Label>Upload Photos of Your Space</Label>
-                            <div class="card bg-light p-4 d-flex">
-                                <div class="text-center"><i class="far fa-images fa-2x text-center"></i></div> 
-                                <p class="text-center p-3">* At least one photo required *</p>
-                                <div class="text-center"><%= f.file_field :images, multiple: true, class: "p-2"%></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="photos"> <%= render 'shared/images'  %> </div>
-                <div class="card">
-                    <div class="col-md-6 p-2 m-2">
-                        <div class="form-group">
-                            <label for="">Check only if you want this space is absolutely READY to be availabe for public to make a reservation right away</label>
-                            <%= f.check_box :active %> Active
-                        </div>
-                    </div>
-                </div>
-            
-            </div>
-
-            <div class="actions m-3">
-                <%= f.submit "Host Your Space", class: "btn btn-primary btn-lg p-4"%>
-            </div>
-        <% end %>
+        <div class="col-md-8 mb-3">
+          <label class="form-label">Note and Message</label>
+          <%= f.text_area :summary, placeholder: "Details about your work space", class: "form-control", rows: 2 %>
         </div>
-    </div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Space Type</label>
+          <%= f.select :space_type, options_for_select([["Apartment", "Apartment"], ["House", "House"], ["Office", "Office"]], selected: @room.space_type || nil), include_blank: true, prompt: 'Select...', class: "form-control" %>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Desk Type</label>
+          <%= f.select :desk_type, [["Single Desk", "Single Desk"], ["Private Room Office", "Private Room Office"], ["Sharing Table", "Sharing Table"]], id: :desk_type, prompt: 'Select...', class: "form-control" %>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Capacity</label>
+          <%= f.number_field :capacity, id: :capacity, placeholder: 'How many people can attend?', class: "form-control" %>
+        </div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Noise Level</label>
+          <%= f.select :noise_level, [["Silent Mode", "Silent Mode"], ["Quiet", "Quiet"], ["Casual", "Casual"]], id: :noise_level, prompt: 'Select...', class: "form-control" %>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Bathrooms</label>
+          <%= f.select :bath_room, [["1", 1], ["2", 2], ["3+", 3]], prompt: 'Select...', class: "form-control" %>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Manager on Premise</label>
+          <%= f.select :manager_on, [["Fulltime", "Fulltime"], ["Parttime", "Parttime"], ["No Stay", "No Stay"]], prompt: 'Select...', class: "form-control" %>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Security</label>
+          <%= f.select :security_level, [["high", "high"], ["good", "good"], ["maximum", "maximum"]], prompt: 'Select...', class: "form-control" %>
+        </div>
+      </div>
+      <!-- 위치 정보 -->
+      <div class="card bg-dark mb-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-7 mb-2">
+              <label class="form-label text-white">Address</label>
+              <%= f.search_field :address, placeholder: "address", class: "form-control", data: { target: "maps.field", action: "keydown->maps#preventSubmit" } %>
+            </div>
+            <div class="col-md-5 mb-2">
+              <label class="form-label text-white">Location</label>
+              <div class="row">
+                <div class="col-6">
+                  <%= f.text_field :latitude, placeholder: "Latitude", class: "form-control mb-2", data: { target: "maps.latitude" } %>
+                </div>
+                <div class="col-6">
+                  <%= f.text_field :longitude, placeholder: "Longitude", class: "form-control", data: { target: "maps.longitude" } %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <%= content_tag :div, nil, data: { target: "maps.map" }, class: 'map mt-3' %>
+        </div>
+      </div>
+      <!-- 옵션 체크박스 -->
+      <div class="card mb-4 px-3">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-6 col-md-4">
+              <label class="d-flex align-items-center gap-2 w-100" for="room_is_wifi">
+                <i class="fas fa-wifi fa-lg"></i>
+                <%= f.check_box :is_wifi, class: "form-check-input", id: "room_is_wifi" %> wifi
+              </label>
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="d-flex align-items-center gap-2 w-100" for="room_is_kitchen">
+                <i class="fas fa-sink fa-lg"></i>
+                <%= f.check_box :is_kitchen, class: "form-check-input", id: "room_is_kitchen" %> Kitchen
+              </label>
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="d-flex align-items-center gap-2 w-100" for="room_is_conference">
+                <i class="fas fa-phone-square-alt fa-lg"></i>
+                <%= f.check_box :is_conference, class: "form-check-input", id: "room_is_conference" %> Conference Call
+              </label>
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="d-flex align-items-center gap-2 w-100" for="room_is_printing">
+                <i class="fas fa-print fa-lg"></i>
+                <%= f.check_box :is_printing, class: "form-check-input", id: "room_is_printing" %> Printing
+              </label>
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="d-flex align-items-center gap-2 w-100" for="room_is_drinks">
+                <i class="fas fa-wine-glass-alt fa-lg"></i>
+                <%= f.check_box :is_drinks, class: "form-check-input", id: "room_is_drinks" %> Free Drinks
+              </label>
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="d-flex align-items-center gap-2 w-100" for="room_is_heating">
+                <i class="fas fa-fire fa-lg"></i>
+                <%= f.check_box :is_heating, class: "form-check-input", id: "room_is_heating" %> Heating
+              </label>
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="d-flex align-items-center gap-2 w-100" for="room_is_air">
+                <i class="fas fa-fan fa-lg"></i>
+                <%= f.check_box :is_air, class: "form-check-input", id: "room_is_air" %> Air-Conditioning
+              </label>
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="d-flex align-items-center gap-2 w-100" for="room_is_parking">
+                <i class="fas fa-parking fa-lg"></i>
+                <%= f.check_box :is_parking, class: "form-check-input", id: "room_is_parking" %> Parking
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 가격 -->
+      <div class="row mb-4">
+        <div class="col-md-4">
+          <label class="form-label">Price($)</label>
+          <%= f.number_field :price, placeholder: "Enter dollar amount", class: "form-control" %>
+        </div>
+      </div>
+      <!-- 사진 업로드 -->
+      <div class="row mb-4">
+        <div class="col-md-12">
+          <label class="form-label">Upload Photos of Your Space</label>
+          <div class="card bg-light p-4 d-flex">
+            <div class="text-center"><i class="far fa-images fa-2x text-center"></i></div>
+            <p class="text-center p-3">* At least one photo required *</p>
+            <div class="text-center"><%= f.file_field :images, multiple: true, class: "p-2" %></div>
+          </div>
+        </div>
+      </div>
+      <div id="photos"> <%= render 'shared/images' %> </div>
+      <!-- 공개 여부 -->
+      <div class="card mb-4">
+        <div class="card-body py-3 px-4">
+          <div class="d-flex flex-row align-items-center justify-content-between">
+            <span class="fw-medium text-muted" style="font-size:1.08rem;">
+              Check only if you want this space to be immediately available for public reservation
+            </span>
+            <label class="d-flex align-items-center gap-2 mb-0" for="room_active" style="font-size:1.08rem;">
+              <%= f.check_box :active, class: "form-check-input", id: "room_active", style: "vertical-align: middle; margin-bottom: 2px;" %> Active
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="actions text-center mt-4">
+        <%= f.submit "Host Your Space", class: "btn btn-primary btn-lg px-5 py-2" %>
+      </div>
+    <% end %>
+  </div>
 </div>
+
+<style>
+.form-check-input[type="checkbox"] {
+  vertical-align: middle;
+  margin-bottom: 2px;
+}
+</style>

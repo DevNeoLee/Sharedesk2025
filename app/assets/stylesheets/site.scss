@@ -403,11 +403,12 @@ select {
   background-color: #fff;
   width: 100%;
   border: 1px solid #ccc;
-  border-radius: 2px;
+  border-radius: 10px;
   padding: 10px;
   -moz-appearance: none;
   -webkit-appearance: none;
 }
+
 
 .select::before {
   content: '\25bc';
@@ -431,13 +432,9 @@ input[type="checkbox"] {
   -webkit-appearance: none;
 }
 
+/* 체크박스 체크 시 빨간색 마크 제거 */
 input[type="checkbox"]:checked:before {
-  content: "\2713";
-  position: absolute;
-  font-size: 0.95em;
-  text-align: center;
-  width: 1.25em;
-  color: #ff5a5f;
+  content: none;
 }
 
 .btn-file {
@@ -1981,3 +1978,50 @@ input[type="search"]::-ms-clear {
   font-size: 1em;
   color: #444;
 }
+
+// --- Form Field Modernization ---
+input.form-control,
+select.form-control,
+textarea.form-control {
+  border-radius: 0.7rem !important;
+  box-shadow: 0 1.5px 6px rgba(80,80,80,0.06);
+  border: 1.5px solid #e0e0e0;
+  padding: 0.7rem 1.1rem;
+  font-size: 1.08rem;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input.form-control:focus,
+select.form-control:focus,
+textarea.form-control:focus {
+  border-color: #1100ff;
+  box-shadow: 0 0 0 2px rgba(17,0,255,0.08);
+  outline: none;
+}
+input.form-control::placeholder,
+select.form-control::placeholder,
+textarea.form-control::placeholder {
+  color: #b0b0b0;
+  opacity: 1;
+}
+
+select.form-control {
+  border-radius: 0.7rem !important;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23828A" height="18" viewBox="0 0 20 20" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7.293 9.293a1 1 0 011.414 0L10 10.586l1.293-1.293a1 1 0 111.414 1.414l-2 2a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+input[type="checkbox"], input[type="radio"] {
+  border-radius: 0.5rem;
+  border: 1.5px solid #bdbdbd;
+  width: 1.2em;
+  height: 1.2em;
+  accent-color: #1100ff;
+}
+
+// --- End Form Field Modernization ---

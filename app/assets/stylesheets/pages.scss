@@ -112,12 +112,60 @@ th, td {
   min-width: 130px;
 }
 
+div.trips-section {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(80, 80, 80, 0.08), 0 1.5px 4px rgba(0,0,0,0.04);
+  padding: 2.5rem 2rem 2rem 2rem;
+  margin-bottom: 2.5rem;
+}
+
 .your_cart_grid {
-  display: grid; 
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .your_cart_card {
-  min-width: 240px; 
-  max-width: 250px;
+  min-width: 0;
+  max-width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(80, 80, 80, 0.08);
+  background: #fff;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: none;
+  overflow: hidden;
+}
+.your_cart_card:hover {
+  box-shadow: 0 8px 32px rgba(80, 80, 80, 0.13);
+  transform: translateY(-2px) scale(1.012);
+}
+
+.your_cart_card .card-body {
+  padding: 1.1rem 1.2rem 1.2rem 1.2rem;
+}
+
+.your_cart_card .fw-bold {
+  color: #222;
+}
+
+.your_cart_card .text-muted {
+  color: #888 !important;
+}
+
+.your_cart_card .badge {
+  font-size: 0.95rem;
+  border-radius: 8px;
+  padding: 0.35em 0.9em;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  div.trips-section {
+    padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+  }
+  .your_cart_grid {
+    gap: 1.1rem 0.7rem;
+  }
 }
