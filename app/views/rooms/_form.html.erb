@@ -51,21 +51,21 @@
           <div class="row">
             <div class="col-md-7 mb-2">
               <label class="form-label text-white">Address</label>
-              <%= f.search_field :address, placeholder: "address", class: "form-control", data: { target: "maps.field", action: "keydown->maps#preventSubmit" } %>
+              <%= f.search_field :address, placeholder: "address", class: "form-control", data: { maps_target: "field", action: "keydown->maps#preventSubmit" } %>
             </div>
             <div class="col-md-5 mb-2">
               <label class="form-label text-white">Location</label>
               <div class="row">
                 <div class="col-6">
-                  <%= f.text_field :latitude, placeholder: "Latitude", class: "form-control mb-2", data: { target: "maps.latitude" } %>
+                  <%= f.text_field :latitude, placeholder: "Latitude", class: "form-control mb-2", data: { maps_target: "latitude" } %>
                 </div>
                 <div class="col-6">
-                  <%= f.text_field :longitude, placeholder: "Longitude", class: "form-control", data: { target: "maps.longitude" } %>
+                  <%= f.text_field :longitude, placeholder: "Longitude", class: "form-control", data: { maps_target: "longitude" } %>
                 </div>
               </div>
             </div>
           </div>
-          <%= content_tag :div, nil, data: { target: "maps.map" }, class: 'map mt-3' %>
+          <div data-maps-target="map" class="map mt-3"></div>
         </div>
       </div>
       <!-- 옵션 체크박스 -->
@@ -155,7 +155,7 @@
           </div>
         </div>
       </div>
-      <div class="actions text-center mt-4">
+      <div class="actions d-flex justify-content-end mt-4">
         <%= f.submit "Host Your Space", class: "btn btn-primary btn-lg px-5 py-2" %>
       </div>
     <% end %>
