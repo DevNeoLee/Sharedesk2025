@@ -1,31 +1,145 @@
 
-<div class="container main" id="main">
-  <div class="h1 m-4 pt-5 pb-5 title_font">Hosting Space List</div>
-  <div class="row">
-    <div class="col-md-3 mb-5">
-      <div class="card shadow-sm rounded-4">
-        <%= image_tag "main_image1.jpg", class: "img-fluid rounded-top" %>
-        <div class="card-body">
-          <div class="card-title">
-            <%= link_to new_room_path do %>
-              <button class="btn btn-lg btn-primary w-100" href="new_room_path">Host New Location</button>
-            <% end %>
+<div class="rooms-dashboard-container">
+  <!-- Header Section -->
+  <div class="rooms-header mb-5">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="rooms-title mb-2">My Workspace Listings</h1>
+          <p class="rooms-subtitle text-muted mb-0">
+            Manage your workspace listings and bookings
+          </p>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <%= link_to new_room_path, class: "btn btn-primary btn-lg" do %>
+            <i class="fas fa-plus me-2"></i>Add New Workspace
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="container mb-5">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <div class="stats-card">
+          <div class="stats-icon">
+            <i class="fas fa-building"></i>
+          </div>
+          <div class="stats-content">
+            <h3 class="stats-number"><%= @rooms_result.count %></h3>
+            <p class="stats-label">Active Listings</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="stats-card">
+          <div class="stats-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <div class="stats-content">
+            <h3 class="stats-number"><%= @rooms_result.sum { |room| room.reservations.count } %></h3>
+            <p class="stats-label">Total Bookings</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="stats-card">
+          <div class="stats-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="stats-content">
+            <h3 class="stats-number"><%= number_with_precision(@rooms_result.sum { |room| room.average_rating || 0 } / [@rooms_result.count, 1].max, precision: 1) %></h3>
+            <p class="stats-label">Avg. Rating</p>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-9">
-      <div data-controller="infinite-scroll" data-action="scroll@window->infinite-scroll#scroll">
-        <div data-infinite-scroll-target="entries">
-          <div class="row g-4">
-            <% @rooms_result.each do |room| %>
-              <%= render 'room_result', room: room %>
-            <% end %>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-lg-3 mb-4">
+        <div class="sidebar-card">
+          <div class="sidebar-header">
+            <h5 class="sidebar-title">Quick Actions</h5>
+          </div>
+          <div class="sidebar-content">
+            <div class="quick-action-item">
+              <%= link_to new_room_path, class: "quick-action-link" do %>
+                <i class="fas fa-plus-circle me-2"></i>
+                <span>Add New Workspace</span>
+              <% end %>
+            </div>
+            <div class="quick-action-item">
+              <%= link_to yourlisting_reservations_path, class: "quick-action-link" do %>
+                <i class="fas fa-calendar-alt me-2"></i>
+                <span>View Bookings</span>
+              <% end %>
+            </div>
+            <div class="quick-action-item">
+              <%= link_to search_path, class: "quick-action-link" do %>
+                <i class="fas fa-search me-2"></i>
+                <span>Browse All Spaces</span>
+              <% end %>
+            </div>
           </div>
         </div>
-        <div data-infinite-scroll-target="pagination" class="pagination_type">
-          <%== pagy_bootstrap_nav(@pagy).html_safe %>
+
+        <div class="sidebar-card mt-4">
+          <div class="sidebar-header">
+            <h5 class="sidebar-title">Tips</h5>
+          </div>
+          <div class="sidebar-content">
+            <div class="tip-item">
+              <i class="fas fa-lightbulb text-warning me-2"></i>
+              <small class="text-muted">Add high-quality photos to attract more bookings</small>
+            </div>
+            <div class="tip-item mt-2">
+              <i class="fas fa-lightbulb text-warning me-2"></i>
+              <small class="text-muted">Keep your availability calendar updated</small>
+            </div>
+            <div class="tip-item mt-2">
+              <i class="fas fa-lightbulb text-warning me-2"></i>
+              <small class="text-muted">Respond quickly to booking requests</small>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="col-lg-9">
+        <% if @rooms_result.any? %>
+          <div class="rooms-grid" data-controller="infinite-scroll" data-action="scroll@window->infinite-scroll#scroll">
+            <div class="row g-4" data-infinite-scroll-target="entries">
+              <% @rooms_result.each do |room| %>
+                <%= render 'room_result', room: room %>
+              <% end %>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination-wrapper mt-5" data-infinite-scroll-target="pagination">
+              <%== pagy_bootstrap_nav(@pagy).html_safe %>
+            </div>
+          </div>
+        <% else %>
+          <!-- Empty State -->
+          <div class="empty-state">
+            <div class="empty-state-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <h3 class="empty-state-title">No Workspaces Yet</h3>
+            <p class="empty-state-description">
+              Start by adding your first workspace listing to begin hosting.
+            </p>
+            <%= link_to new_room_path, class: "btn btn-primary btn-lg" do %>
+              <i class="fas fa-plus me-2"></i>Add Your First Workspace
+            <% end %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

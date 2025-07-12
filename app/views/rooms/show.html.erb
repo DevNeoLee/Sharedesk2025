@@ -102,7 +102,7 @@
                 </div>
                 <div class="room-info-content">
                   <div class="room-info-label">Capacity</div>
-                  <div class="room-info-value"><%= @room.capacity %> <%= @room.capacity > 1 ? "Seats" : "Seat" %></div>
+                  <div class="room-info-value"><%= @room.capacity || 0 %> <%= (@room.capacity || 0) > 1 ? "Seats" : "Seat" %></div>
                 </div>
               </div>
               <div class="room-info-item">
@@ -138,7 +138,7 @@
                 </div>
                 <div class="room-info-content">
                   <div class="room-info-label">Bathrooms</div>
-                  <div class="room-info-value"><%= @room.bath_room %> <%= @room.bath_room > 1 ? "Bathrooms" : "Bathroom" %></div>
+                  <div class="room-info-value"><%= @room.bath_room || 0 %> <%= (@room.bath_room || 0) > 1 ? "Bathrooms" : "Bathroom" %></div>
                 </div>
               </div>
               <div class="room-info-item">
