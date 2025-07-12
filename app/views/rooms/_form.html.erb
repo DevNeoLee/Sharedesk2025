@@ -13,6 +13,25 @@
       console.log('Stimulus available:', typeof window.Stimulus !== 'undefined');
       console.log('Application available:', typeof window.Stimulus !== 'undefined' && window.Stimulus.application);
       
+      // 추가 Stimulus 디버깅 명령어들
+      console.log('=== Additional Stimulus Debug ===');
+      console.log('Importmap available:', typeof window.importmap !== 'undefined');
+      console.log('Stimulus application:', window.Stimulus?.application);
+      console.log('Registered controllers:', window.Stimulus?.application?.controllers);
+      
+      // maps 컨트롤러 등록 확인
+      const mapsController = window.Stimulus?.application?.controllers?.find(c => c.identifier === 'maps');
+      console.log('Maps controller registered:', !!mapsController);
+      console.log('Maps controller details:', mapsController);
+      
+      // 모든 등록된 컨트롤러 확인
+      if (window.Stimulus?.application?.controllers) {
+        console.log('All registered controllers:');
+        window.Stimulus.application.controllers.forEach((controller, index) => {
+          console.log(`Controller ${index}:`, controller.identifier, controller.element);
+        });
+      }
+      
       // Google Maps API 상태 확인
       function checkGoogleMapsStatus() {
         console.log('Checking Google Maps API status...');
@@ -67,6 +86,21 @@
             if (mapContainer) {
               console.log('Map container dimensions:', mapContainer.offsetWidth, 'x', mapContainer.offsetHeight);
               console.log('Map container styles:', window.getComputedStyle(mapContainer));
+            }
+          }
+          
+          // 추가 Stimulus 상태 확인
+          console.log('=== Final Stimulus Status Check ===');
+          console.log('Stimulus available:', typeof window.Stimulus !== 'undefined');
+          console.log('Stimulus application:', window.Stimulus?.application);
+          console.log('Controllers count:', window.Stimulus?.application?.controllers?.length || 0);
+          
+          if (window.Stimulus?.application?.controllers) {
+            const mapsController = window.Stimulus.application.controllers.find(c => c.identifier === 'maps');
+            console.log('Maps controller found:', !!mapsController);
+            if (mapsController) {
+              console.log('Maps controller element:', mapsController.element);
+              console.log('Maps controller targets:', mapsController.targets);
             }
           }
         }, 2000);
