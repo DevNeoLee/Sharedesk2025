@@ -30,165 +30,89 @@
     
     <!-- Backup Stimulus loading script -->
     <script>
-      // Google Maps API debugging logs
-      console.log('=== Google Maps API Debug ===');
-      console.log('Current page:', window.location.pathname);
-      console.log('Environment:', '<%= Rails.env %>');
-      console.log('API Key present:', '<%= ENV['MAPS_API_KEY'].present? %>');
-      console.log('API Key starts with:', '<%= ENV['MAPS_API_KEY']&.first(10) %>');
-      
-      // Check Stimulus controller loading status
-      console.log('=== Stimulus Loading Check ===');
-      console.log('Importmap available:', typeof window.importmap !== 'undefined');
-      console.log('Stimulus available:', typeof window.Stimulus !== 'undefined');
-      
-      // Check Google Maps API loading status
-      window.addEventListener('load', function() {
-        console.log('Page loaded, checking Google Maps API...');
-        
-        // Check API key
-        const script = document.querySelector('script[src*="maps.googleapis.com"]');
-        if (script) {
-          console.log('✅ Google Maps script found:', script.src);
-        } else {
-          console.error('❌ Google Maps script not found');
-        }
-        
-        // Check Google Maps object
-        setTimeout(function() {
-          if (typeof google !== 'undefined' && google.maps) {
-            console.log('✅ Google Maps API loaded successfully');
-            console.log('Available services:', Object.keys(google.maps));
-          } else {
-            console.error('❌ Google Maps API not loaded');
-            console.log('Google object:', typeof google);
-            if (typeof google !== 'undefined') {
-              console.log('Google maps object:', typeof google.maps);
-            }
-          }
-        }, 2000);
-      });
-      
-      // Google Maps API error handling
-      window.gm_authFailure = function() {
-        console.error('❌ Google Maps API authentication failed');
-        console.log('This usually means the API key is invalid or has restrictions');
-      };
-      
       // Backup loading if Stimulus is not loaded
       window.addEventListener('load', function() {
         setTimeout(function() {
           if (typeof window.Stimulus === 'undefined') {
-            console.log('⚠️ Stimulus not loaded, attempting backup loading...');
-            
-            // Try loading Stimulus from unpkg CDN (more compatible)
-            const script = document.createElement('script');
-            script.src = 'https://unpkg.com/@hotwired/stimulus@3.2.2/dist/stimulus.umd.js';
-            script.onload = function() {
-              console.log('✅ Stimulus loaded from unpkg CDN');
-              
-              // Initialize Stimulus application
-              if (typeof Stimulus !== 'undefined') {
-                window.Stimulus = Stimulus.Application.start();
-                window.Stimulus.debug = true;
-                console.log('✅ Stimulus application started');
+            // Direct Google Maps initialization without Stimulus
+            try {
+              const form = document.querySelector('form[data-controller="maps"]');
+              if (form && typeof google !== 'undefined' && google.maps) {
+                const mapContainer = form.querySelector('[data-maps-target="map"]');
+                const addressField = form.querySelector('[data-maps-target="field"]');
+                const latField = form.querySelector('[data-maps-target="latitude"]');
+                const lngField = form.querySelector('[data-maps-target="longitude"]');
                 
-                // Try manual controller registration
-                try {
-                  // Check if maps controller exists
-                  const form = document.querySelector('form[data-controller="maps"]');
-                  if (form) {
-                    console.log('Found form with maps controller, attempting to initialize...');
-                    // Try simple map initialization
-                    if (typeof google !== 'undefined' && google.maps) {
-                      console.log('Google Maps available, initializing basic map...');
-                      const mapContainer = form.querySelector('[data-maps-target="map"]');
-                      if (mapContainer) {
-                        const map = new google.maps.Map(mapContainer, {
-                          center: { lat: 37.7749, lng: -122.4194 },
-                          zoom: 17
-                        });
-                        console.log('✅ Basic map initialized');
-                        
-                        // Try to add basic autocomplete functionality
-                        const addressField = form.querySelector('[data-maps-target="field"]');
-                        if (addressField && google.maps.places) {
-                          try {
-                            const autocomplete = new google.maps.places.Autocomplete(addressField);
-                            autocomplete.addListener('place_changed', function() {
-                              const place = autocomplete.getPlace();
-                              if (place.geometry) {
-                                map.setCenter(place.geometry.location);
-                                map.setZoom(17);
-                                
-                                // Update hidden fields
-                                const latField = form.querySelector('[data-maps-target="latitude"]');
-                                const lngField = form.querySelector('[data-maps-target="longitude"]');
-                                if (latField) latField.value = place.geometry.location.lat();
-                                if (lngField) lngField.value = place.geometry.location.lng();
-                                
-                                console.log('✅ Autocomplete functionality added');
-                              }
-                            });
-                            console.log('✅ Autocomplete initialized');
-                          } catch (error) {
-                            console.error('Error initializing autocomplete:', error);
-                          }
-                        }
-                      }
-                    }
-                  }
-                } catch (error) {
-                  console.error('Error initializing backup map:', error);
-                }
-              }
-            };
-            script.onerror = function() {
-              console.error('❌ Failed to load Stimulus from unpkg CDN');
-              
-              // Fallback: Direct Google Maps initialization without Stimulus
-              console.log('🔄 Attempting direct Google Maps initialization...');
-              try {
-                const form = document.querySelector('form[data-controller="maps"]');
-                if (form && typeof google !== 'undefined' && google.maps) {
-                  const mapContainer = form.querySelector('[data-maps-target="map"]');
-                  const addressField = form.querySelector('[data-maps-target="field"]');
+                if (mapContainer) {
+                  // Initialize map
+                  const map = new google.maps.Map(mapContainer, {
+                    center: { lat: 37.7749, lng: -122.4194 },
+                    zoom: 17
+                  });
                   
-                  if (mapContainer) {
-                    const map = new google.maps.Map(mapContainer, {
-                      center: { lat: 37.7749, lng: -122.4194 },
-                      zoom: 17
-                    });
-                    console.log('✅ Direct map initialization successful');
+                  // Add marker
+                  const marker = new google.maps.Marker({
+                    map: map,
+                    anchorPoint: new google.maps.Point(0, 0)
+                  });
+                  
+                  // Add autocomplete
+                  if (addressField && google.maps.places) {
+                    const autocomplete = new google.maps.places.Autocomplete(addressField);
+                    autocomplete.bindTo('bounds', map);
+                    autocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
                     
-                    // Add autocomplete
-                    if (addressField && google.maps.places) {
-                      const autocomplete = new google.maps.places.Autocomplete(addressField);
-                      autocomplete.addListener('place_changed', function() {
-                        const place = autocomplete.getPlace();
-                        if (place.geometry) {
-                          map.setCenter(place.geometry.location);
-                          map.setZoom(17);
-                          
-                          const latField = form.querySelector('[data-maps-target="latitude"]');
-                          const lngField = form.querySelector('[data-maps-target="longitude"]');
-                          if (latField) latField.value = place.geometry.location.lat();
-                          if (lngField) lngField.value = place.geometry.location.lng();
-                        }
-                      });
-                      console.log('✅ Direct autocomplete initialization successful');
-                    }
+                    autocomplete.addListener('place_changed', function() {
+                      const place = autocomplete.getPlace();
+                      
+                      if (!place.geometry) {
+                        window.alert("No details available for input: '" + place.name + "'");
+                        return;
+                      }
+                      
+                      // Update map
+                      if (place.geometry.viewport) {
+                        map.fitBounds(place.geometry.viewport);
+                      } else {
+                        map.setCenter(place.geometry.location);
+                        map.setZoom(17);
+                      }
+                      
+                      // Update marker
+                      marker.setPosition(place.geometry.location);
+                      marker.setVisible(true);
+                      
+                      // Update hidden fields
+                      if (latField) latField.value = place.geometry.location.lat();
+                      if (lngField) lngField.value = place.geometry.location.lng();
+                    });
                   }
+                  
+                  // Add click listener to map
+                  map.addListener('click', function(event) {
+                    const position = event.latLng;
+                    marker.setPosition(position);
+                    marker.setVisible(true);
+                    
+                    // Update hidden fields
+                    if (latField) latField.value = position.lat();
+                    if (lngField) lngField.value = position.lng();
+                    
+                    // Reverse geocode to get address
+                    const geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({ location: position }, function(results, status) {
+                      if (status === 'OK' && results[0]) {
+                        if (addressField) addressField.value = results[0].formatted_address;
+                      }
+                    });
+                  });
                 }
-              } catch (error) {
-                console.error('Error in direct initialization:', error);
               }
-            };
-            document.head.appendChild(script);
-          } else {
-            console.log('✅ Stimulus already loaded');
+            } catch (error) {
+              console.error('Error initializing Google Maps:', error);
+            }
           }
-        }, 3000); // Check after 3 seconds
+        }, 3000);
       });
     </script>
     <%= favicon_link_tag asset_path('orangePolygonLarge.png') %>

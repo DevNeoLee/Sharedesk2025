@@ -4,68 +4,24 @@ export default class extends Controller {
   static targets = ["field", "map", "latitude", "longitude"]
 
   connect() {
-    console.log("=== Maps Controller Connected ===")
-    console.log("Controller element:", this.element)
-    console.log("Controller element tag:", this.element.tagName)
-    console.log("Controller element classes:", this.element.className)
-    console.log("Controller element id:", this.element.id)
-    console.log("Controller targets found:", this.hasFieldTarget, this.hasMapTarget, this.hasLatitudeTarget, this.hasLongitudeTarget)
-    console.log("Google object available:", typeof google !== "undefined")
-    console.log("Google Maps available:", typeof google !== "undefined" && google.maps)
-    console.log("Places API available:", typeof google !== "undefined" && google.maps && google.maps.places)
-    
-    // 각 타겟 요소의 상세 정보 출력
-    if (this.hasFieldTarget) {
-      console.log("Field target element:", this.fieldTarget)
-      console.log("Field target type:", this.fieldTarget.type)
-      console.log("Field target name:", this.fieldTarget.name)
-      console.log("Field target value:", this.fieldTarget.value)
-    }
-    
-    if (this.hasMapTarget) {
-      console.log("Map target element:", this.mapTarget)
-      console.log("Map target classes:", this.mapTarget.className)
-      console.log("Map target dimensions:", this.mapTarget.offsetWidth, "x", this.mapTarget.offsetHeight)
-      console.log("Map target computed styles:", window.getComputedStyle(this.mapTarget))
-    }
-    
-    if (this.hasLatitudeTarget) {
-      console.log("Latitude target element:", this.latitudeTarget)
-      console.log("Latitude target value:", this.latitudeTarget.value)
-    }
-    
-    if (this.hasLongitudeTarget) {
-      console.log("Longitude target element:", this.longitudeTarget)
-      console.log("Longitude target value:", this.longitudeTarget.value)
-    }
-    
     if (typeof google !== "undefined" && google.maps) {
-      console.log("✅ Google Maps API is loaded, initializing map...")
       this.initializeMap()
     } else {
-      console.log("⏳ Google Maps API not loaded yet, waiting...")
-      // Wait for Google Maps API to load
       this.waitForGoogleMaps()
     }
   }
 
   waitForGoogleMaps() {
     let attempts = 0
-    const maxAttempts = 50 // 5 seconds max wait
+    const maxAttempts = 50
     
     const checkGoogleMaps = () => {
       attempts++
-      console.log(`⏳ Waiting for Google Maps API... (attempt ${attempts}/${maxAttempts})`)
       
       if (typeof google !== "undefined" && google.maps) {
-        console.log("✅ Google Maps API loaded, initializing map...")
         this.initializeMap()
       } else if (attempts >= maxAttempts) {
-        console.error("❌ Google Maps API failed to load after 5 seconds")
-        console.error("This might be due to:")
-        console.error("- API key restrictions")
-        console.error("- Network issues")
-        console.error("- Script loading problems")
+        console.error("Google Maps API failed to load after 5 seconds")
       } else {
         setTimeout(checkGoogleMaps, 100)
       }
@@ -74,12 +30,10 @@ export default class extends Controller {
   }
 
   initializeMap() {
-    console.log("Initializing map components...")
     try {
       this.map()
       this.marker()
       this.autocomplete()
-      console.log("Map initialization completed successfully")
     } catch (error) {
       console.error("Error initializing map:", error)
     }
@@ -87,10 +41,6 @@ export default class extends Controller {
 
   map() {
     if(this._map == undefined) {
-      console.log("Creating new map...")
-      console.log("Map target element:", this.mapTarget)
-      console.log("Initial coordinates:", this.latitudeTarget.value, this.longitudeTarget.value)
-      
       this._map = new google.maps.Map(this.mapTarget, {
         center: new google.maps.LatLng(
           this.latitudeTarget.value || 37.7749,
@@ -98,14 +48,12 @@ export default class extends Controller {
         ),
         zoom: 17
       })
-      console.log("Map created successfully")
     }
     return this._map
   }
 
   marker() {
     if (this._marker == undefined) {
-      console.log("Creating new marker...")
       this._marker = new google.maps.Marker({
         map: this.map(),
         anchorPoint: new google.maps.Point(0,0)
@@ -116,52 +64,21 @@ export default class extends Controller {
       }
       this._marker.setPosition(mapLocation)
       this._marker.setVisible(true)
-      console.log("Marker created at:", mapLocation)
     }
     return this._marker
   }
 
   autocomplete() {
     if (this._autocomplete == undefined) {
-      console.log("Creating autocomplete...")
-      console.log("Field target element:", this.fieldTarget)
-      console.log("Field target value:", this.fieldTarget.value)
-      console.log("Field target type:", this.fieldTarget.type)
-      console.log("Field target name:", this.fieldTarget.name)
-      
       if (!google.maps.places) {
-        console.error("Google Maps Places API not available!")
         return
       }
       
       try {
         this._autocomplete = new google.maps.places.Autocomplete(this.fieldTarget)
-        console.log("Autocomplete object created:", this._autocomplete)
-        
         this._autocomplete.bindTo('bounds', this.map())
         this._autocomplete.setFields(['address_components', 'geometry', 'icon', 'name'])
-        
-        // Add autocomplete event listener
         this._autocomplete.addListener('place_changed', this.locationChanged.bind(this))
-        
-        // Additional event listeners
-        this.fieldTarget.addEventListener('input', (e) => {
-          console.log("Input event triggered:", e.target.value)
-        })
-        
-        this.fieldTarget.addEventListener('keydown', (e) => {
-          console.log("Keydown event triggered:", e.key)
-        })
-        
-        this.fieldTarget.addEventListener('focus', (e) => {
-          console.log("Focus event triggered")
-        })
-        
-        this.fieldTarget.addEventListener('blur', (e) => {
-          console.log("Blur event triggered")
-        })
-        
-        console.log("Autocomplete created successfully with all event listeners")
       } catch (error) {
         console.error("Error creating autocomplete:", error)
       }
@@ -170,18 +87,12 @@ export default class extends Controller {
   }
 
   locationChanged() {
-    console.log("Location changed event triggered")
     let place = this.autocomplete().getPlace()
-    console.log("Selected place:", place)
 
     if (!place.geometry) {
-      console.warn("No geometry available for place:", place.name)
       window.alert("No details available for input: '" + place.name + "'");
       return;
     }
-
-    console.log("Place geometry:", place.geometry)
-    console.log("Place location:", place.geometry.location)
 
     this.map().fitBounds(place.geometry.viewport)
     this.map().setCenter(place.geometry.location)
@@ -190,13 +101,10 @@ export default class extends Controller {
 
     this.latitudeTarget.value = place.geometry.location.lat()
     this.longitudeTarget.value = place.geometry.location.lng()
-    
-    console.log("Updated coordinates:", this.latitudeTarget.value, this.longitudeTarget.value)
   }
 
   preventSubmit(e) {
     if (e.key == "Enter") { 
-      console.log("Preventing form submit on Enter key")
       e.preventDefault() 
     }
   }
