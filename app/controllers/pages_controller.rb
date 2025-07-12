@@ -49,17 +49,33 @@ class PagesController < ApplicationController
   end
   
   def location_consent
+    Rails.logger.info "=== Location Consent Request ==="
+    Rails.logger.info "Request method: #{request.method}"
+    Rails.logger.info "Request params: #{params.inspect}"
+    Rails.logger.info "Current session consent: #{session[:location_consent]}"
+    Rails.logger.info "Request IP: #{request.remote_ip}"
+    
     if params[:consent] == 'true'
       session[:location_consent] = true
+      Rails.logger.info "Location consent granted - session updated"
       render json: { success: true, message: 'Location consent granted' }
     else
       session[:location_consent] = false
+      Rails.logger.info "Location consent declined - session updated"
       render json: { success: true, message: 'Location consent declined' }
     end
+    
+    Rails.logger.info "Final session consent: #{session[:location_consent]}"
   end
   
   def current_user_location
+    Rails.logger.info "=== Current User Location Request ==="
+    Rails.logger.info "Session consent: #{session[:location_consent]}"
+    Rails.logger.info "Request IP: #{request.remote_ip}"
+    
     location = get_user_location
+    Rails.logger.info "Final location returned: #{location}"
+    
     render json: { location: location }
   end
 end

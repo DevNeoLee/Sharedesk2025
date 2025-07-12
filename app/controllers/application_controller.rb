@@ -32,40 +32,62 @@ class ApplicationController < ActionController::Base
         if session[:location_consent] == true
             Rails.logger.info "User has consented to location sharing"
             
-            # Try to get location from request
+            # Try multiple methods to get user location
+            location = nil
+            
+            # Method 1: Try request.location (Geocoder gem)
             if request.location.present? && request.location.city.present?
-                Rails.logger.info "Location detected via request.location: #{request.location.city}"
-                return request.location.city
+                location = request.location.city
+                Rails.logger.info "Location detected via request.location: #{location}"
             end
             
-            # If request.location fails, try alternative IP lookup
-            begin
-                # Use a more reliable IP geolocation service for production
-                if Rails.env.production?
-                    # Try to get location from X-Forwarded-For header (common in production)
-                    client_ip = request.env['HTTP_X_FORWARDED_FOR']&.split(',')&.first || request.remote_ip
-                    Rails.logger.info "Client IP for geolocation: #{client_ip}"
+            # Method 2: Try direct Geocoder search if Method 1 failed
+            if location.blank?
+                begin
+                    # Get the real client IP (handles proxies)
+                    client_ip = get_real_client_ip
+                    Rails.logger.info "Attempting Geocoder search for IP: #{client_ip}"
                     
                     # Use Geocoder to get location from IP
                     result = Geocoder.search(client_ip).first
                     if result && result.city.present?
-                        Rails.logger.info "Geocoder location detected: #{result.city}"
-                        return result.city
+                        location = result.city
+                        Rails.logger.info "Geocoder location detected: #{location}"
                     else
                         Rails.logger.warn "Geocoder returned no city for IP: #{client_ip}"
                     end
-                else
-                    # For development, try Geocoder as well
-                    result = Geocoder.search(request.remote_ip).first
-                    if result && result.city.present?
-                        Rails.logger.info "Geocoder location detected (dev): #{result.city}"
-                        return result.city
-                    end
+                rescue => e
+                    Rails.logger.error "Error in IP geolocation: #{e.message}"
+                    Rails.logger.error "Backtrace: #{e.backtrace.first(3).join(', ')}"
                 end
-            rescue => e
-                Rails.logger.error "Error in IP geolocation: #{e.message}"
-                Rails.logger.error "Backtrace: #{e.backtrace.first(5).join(', ')}"
             end
+            
+            # Method 3: Try alternative IP lookup services if still no location
+            if location.blank?
+                begin
+                    client_ip = get_real_client_ip
+                    Rails.logger.info "Trying alternative location service for IP: #{client_ip}"
+                    
+                    # Try a different approach - use HTTP request to IP geolocation service
+                    require 'net/http'
+                    require 'json'
+                    
+                    uri = URI("http://ip-api.com/json/#{client_ip}")
+                    response = Net::HTTP.get_response(uri)
+                    
+                    if response.is_a?(Net::HTTPSuccess)
+                        data = JSON.parse(response.body)
+                        if data['status'] == 'success' && data['city'].present?
+                            location = data['city']
+                            Rails.logger.info "Alternative service location detected: #{location}"
+                        end
+                    end
+                rescue => e
+                    Rails.logger.error "Error in alternative location service: #{e.message}"
+                end
+            end
+            
+            return location if location.present?
         else
             Rails.logger.info "User has not consented to location sharing"
         end
@@ -79,6 +101,19 @@ class ApplicationController < ActionController::Base
         # Default fallback - no location tracking
         Rails.logger.info "Using default location: NYC"
         "NYC"
+    end
+    
+    private
+    
+    def get_real_client_ip
+        # Get the real client IP address, handling various proxy scenarios
+        ip = request.env['HTTP_X_FORWARDED_FOR']&.split(',')&.first&.strip ||
+             request.env['HTTP_X_REAL_IP'] ||
+             request.env['HTTP_CLIENT_IP'] ||
+             request.remote_ip
+        
+        Rails.logger.info "Real client IP detected: #{ip}"
+        ip
     end
 
     def configure_permitted_parameters 

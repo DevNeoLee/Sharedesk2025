@@ -1,7 +1,7 @@
 # Geocoder configuration
 Geocoder.configure(
   # Geocoding options
-  timeout: 5,                 # geocoding service timeout (secs) - increased for production
+  timeout: 10,                # geocoding service timeout (secs) - increased for production
   lookup: :nominatim,         # name of geocoding service (symbol)
   ip_lookup: :ipapi_com,      # name of IP address geocoding service (symbol)
   language: :en,              # ISO-639 language code
@@ -20,4 +20,8 @@ Geocoder.configure(
   # Calculation options
   units: :mi,                 # :km for kilometers or :mi for miles
   distances: :linear          # :spherical or :linear
-) 
+)
+
+# Log Geocoder configuration for debugging
+Rails.logger.info "Geocoder configured with timeout: #{Geocoder.config.timeout}s"
+Rails.logger.info "Geocoder IP lookup service: #{Geocoder.config.ip_lookup}" 

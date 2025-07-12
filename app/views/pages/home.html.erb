@@ -2,6 +2,11 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    console.log('=== Home Page Loaded ===');
+    console.log('Current location from server:', '<%= @location_received %>');
+    console.log('Session storage location consent:', sessionStorage.getItem('locationConsent'));
+    console.log('Session storage location consent shown:', sessionStorage.getItem('locationConsentShown'));
+    
     // Initialize all star rating elements
     document.querySelectorAll('.star-rating').forEach(function(element, index) {
       const originalScore = parseFloat(element.dataset.score) || 0;
@@ -13,20 +18,35 @@
     
     // Check if user has consented to location sharing
     if (!sessionStorage.getItem('locationConsentShown')) {
+      console.log('Location consent modal not shown yet, displaying...');
       showLocationConsentModal();
+    } else {
+      console.log('Location consent modal already shown');
     }
   });
   
   function showLocationConsentModal() {
+    console.log('=== Showing Location Consent Modal ===');
     const modal = document.getElementById('locationConsentModal');
     if (modal) {
       modal.style.display = 'block';
+      console.log('Modal displayed successfully');
+    } else {
+      console.error('Modal element not found!');
     }
   }
   
   function acceptLocationSharing() {
+    console.log('=== User Accepted Location Sharing ===');
+    console.log('Setting session storage values...');
+    
     sessionStorage.setItem('locationConsentShown', 'true');
     sessionStorage.setItem('locationConsent', 'true');
+    
+    console.log('Session storage updated:', {
+      consentShown: sessionStorage.getItem('locationConsentShown'),
+      consent: sessionStorage.getItem('locationConsent')
+    });
     
     // Show loading state
     const modal = document.getElementById('locationConsentModal');
@@ -35,8 +55,10 @@
       const originalText = acceptBtn.innerHTML;
       acceptBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
       acceptBtn.disabled = true;
+      console.log('Button updated to loading state');
     }
     
+    console.log('Sending location consent to server...');
     // Send consent to server and get updated location
     fetch('/location_consent', {
       method: 'POST',
@@ -46,9 +68,18 @@
       },
       body: JSON.stringify({ consent: true })
     })
-    .then(response => response.json())
+    .then(response => {
+      console.log('Location consent response status:', response.status);
+      console.log('Location consent response ok:', response.ok);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then(data => {
+      console.log('Location consent response data:', data);
       if (data.success) {
+        console.log('Location consent successful, fetching updated location...');
         // Get updated location from server
         return fetch('/current_user_location', {
           method: 'GET',
@@ -56,52 +87,99 @@
             'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
           }
         });
+      } else {
+        throw new Error('Location consent failed');
       }
     })
-    .then(response => response.json())
+    .then(response => {
+      console.log('Current user location response status:', response.status);
+      console.log('Current user location response ok:', response.ok);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then(data => {
+      console.log('Current user location response data:', data);
       if (data.location) {
+        console.log('Location data received, updating page...');
         // Update all location references on the page
         updateLocationOnPage(data.location);
+      } else {
+        throw new Error('No location data received');
       }
     })
     .catch(error => {
-      console.error('Error updating location:', error);
+      console.error('=== Error in Location Update Process ===');
+      console.error('Error details:', error);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      
+      // Show error message to user
+      if (typeof toastr !== 'undefined') {
+        console.log('Showing toastr error message');
+        toastr.error('Failed to update location. Please try refreshing the page.');
+      } else {
+        console.log('Showing alert error message');
+        alert('Failed to update location. Please try refreshing the page.');
+      }
+      
       // Fallback to page reload if AJAX fails
-      window.location.reload();
+      console.log('Scheduling page reload as fallback...');
+      setTimeout(() => {
+        console.log('Reloading page...');
+        window.location.reload();
+      }, 2000);
     })
     .finally(() => {
+      console.log('Closing location modal...');
       closeLocationModal();
     });
   }
   
   function declineLocationSharing() {
+    console.log('=== User Declined Location Sharing ===');
     sessionStorage.setItem('locationConsentShown', 'true');
     sessionStorage.setItem('locationConsent', 'false');
+    console.log('Session storage updated for declined consent');
     closeLocationModal();
   }
   
   function closeLocationModal() {
+    console.log('=== Closing Location Modal ===');
     const modal = document.getElementById('locationConsentModal');
     if (modal) {
       modal.style.display = 'none';
+      console.log('Modal closed successfully');
+    } else {
+      console.error('Modal element not found for closing!');
     }
   }
-
+  
   function updateLocationOnPage(location) {
+    console.log('=== Updating Location on Page ===');
+    console.log('New location:', location);
+    
     // Add updating animation to location elements
     const locationElements = document.querySelectorAll('.display-4, .btn-cta, input[name="q[address_cont]"]');
-    locationElements.forEach(el => {
+    console.log('Found location elements to update:', locationElements.length);
+    locationElements.forEach((el, index) => {
+      console.log(`Element ${index}:`, el.tagName, el.className);
       el.classList.add('location-update', 'updating');
     });
     
     // Update the main heading with animation
     const mainHeading = document.querySelector('.display-4');
     if (mainHeading) {
+      console.log('Updating main heading...');
+      console.log('Current heading text:', mainHeading.innerHTML);
       setTimeout(() => {
         mainHeading.innerHTML = `Need a Desk in ${location}—Fast?`;
         mainHeading.classList.remove('updating');
+        console.log('Main heading updated to:', mainHeading.innerHTML);
       }, 150);
+    } else {
+      console.error('Main heading element not found!');
     }
     
     // Update the "Find in Your Area" button link
@@ -109,31 +187,46 @@
     if (findButton) {
       const link = findButton.closest('a');
       if (link) {
+        console.log('Updating "Find in Your Area" button link...');
+        console.log('Current link href:', link.href);
         link.href = `/search?q[address_cont]=${encodeURIComponent(location)}`;
         setTimeout(() => {
           findButton.classList.remove('updating');
+          console.log('Button link updated to:', link.href);
         }, 300);
+      } else {
+        console.error('Link element not found for button!');
       }
+    } else {
+      console.error('Find button element not found!');
     }
     
     // Update search form location field
     const searchField = document.querySelector('input[name="q[address_cont]"]');
     if (searchField) {
+      console.log('Updating search form location field...');
+      console.log('Current field value:', searchField.value);
       setTimeout(() => {
         searchField.value = location;
         searchField.classList.remove('updating');
+        console.log('Search field updated to:', searchField.value);
       }, 450);
+    } else {
+      console.error('Search field element not found!');
     }
     
     // Remove updating class from all elements after animation
     setTimeout(() => {
+      console.log('Removing updating classes from all elements...');
       locationElements.forEach(el => {
         el.classList.remove('location-update', 'updating');
       });
     }, 600);
     
     // Show success message
+    console.log('Showing success message...');
     if (typeof toastr !== 'undefined') {
+      console.log('Using toastr for success message');
       toastr.success(`Location updated to ${location}!`, 'Location Updated', {
         timeOut: 3000,
         extendedTimeOut: 1000,
@@ -141,6 +234,7 @@
         progressBar: true
       });
     } else {
+      console.log('Using custom notification for success message');
       // Fallback notification
       const notification = document.createElement('div');
       notification.className = 'alert alert-success alert-dismissible fade show location-update-notification';
@@ -155,6 +249,7 @@
         </div>
       `;
       document.body.appendChild(notification);
+      console.log('Custom notification added to page');
       
       // Auto-remove after 4 seconds
       setTimeout(() => {
@@ -163,11 +258,14 @@
           setTimeout(() => {
             if (notification.parentNode) {
               notification.parentNode.removeChild(notification);
+              console.log('Custom notification removed');
             }
           }, 300);
         }
       }, 4000);
     }
+    
+    console.log('=== Location Update Complete ===');
   }
 </script>
 
@@ -455,3 +553,4 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+
