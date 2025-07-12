@@ -3,13 +3,19 @@
 
 puts "Starting database seeding..."
 
-# Check if we should clear existing data
-if ENV['CLEAR_EXISTING'] == 'true'
-  puts "Clearing existing rooms and reviews..."
+# Always clear existing data before seeding (unless explicitly told not to)
+if ENV['KEEP_EXISTING'] != 'true'
+  puts "Clearing existing data..."
+  puts "Deleting reviews..."
   Review.delete_all
+  puts "Deleting rooms..."
   Room.delete_all
   puts "Existing data cleared."
+else
+  puts "KEEP_EXISTING=true - keeping existing data"
 end
+
+puts "Current room count: #{Room.count}. Proceeding with seed data creation..."
 
 # Create users only if they don't exist
 user1 = User.find_or_create_by(email: "justin@email.com") do |user|
@@ -82,14 +88,11 @@ def create_room_with_image(attributes)
   # Extract city from address
   city = extract_city_from_address(attributes[:address])
   
-  # Check if room with same name and city already exists
-  existing_room = Room.joins("JOIN users ON rooms.user_id = users.id")
-                     .where(listing_name: attributes[:listing_name])
-                     .where("rooms.address LIKE ?", "%#{city}%")
-                     .first
+  # Check if room with same name already exists (anywhere)
+  existing_room = Room.where(listing_name: attributes[:listing_name]).first
   
   if existing_room
-    puts "Room with same name and city already exists: #{attributes[:listing_name]} in #{city} (skipping)"
+    puts "Room with same name already exists: #{attributes[:listing_name]} (skipping)"
     return existing_room
   end
   
@@ -1345,12 +1348,22 @@ cities.each do |city|
   puts "#{city}: #{count} rooms"
 end
 
+puts "\n=== Duplicate Prevention Summary ==="
+puts "✓ Rooms with same name are skipped"
+puts "✓ Maximum 5 rooms per city"
+puts "✓ Maximum 5 reviews per room"
+puts "✓ Users are created only once"
+puts "✓ Total room limit: 50 rooms"
+
 puts "\n=== Usage Instructions ==="
-puts "To clear existing data and recreate everything:"
-puts "  CLEAR_EXISTING=true rails db:seed"
-puts ""
-puts "To add only missing data (default):"
+puts "To recreate all data (default behavior):"
 puts "  rails db:seed"
+puts ""
+puts "To keep existing data and add only missing items:"
+puts "  KEEP_EXISTING=true rails db:seed"
 puts ""
 puts "To reset database completely:"
 puts "  rails db:drop && rails db:create && rails db:migrate && rails db:seed"
+puts ""
+puts "To check current data without seeding:"
+puts "  rails runner 'puts \"Rooms: #{Room.count}\"; puts \"Users: #{User.count}\"; puts \"Reviews: #{Review.count}\"'"
