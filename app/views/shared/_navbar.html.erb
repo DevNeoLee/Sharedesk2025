@@ -34,6 +34,8 @@
                 <div class="profile-avatar">
                   <% if current_user.avatar.attached? %>
                     <%= image_tag current_user.avatar, class: "rounded-circle", width: "45", height: "45", style: "object-fit: cover;" %>
+                  <% elsif current_user.email == "demo@email.com" %>
+                    <%= image_tag "default_profile.jpg", class: "rounded-circle", width: "45", height: "45", style: "object-fit: cover;" %>
                   <% else %>
                     <%= image_tag "default_avatar.jpg", class: "rounded-circle", width: "45", height: "45", style: "object-fit: cover;" %>
                   <% end %>
@@ -47,6 +49,8 @@
                     <div class="profile-avatar">
                       <% if current_user.avatar.attached? %>
                         <%= image_tag current_user.avatar, class: "rounded-circle", width: "50", height: "50", style: "object-fit: cover;" %>
+                      <% elsif current_user.email == "demo@email.com" %>
+                        <%= image_tag "default_profile.jpg", class: "rounded-circle", width: "50", height: "50", style: "object-fit: cover;" %>
                       <% else %>
                         <%= image_tag "default_avatar.jpg", class: "rounded-circle", width: "50", height: "50", style: "object-fit: cover;" %>
                       <% end %>
@@ -92,6 +96,8 @@
               <div class="profile-avatar">
                 <% if current_user.avatar.attached? %>
                   <%= image_tag current_user.avatar, class: "rounded-circle", width: "48", height: "48", style: "object-fit: cover;" %>
+                <% elsif current_user.email == "demo@email.com" %>
+                  <%= image_tag "default_profile.jpg", class: "rounded-circle", width: "48", height: "48", style: "object-fit: cover;" %>
                 <% else %>
                   <%= image_tag "default_avatar.jpg", class: "rounded-circle", width: "48", height: "48", style: "object-fit: cover;" %>
                 <% end %>
