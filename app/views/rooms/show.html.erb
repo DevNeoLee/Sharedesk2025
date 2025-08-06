@@ -37,10 +37,7 @@
             <% end %>
           <% else %>
             <div class="carousel-item active">
-              <div class="room-detail-no-image">
-                <i class="fas fa-image"></i>
-                <span>No Image Available</span>
-              </div>
+              <%= image_tag "main_image1.jpg", class: "room-detail-main-image"%>
             </div>
           <% end %>
         </div>
@@ -271,12 +268,9 @@
             <%= link_to room_path(room.id) do %>
               <div class="nearby-space-image">
                 <% if room.images.attached? %>
-                  <%= image_tag room.medium_image(room.images[0]), class: "nearby-space-img"%>
+                  <%= image_tag room.images[0], class: "nearby-space-img"%>
                 <% else %>
-                  <div class="nearby-space-placeholder">
-                    <i class="fas fa-image"></i>
-                    <span>No Image</span>
-                  </div>
+                  <%= image_tag "main_image1.jpg", class: "nearby-space-img"%>
                 <% end %>
               </div>
               <div class="nearby-space-content">

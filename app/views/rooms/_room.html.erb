@@ -4,12 +4,9 @@
     <div class="room-card">
         <div class="room-card-image">
             <% if room.images.attached? %>
-                <%= image_tag room.medium_image(room.images[0]), class: "room-image"%>
+                <%= image_tag room.images[0], class: "room-image"%>
             <% else %>
-                <div class="room-image-placeholder">
-                    <i class="fas fa-image"></i>
-                    <span>No Image</span>
-                </div>
+                <%= image_tag "main_image1.jpg", class: "room-image"%>
             <% end %>
         </div>
         <div class="room-card-content">

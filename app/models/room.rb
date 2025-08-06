@@ -28,15 +28,15 @@ class Room < ApplicationRecord
   end
 
   def small_image(image)
-    image.variant(resize_to_fill: [80, 80]) 
+    image
   end
 
   def medium_image(image)
-    image.variant(resize_to_fill: [300, 300], quality: 2000) 
+    image
   end
 
   def large_image(image)
-    image.variant(resize_to_fill: [400, 400]) 
+    image
   end
 
   def default_room
@@ -44,6 +44,26 @@ class Room < ApplicationRecord
       avatar
     else 
       'default_avatar.png'
+    end
+  end
+
+  # 모든 방에 main_image1.jpg를 기본 이미지로 설정
+  def self.set_default_images_for_all_rooms
+    Room.find_each do |room|
+      # 기존 이미지 제거
+      room.images.purge if room.images.attached?
+      
+      # main_image1.jpg를 기본 이미지로 설정
+      begin
+        room.images.attach(
+          io: File.open(Rails.root.join('app', 'assets', 'images', 'main_image1.jpg')),
+          filename: 'main_image1.jpg',
+          content_type: 'image/jpeg'
+        )
+        puts "Set default image for room: #{room.listing_name}"
+      rescue => e
+        puts "Error setting default image for room #{room.listing_name}: #{e.message}"
+      end
     end
   end
 
