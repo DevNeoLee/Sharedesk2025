@@ -129,6 +129,8 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    dockerfile-rails (1.7.10)
+      rails (>= 3.0.0)
     drb (2.2.3)
     erb (5.0.1)
     erubi (1.13.1)
@@ -404,6 +406,7 @@ DEPENDENCIES
   byebug
   capybara (>= 3.39)
   devise (~> 4.9)
+  dockerfile-rails (>= 1.7)
   geocoder (~> 1.8)
   image_processing (~> 1.2)
   importmap-rails (~> 2.1)
